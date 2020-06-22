@@ -61,7 +61,7 @@ class ViewController: UIViewController {
     var startingWorldPosition: SIMD3<Float> = SIMD3<Float>(0, 0, 0)
     
     var trackedEntity: Entity = Entity()
-    var dummyEntity: Entity = Entity()
+    var tappedEntity: Entity = Entity()
     
     // translates autoresizing mask into constraints lets us
     // manually alter the constraints
@@ -100,9 +100,21 @@ class ViewController: UIViewController {
         firstPointTapRecognizer.name = "First Point Recognizer"
         arView.addGestureRecognizer(firstPointTapRecognizer)
         
-        // Pan gesture recognizer: for dragging around points of charge
-//        let panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan(panRecognizer:)))
-//        arView.addGestureRecognizer(panRecognizer)
+        // Tap Recognizer for pointChargeEntities
+        // Don't enable it, until the first point Charges are added
+        let pointTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(handlePointTap(recognizer:)))
+        pointTapRecognizer.name = "Point Tap Recognizer"
+        arView.addGestureRecognizer(pointTapRecognizer)
+        pointTapRecognizer.isEnabled = false
+    }
+    
+    func setupARView() {
+        arView.automaticallyConfigureSession = false
+        let config = ARWorldTrackingConfiguration()
+        config.planeDetection = [.horizontal, .vertical]
+        config.environmentTexturing = .automatic
+        arView.session.run(config)
+
     }
     
     @objc func handleTap(recognizer: UITapGestureRecognizer) {
@@ -119,53 +131,15 @@ class ViewController: UIViewController {
         }
     }
     
-//    @objc func handlePan(panRecognizer: UIPanGestureRecognizer) {
-//        let location = panRecognizer.location(in: arView)
-//
-//        let results = arView.raycast(from: location, allowing: .estimatedPlane, alignment: .horizontal)
-//
-//        switch panRecognizer.state {
-//        case .began:
-//            guard let hitEntity = arView.entity(at: location) else {return}
-//            if hitEntity.name == "pointChargeObject" {
-//                trackedEntity = hitEntity
-//                dummyEntity = trackedEntity.clone(recursive: true)
-//
-//                let newLocation = panRecognizer.location(in: arView)
-//                if let firstResult = results.first {
-//                    let worldTouchPosition = arView.unproject(newLocation, ontoPlane: firstResult.worldTransform)
-//                    self.startingWorldPosition = worldTouchPosition!
-//                }
-//            } else {
-//                return
-//            }
-//
-//        case .changed:
-//            let newLocation = panRecognizer.location(in: arView)
-//            if let firstResult = results.first {
-//                let worldTouchPosition = arView.unproject(newLocation, ontoPlane: firstResult.worldTransform)!
-//                let newPosition = worldTouchPosition - startingWorldPosition
-//
-//                print(newPosition)
-//                print(trackedEntity.position)
-//                print(dummyEntity.position)
-//                print("")
-//            }
-//        case .ended:
-//            trackedEntity = Entity()
-//            dummyEntity = Entity()
-//        default:
-//            break
-//        }
-//    }
-//
-    func setupARView() {
-        arView.automaticallyConfigureSession = false
-        let config = ARWorldTrackingConfiguration()
-        config.planeDetection = [.horizontal, .vertical]
-        config.environmentTexturing = .automatic
-        arView.session.run(config)
-
+    @objc func handlePointTap(recognizer: UITapGestureRecognizer) {
+        let location = recognizer.location(in: arView)
+        
+        guard let hitEntity = arView.entity(at: location) else {return}
+        
+        if hitEntity.name == "pointChargeObject" {
+            tappedEntity = hitEntity
+            loadPointChargeInfo(entity: tappedEntity)
+        }
     }
 
     func addStackView() {
@@ -198,7 +172,7 @@ class ViewController: UIViewController {
         }
 
     }
-
+    
     @objc func buttonAction(sender: UIButton!) {
         let btnsend: UIButton = sender
         if btnsend.tag > 0 && btnsend.tag < 7 {
@@ -209,6 +183,8 @@ class ViewController: UIViewController {
             selectedPositions.append(contentsOf: dict["startingPos"]!)
         }
     }
+    
+    
     
     func placeObject(for anchor: ARAnchor) {
         // Add the anchor of the scene where the user tapped
@@ -237,10 +213,22 @@ class ViewController: UIViewController {
             
             // remove gesture recognizer for the first point of charge
             if recognizer.name == "First Point Recognizer" {
-                arView.removeGestureRecognizer(recognizer)
+//                arView.removeGestureRecognizer(recognizer)
+                recognizer.isEnabled = false
+            }
+            // enable the point tap recognizer
+            if recognizer.name == "Point Tap Recognizer" {
+                recognizer.isEnabled = true
             }
         }
         
+    }
+    
+    func loadPointChargeInfo(entity: Entity) {
+        print(entity)
+        var textModelComponent : ModelComponent = entity.children[1].children[0].children[0].components[ModelComponent] as! ModelComponent
+        textModelComponent.mesh = .generateText("2 Cb", extrusionDepth: 0, font: .systemFont(ofSize: 0.02), containerFrame: CGRect.zero, alignment: .center, lineBreakMode: .byCharWrapping)
+        entity.children[1].children[0].children[0].components.set(textModelComponent)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
