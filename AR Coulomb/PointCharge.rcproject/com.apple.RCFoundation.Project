@@ -1,0 +1,627 @@
+{
+  "__content" : [
+    {
+      "scenes" : [
+        {
+          "__content" : [
+            {
+              "arAnchorSpecification" : {
+                "alignment" : "horizontal",
+                "name" : "surface"
+              },
+              "behaviors" : [
+                {
+                  "__content" : [
+                    {
+                      "accessibility" : {
+                        "__content" : [
+                          {
+                            "isEnabled" : true
+                          }
+                        ],
+                        "__version" : 1
+                      },
+                      "actionGroups" : [
+                        {
+                          "__content" : [
+                            {
+                              "configurations" : [
+                                {
+                                  "__content" : [
+                                    {
+                                      "configurationBox" : {
+                                        "configuration" : {
+                                          "target" : [
+                                            "4E820375-079C-4612-AC55-A67D2DE293E6"
+                                          ],
+                                          "userIdentifier" : "TapPointBehavior"
+                                        },
+                                        "name" : {
+                                          "type" : "custom"
+                                        }
+                                      },
+                                      "identifier" : "2D619977-C328-463A-947C-7925367FAB84",
+                                      "isEnabled" : true
+                                    }
+                                  ],
+                                  "__version" : 1
+                                }
+                              ],
+                              "identifier" : "48109438-C7ED-4C29-8F17-FB961A38BF63",
+                              "isEnabled" : true
+                            }
+                          ],
+                          "__version" : 1
+                        },
+                        {
+                          "__content" : [
+                            {
+                              "configurations" : [
+                                {
+                                  "__content" : [
+                                    {
+                                      "configurationBox" : {
+                                        "configuration" : {
+                                          "animationStyle" : "wild",
+                                          "duration" : 1,
+                                          "emphasisAnimationType" : "blink",
+                                          "iterations" : 1,
+                                          "target" : [
+                                            "4E820375-079C-4612-AC55-A67D2DE293E6"
+                                          ]
+                                        },
+                                        "name" : {
+                                          "type" : "emphasis"
+                                        }
+                                      },
+                                      "identifier" : "716585B9-98EA-473C-A77B-64D03F70EE8A",
+                                      "isEnabled" : true
+                                    }
+                                  ],
+                                  "__version" : 1
+                                }
+                              ],
+                              "identifier" : "7658F608-C7D4-42D7-8C77-C725E49DC91C",
+                              "isEnabled" : true
+                            }
+                          ],
+                          "__version" : 1
+                        }
+                      ],
+                      "color" : [
+                        0.364705890417099,
+                        0.74117648601531982,
+                        0.69019609689712524,
+                        1
+                      ],
+                      "identifier" : "BF69D350-981A-40CF-A4B3-125F9DA082C8",
+                      "isEnabled" : true,
+                      "isLooping" : false,
+                      "isModal" : false,
+                      "name" : "TapPointBehavior",
+                      "triggers" : [
+                        {
+                          "__content" : [
+                            {
+                              "configurationBox" : {
+                                "configuration" : {
+                                  "target" : [
+                                    "4E820375-079C-4612-AC55-A67D2DE293E6"
+                                  ]
+                                },
+                                "name" : "tapTarget"
+                              },
+                              "identifier" : "F1BACD21-D48E-46F4-804B-DBD4635368EC",
+                              "isEnabled" : true
+                            }
+                          ],
+                          "__version" : 1
+                        }
+                      ]
+                    }
+                  ],
+                  "__version" : 3
+                }
+              ],
+              "gravity" : [
+                0,
+                -9.8000001907348633,
+                0
+              ],
+              "identifier" : "F9610871-0955-494F-A5C3-51D1A281BAB3",
+              "material" : "concrete",
+              "overrides" : {
+                "children" : {
+                  "0A6F3C0F-7D56-4E35-883A-B247E1286A76" : null,
+                  "4A213441-135C-450E-8EF8-1A4EAB267C1D" : null,
+                  "5A759840-8CAA-4030-A8E8-69600835B0BF" : null,
+                  "7F5F1ADC-E5E4-4EF5-A5B5-FC43B071FFA5" : null,
+                  "8B37E579-3C92-4FAB-A88A-589E9DA18C8E" : null,
+                  "8C57B8F8-1813-4011-A6AC-E1011F1DE888" : null,
+                  "53C65DEE-13C8-4EB7-8A28-C8AE71107AD2" : {
+                    "overrides" : {
+                      "children" : {
+                        "5A759840-8CAA-4030-A8E8-69600835B0BF" : {
+                          "overrides" : {
+                            "arguments" : [
+                              [
+                                "diameter",
+                                {
+                                  "typeName" : "Double",
+                                  "value" : 0.025000000000000001
+                                }
+                              ],
+                              [
+                                "material",
+                                {
+                                  "typeName" : "String",
+                                  "value" : "plastic"
+                                }
+                              ],
+                              [
+                                "materialColor",
+                                {
+                                  "typeName" : "double4",
+                                  "value" : [
+                                    0.55000001192092896,
+                                    0.10999999940395355,
+                                    0.10999999940395355,
+                                    1
+                                  ]
+                                }
+                              ],
+                              [
+                                "type",
+                                {
+                                  "typeName" : "String",
+                                  "value" : "sphere"
+                                }
+                              ]
+                            ],
+                            "factory" : {
+                              "identifier" : "com.apple.rc.af.CoreAssetFactories.PrimitiveShapeAssetFactory",
+                              "version" : "1.0"
+                            },
+                            "runtimeAttributes" : [
+                              [
+                                "RuntimeIdentifier",
+                                {
+                                  "typeName" : "UUID",
+                                  "value" : "C4CF2E90-722D-47F7-99EE-3E4B5B96BAD5"
+                                }
+                              ],
+                              [
+                                "accessibilityLabel",
+                                {
+                                  "typeName" : "String",
+                                  "value" : "chargePointModel"
+                                }
+                              ],
+                              [
+                                "entityName",
+                                {
+                                  "typeName" : "String",
+                                  "value" : "chargePoint"
+                                }
+                              ],
+                              [
+                                "isAccessibilityEnabled",
+                                {
+                                  "typeName" : "Bool",
+                                  "value" : true
+                                }
+                              ],
+                              [
+                                "rigidBody-enabled",
+                                {
+                                  "typeName" : "Bool",
+                                  "value" : false
+                                }
+                              ],
+                              [
+                                "rigidBody-motionType",
+                                {
+                                  "typeName" : "REMotionType",
+                                  "value" : "static"
+                                }
+                              ]
+                            ]
+                          },
+                          "transform" : {
+                            "matrix" : [
+                              0.99999994039535522,
+                              0,
+                              0,
+                              0,
+                              0,
+                              0.99999994039535522,
+                              0,
+                              0,
+                              0,
+                              0,
+                              0.99999994039535522,
+                              0,
+                              -0.0030540036968886852,
+                              0.016981134191155434,
+                              -0.0087173646315932274,
+                              0.99999994039535522
+                            ]
+                          }
+                        },
+                        "B9AE9C58-22EB-4008-9F9E-D7F5E37AF1A2" : {
+                          "overrides" : {
+                            "arguments" : [
+                              [
+                                "bgMaterial",
+                                {
+                                  "typeName" : "String",
+                                  "value" : "paintEnamelMatte"
+                                }
+                              ],
+                              [
+                                "bgMaterialColor",
+                                {
+                                  "typeName" : "double4",
+                                  "value" : [
+                                    0.23875176906585693,
+                                    0.23875176906585693,
+                                    0.23875176906585693,
+                                    1
+                                  ]
+                                }
+                              ],
+                              [
+                                "boundHeight",
+                                {
+                                  "typeName" : "Double",
+                                  "value" : 1.5
+                                }
+                              ],
+                              [
+                                "boundWidth",
+                                {
+                                  "typeName" : "Double",
+                                  "value" : 8.3085129658381156
+                                }
+                              ],
+                              [
+                                "depth",
+                                {
+                                  "typeName" : "Double",
+                                  "value" : 0.13579774651394422
+                                }
+                              ],
+                              [
+                                "font",
+                                {
+                                  "typeName" : "String",
+                                  "value" : "Helvetica"
+                                }
+                              ],
+                              [
+                                "hasBackground",
+                                {
+                                  "typeName" : "Bool",
+                                  "value" : false
+                                }
+                              ],
+                              [
+                                "height",
+                                {
+                                  "typeName" : "Double",
+                                  "value" : 0.019160657136012178
+                                }
+                              ],
+                              [
+                                "horizontalAlignment",
+                                {
+                                  "typeName" : "String",
+                                  "value" : "center"
+                                }
+                              ],
+                              [
+                                "material",
+                                {
+                                  "typeName" : "String",
+                                  "value" : "standard"
+                                }
+                              ],
+                              [
+                                "materialColor",
+                                {
+                                  "typeName" : "double4",
+                                  "value" : [
+                                    1,
+                                    1,
+                                    1,
+                                    1
+                                  ]
+                                }
+                              ],
+                              [
+                                "oneLine",
+                                {
+                                  "typeName" : "Bool",
+                                  "value" : false
+                                }
+                              ],
+                              [
+                                "precision",
+                                {
+                                  "typeName" : "String",
+                                  "value" : "normal"
+                                }
+                              ],
+                              [
+                                "text",
+                                {
+                                  "typeName" : "String",
+                                  "value" : "1 Cb"
+                                }
+                              ],
+                              [
+                                "verticalAlignment",
+                                {
+                                  "typeName" : "String",
+                                  "value" : "bottom"
+                                }
+                              ],
+                              [
+                                "verticalPosition",
+                                {
+                                  "typeName" : "String",
+                                  "value" : "middle"
+                                }
+                              ],
+                              [
+                                "wordWrap",
+                                {
+                                  "typeName" : "Bool",
+                                  "value" : true
+                                }
+                              ]
+                            ],
+                            "children" : {
+                              "back_1" : {
+                                "overrides" : {
+                                  "factory" : null,
+                                  "runtimeAttributes" : [
+                                    [
+                                      "RuntimeIdentifier",
+                                      {
+                                        "typeName" : "UUID",
+                                        "value" : "D9E9DD0E-AF67-41B7-B660-2453956211DA"
+                                      }
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "factory" : {
+                              "identifier" : "com.apple.rc.af.CoreAssetFactories.Text",
+                              "version" : "0.0"
+                            },
+                            "runtimeAttributes" : [
+                              [
+                                "RuntimeIdentifier",
+                                {
+                                  "typeName" : "UUID",
+                                  "value" : "81B18301-84EA-4061-AD93-BB173A17349C"
+                                }
+                              ],
+                              [
+                                "accessibilityLabel",
+                                {
+                                  "typeName" : "String",
+                                  "value" : "chargePointLabelModel"
+                                }
+                              ],
+                              [
+                                "entityName",
+                                {
+                                  "typeName" : "String",
+                                  "value" : "chargePointLabel"
+                                }
+                              ],
+                              [
+                                "isAccessibilityEnabled",
+                                {
+                                  "typeName" : "Bool",
+                                  "value" : true
+                                }
+                              ],
+                              [
+                                "rigidBody-enabled",
+                                {
+                                  "typeName" : "Bool",
+                                  "value" : false
+                                }
+                              ],
+                              [
+                                "rigidBody-motionType",
+                                {
+                                  "typeName" : "REMotionType",
+                                  "value" : "static"
+                                }
+                              ]
+                            ]
+                          },
+                          "transform" : {
+                            "matrix" : [
+                              0.85484153032302856,
+                              4.3270379279647386e-08,
+                              -6.0887083463967429e-07,
+                              0,
+                              -4.6113379426060419e-07,
+                              0.60446399450302124,
+                              -0.60446459054946899,
+                              0,
+                              3.9993975065044651e-07,
+                              0.60446459054946899,
+                              0.60446393489837646,
+                              0,
+                              -0.00047186366282403469,
+                              0.0046072322875261307,
+                              0.016594074666500092,
+                              0.99999994039535522
+                            ]
+                          }
+                        }
+                      },
+                      "factory" : {
+                        "identifier" : "com.apple.af.Group",
+                        "version" : "0.0"
+                      },
+                      "runtimeAttributes" : [
+                        [
+                          "RuntimeIdentifier",
+                          {
+                            "typeName" : "UUID",
+                            "value" : "4E820375-079C-4612-AC55-A67D2DE293E6"
+                          }
+                        ],
+                        [
+                          "entityName",
+                          {
+                            "typeName" : "String",
+                            "value" : "pointChargeObject"
+                          }
+                        ],
+                        [
+                          "isAccessibilityEnabled",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
+                          }
+                        ],
+                        [
+                          "rigidBody-enabled",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
+                          }
+                        ],
+                        [
+                          "rigidBody-motionType",
+                          {
+                            "typeName" : "REMotionType",
+                            "value" : "static"
+                          }
+                        ],
+                        [
+                          "rigidBody-shapeType",
+                          {
+                            "typeName" : "String",
+                            "value" : "box"
+                          }
+                        ]
+                      ]
+                    },
+                    "transform" : {
+                      "matrix" : [
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0.019999999552965164,
+                        0,
+                        1
+                      ]
+                    }
+                  },
+                  "89CCAA07-A616-497E-B98E-5BF876BD5F58" : null,
+                  "113B801F-3293-4E93-972D-428026E3BF4B" : null,
+                  "253ABEF5-3879-4436-8497-C372E0C6A645" : null,
+                  "632E476F-1E55-4E30-9723-1C51DD2E8B89" : null,
+                  "991B2B5B-A881-496A-B522-164167223878" : null,
+                  "080391AA-17E0-463F-B6F4-DED4C5031E0F" : null,
+                  "B9AE9C58-22EB-4008-9F9E-D7F5E37AF1A2" : null,
+                  "B91C7CA3-4AB1-4253-9A84-07383168A8A8" : null,
+                  "FCC0B98E-AA28-4969-89B8-8AD7842362CA" : null
+                },
+                "factory" : null,
+                "runtimeAttributes" : [
+                  [
+                    "accessibilityLabel",
+                    {
+                      "typeName" : "String",
+                      "value" : "PointChargeLabel"
+                    }
+                  ],
+                  [
+                    "isAccessibilityEnabled",
+                    {
+                      "typeName" : "Bool",
+                      "value" : false
+                    }
+                  ]
+                ]
+              },
+              "physicsMode" : "grid",
+              "title" : "PointCharge",
+              "viewTransform" : {
+                "cameraTransform" : [
+                  0.99999964237213135,
+                  -1.862645149230957e-08,
+                  -0.00081542599946260452,
+                  0,
+                  -0.00035528172156773508,
+                  0.90007096529006958,
+                  -0.43574312329292297,
+                  0,
+                  0.00073390238685533404,
+                  0.43574336171150208,
+                  0.90007060766220093,
+                  0,
+                  -0.017617510631680489,
+                  0.33041495084762573,
+                  0.73638957738876343,
+                  1
+                ],
+                "sceneTransform" : [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0.99999994039535522,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0.99999994039535522,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ]
+              }
+            }
+          ],
+          "__version" : 5
+        }
+      ],
+      "tags" : {
+        "__content" : [
+          {
+            "tagsStore" : {
+
+            }
+          }
+        ],
+        "__version" : 1
+      }
+    }
+  ],
+  "__version" : 1
+}
