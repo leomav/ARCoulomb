@@ -229,6 +229,10 @@ class ViewController: UIViewController {
         var textModelComponent : ModelComponent = entity.children[1].children[0].children[0].components[ModelComponent] as! ModelComponent
         textModelComponent.mesh = .generateText("2 Cb", extrusionDepth: 0, font: .systemFont(ofSize: 0.02), containerFrame: CGRect.zero, alignment: .center, lineBreakMode: .byCharWrapping)
         entity.children[1].children[0].children[0].components.set(textModelComponent)
+        
+        
+        
+        
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
