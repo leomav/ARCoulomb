@@ -10,6 +10,8 @@ import UIKit
 import RealityKit
 import ARKit
 
+let cbNotificationKey = "com.leomav.coulombValueChange"
+
 class PointChargeEntity: Entity, HasModel, HasCollision, HasPhysicsBody {
     required init(color: UIColor, charge: String) {
         super.init()
@@ -28,6 +30,9 @@ class PointChargeEntity: Entity, HasModel, HasCollision, HasPhysicsBody {
 class ViewController: UIViewController {
     
     @IBOutlet var arView: ARView!
+    
+//    let coulombViewController = CoulombMenu(nibName: nil, bundle: nil)
+//    let coulombViewMenu = coulombViewController.coulombMenuView
     
     var pointsChargeScenesDict: [Int: Dictionary<String, [SIMD3<Float>]>] = [
         1: [
@@ -74,7 +79,7 @@ class ViewController: UIViewController {
     var startingWorldPosition: SIMD3<Float> = SIMD3<Float>(0, 0, 0)
     
     var trackedEntity: Entity = Entity()
-    var tappedEntity: Entity = Entity()
+    var longPressedEntity: Entity = Entity()
     
     // translates autoresizing mask into constraints lets us
     // manually alter the constraints
@@ -98,6 +103,12 @@ class ViewController: UIViewController {
         return scroll
     }()
     
+    let slider: UISlider = {
+        let slider = UISlider()
+        return slider
+    }()
+    
+    let coulombViewController = CoulombMenu(nibName: nil, bundle: nil)
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -192,7 +203,7 @@ class ViewController: UIViewController {
             // Create Text Entity for the particle
             let textEntity = createTextEntity(pointEntity: point)
             // Load the mesh and material for the model of the text entity
-            loadText(textEntity: textEntity, material: coulombTextMaterial, coulomb: 1)
+            loadText(textEntity: textEntity, material: coulombTextMaterial, coulombStringValue: "0 Cb")
             
             // Install gestures
             point.generateCollisionShapes(recursive: false)
@@ -215,6 +226,8 @@ class ViewController: UIViewController {
             recognizer.cancelsTouchesInView = false
         }
         
+        createObserver()
+        
     }
     
     
@@ -233,8 +246,8 @@ class ViewController: UIViewController {
         return textEntity
     }
     
-    func loadText(textEntity: Entity, material: SimpleMaterial, coulomb: Float) {
-        let model: ModelComponent = ModelComponent(mesh: .generateText("\(coulomb) Cb",
+    func loadText(textEntity: Entity, material: SimpleMaterial, coulombStringValue: String) {
+        let model: ModelComponent = ModelComponent(mesh: .generateText(coulombStringValue,
                                                                        extrusionDepth: 0.003,
                                                                        font: .systemFont(ofSize: 0.02),
                                                                        containerFrame: CGRect.zero,
@@ -262,26 +275,30 @@ class ViewController: UIViewController {
         }
     }
     
+//    var longPressStarted = false
     @objc func handleLongPress(recognizer: UILongPressGestureRecognizer) {
         let location = recognizer.location(in: arView)
         
         guard let hitEntity = arView.entity(at: location) else {return}
         
         if recognizer.state == .began {
-            print("long press started")
-            
-            if hitEntity.name == "pointCharge" {
+            if hitEntity == trackedEntity {
+                
+                longPressedEntity = hitEntity
+                
+                pointChargeInteraction(zoom: 2/3, showLabel: true)
+                
+                trackedEntity = Entity()
+                
+                performSegue(withIdentifier: "toCoulombMenuSegue", sender: nil)
             }
         }
         
         if recognizer.state == .ended {
-            print("long press ended")
             if hitEntity.name == "pointCharge" {
             }
         }
     }
-    
-    
     
     
     // ---------------------------------------------------------------------------------
@@ -293,14 +310,7 @@ class ViewController: UIViewController {
         if hitEntity.name == "pointCharge" {
             trackedEntity = hitEntity
             
-            // Emphasize the pointCharge by scaling it up 50%
-            trackedEntity.setScale(SIMD3<Float>(3/2, 3/2, 3/2), relativeTo: trackedEntity)
-            // Hide the (text) value (coulomb) label
-            trackedEntity.children.forEach{ child in
-                if child.name == "text" {
-                    child.isEnabled = false
-                }
-            }
+            pointChargeInteraction(zoom: 3/2, showLabel: false)
         }
     }
 
@@ -312,14 +322,7 @@ class ViewController: UIViewController {
         /// If tracked entity is a pointCharge, check if its alignment differ less than 0.05m from the other particles.
         /// If so, align it to them
         if trackedEntity.name == "pointCharge" {
-            /// De emphasize the Point Charge by scaling it down 50%
-            trackedEntity.setScale(SIMD3<Float>(2/3, 2/3, 2/3), relativeTo: trackedEntity)
-            /// Bring back the value label
-            trackedEntity.children.forEach{ child in
-                if child.name == "text" {
-                    child.isEnabled = true
-                }
-            }
+            pointChargeInteraction(zoom: 2/3, showLabel: true)
             
             let x = trackedEntity.position.x
             let z = trackedEntity.position.z
@@ -342,6 +345,42 @@ class ViewController: UIViewController {
             }
             /// When touches end, no entity is tracked by the gesture
             trackedEntity = Entity()
+        }
+    }
+    
+    
+    
+    
+// ---------------------------------------------------------------------------------
+// -------------------------- Notification OBSERVER --------------------------------
+    func createObserver() {
+        let notifName = Notification.Name(rawValue: cbNotificationKey)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateCoulombValue(notification:)), name: notifName, object: nil)
+    }
+    
+    @objc func updateCoulombValue(notification: Notification) {
+        if let newValue = (notification.userInfo?["updatedValue"]) as? String {
+            loadText(textEntity: longPressedEntity.children[1], material: coulombTextMaterial, coulombStringValue: newValue)
+        } else {
+            print("Error: updated coulomb value")
+        }
+        
+    }
+    
+    
+    
+    
+// ---------------------------------------------------------------------------------
+// -------------------------- pointCharge INTERACTION ------------------------------
+    // Emphasize or Deemphasize
+    func pointChargeInteraction(zoom: Float, showLabel: Bool) {
+        /// (De))emphasize the Point Charge by scaling it down/up 50%
+        trackedEntity.setScale(SIMD3<Float>(zoom, zoom, zoom), relativeTo: trackedEntity)
+        /// Show/Hide the value label
+        trackedEntity.children.forEach{ child in
+            if child.name == "text" {
+                child.isEnabled = showLabel
+            }
         }
     }
     
