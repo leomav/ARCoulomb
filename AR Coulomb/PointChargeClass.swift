@@ -18,8 +18,8 @@ class PointChargeClass {
     init(entity: Entity, value: Float) {
         PointChargeClass.volume += 1
         
-        self.entity = entity
         self.id = PointChargeClass.volume
+        self.entity = entity
         self.value = value
     }
     

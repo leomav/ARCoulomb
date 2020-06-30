@@ -19,6 +19,8 @@
 		9FF77FDB24AA8470003477C2 /* Force.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF77FDA24AA8470003477C2 /* Force.swift */; };
 		9FFD6FC824ABA5BF00D8DE89 /* ArrowHead.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 9FFD6FC724ABA5BF00D8DE89 /* ArrowHead.rcproject */; };
 		9FFD6FCA24ABAE1500D8DE89 /* PointChargeClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FFD6FC924ABAE1500D8DE89 /* PointChargeClass.swift */; };
+		9FFD6FCC24ABFE2400D8DE89 /* ViewController_+_Gestures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FFD6FCB24ABFE2400D8DE89 /* ViewController_+_Gestures.swift */; };
+		9FFD6FCE24ABFFB800D8DE89 /* ViewController_+_ObjectPlacement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FFD6FCD24ABFFB800D8DE89 /* ViewController_+_ObjectPlacement.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		9FF77FDA24AA8470003477C2 /* Force.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Force.swift; sourceTree = "<group>"; };
 		9FFD6FC724ABA5BF00D8DE89 /* ArrowHead.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = ArrowHead.rcproject; sourceTree = "<group>"; };
 		9FFD6FC924ABAE1500D8DE89 /* PointChargeClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointChargeClass.swift; sourceTree = "<group>"; };
+		9FFD6FCB24ABFE2400D8DE89 /* ViewController_+_Gestures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController_+_Gestures.swift"; sourceTree = "<group>"; };
+		9FFD6FCD24ABFFB800D8DE89 /* ViewController_+_ObjectPlacement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController_+_ObjectPlacement.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,16 +74,18 @@
 			children = (
 				9FD94473249A258400C0E646 /* AppDelegate.swift */,
 				9FD94475249A258400C0E646 /* ViewController.swift */,
-				9FD94477249A258400C0E646 /* Experience.rcproject */,
-				9F368B24249A582000C6E07A /* PointCharge.rcproject */,
+				9FFD6FCB24ABFE2400D8DE89 /* ViewController_+_Gestures.swift */,
+				9FFD6FCD24ABFFB800D8DE89 /* ViewController_+_ObjectPlacement.swift */,
 				9FD94479249A258400C0E646 /* Main.storyboard */,
 				9FD9447C249A258600C0E646 /* Assets.xcassets */,
 				9FD9447E249A258600C0E646 /* LaunchScreen.storyboard */,
 				9FD94481249A258600C0E646 /* Info.plist */,
 				9FF77FD624A7993C003477C2 /* BottomPopUpTopolo_ViewController.swift */,
 				9FF77FD824A7E3EA003477C2 /* CoulombMenu.swift */,
-				9FF77FDA24AA8470003477C2 /* Force.swift */,
+				9FD94477249A258400C0E646 /* Experience.rcproject */,
+				9F368B24249A582000C6E07A /* PointCharge.rcproject */,
 				9FFD6FC724ABA5BF00D8DE89 /* ArrowHead.rcproject */,
+				9FF77FDA24AA8470003477C2 /* Force.swift */,
 				9FFD6FC924ABAE1500D8DE89 /* PointChargeClass.swift */,
 			);
 			path = "AR Coulomb";
@@ -159,11 +165,13 @@
 				9FD94476249A258400C0E646 /* ViewController.swift in Sources */,
 				9FF77FD724A7993C003477C2 /* BottomPopUpTopolo_ViewController.swift in Sources */,
 				9FD94474249A258400C0E646 /* AppDelegate.swift in Sources */,
+				9FFD6FCE24ABFFB800D8DE89 /* ViewController_+_ObjectPlacement.swift in Sources */,
 				9FFD6FCA24ABAE1500D8DE89 /* PointChargeClass.swift in Sources */,
 				9FD94478249A258400C0E646 /* Experience.rcproject in Sources */,
 				9FF77FD924A7E3EA003477C2 /* CoulombMenu.swift in Sources */,
 				9FF77FDB24AA8470003477C2 /* Force.swift in Sources */,
 				9FFD6FC824ABA5BF00D8DE89 /* ArrowHead.rcproject in Sources */,
+				9FFD6FCC24ABFE2400D8DE89 /* ViewController_+_Gestures.swift in Sources */,
 				9F368B25249A582000C6E07A /* PointCharge.rcproject in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

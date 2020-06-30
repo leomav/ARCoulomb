@@ -15,21 +15,6 @@ let cbNotificationKey = "com.leomav.coulombValueChange"
 let ZOOM_IN_5_4: Float = 1.25
 let ZOOM_OUT_4_5: Float = 0.8
 
-class PointChargeEntity: Entity, HasModel, HasCollision, HasPhysicsBody {
-    required init(color: UIColor, charge: String) {
-        super.init()
-        self.model = ModelComponent(mesh: .generateSphere(radius: 0.04), materials: [SimpleMaterial(color: color, isMetallic: true)])
-        self.name = charge
-        self.generateCollisionShapes(recursive: true)
-    }
-    
-    required init() {
-        fatalError("init() has not been implemented")
-    }
-}
-
-
-
 class ViewController: UIViewController {
     
     @IBOutlet var arView: ARView!
@@ -189,59 +174,6 @@ class ViewController: UIViewController {
         }
     }
     
-    func placeObject(for anchor: ARAnchor) {
-        // Add the anchor of the scene where the user tapped
-        let anchorEntity = AnchorEntity(anchor: anchor)
-        anchorEntity.name = "Point Charge Scene AnchorEntity"
-        arView.scene.addAnchor(anchorEntity)
-        
-        // Import the Point Charge Model, clone the entity as many times as needed
-        let pointChargeAnchor = try! PointCharge.load_PointCharge()
-        let pointChargeEntity = pointChargeAnchor.pointCharge!
-        
-        for pos in selectedPositions {
-            let point = pointChargeEntity.clone(recursive: true)
-            anchorEntity.addChild(point)
-            point.setPosition(pos, relativeTo: anchorEntity)
-            
-            // Create new PointChargeClass Object and append it to pointCharges[]
-            let newPoint = PointChargeClass(entity: point, value: 0)
-            pointCharges.append(newPoint)
-            
-            // Create Text Entity for the particle
-            let textEntity = createTextEntity(pointEntity: point)
-            // Load the mesh and material for the model of the text entity
-            loadText(textEntity: textEntity, material: coulombTextMaterial, coulombStringValue: "0 Cb")
-            
-            // Install gestures
-            point.generateCollisionShapes(recursive: false)
-            arView.installGestures([.translation, .rotation, .scale], for: point as! HasCollision)
-        }
-        
-        arView.gestureRecognizers?.forEach { recognizer in
-            // remove gesture recognizer for the first point of charge
-            if recognizer.name == "First Point Recognizer" {
-                //                arView.removeGestureRecognizer(recognizer)
-                recognizer.isEnabled = false
-            }
-            // enable the point long tap recognizer
-            if recognizer.name == "Long Press Recognizer" {
-                recognizer.isEnabled = true
-            }
-            
-            // Installed gestures (EntityGesturesRecognizers for each point charge) were cancelling
-            // other touches, so turn that to false
-            recognizer.cancelsTouchesInView = false
-        }
-        
-        createObserver()
-        
-        addForcesEntities()
-        
-    }
-    
-    
-    
     
     // ---------------------------------------------------------------------------------
     // --------------------------- TEXT ENTITY -----------------------------------------
@@ -269,103 +201,6 @@ class ViewController: UIViewController {
     
     
     
-    
-    // ---------------------------------------------------------------------------
-    // -------------------- Gesture Recognizer HANDLERS --------------------------
-    @objc func handleTap(recognizer: UITapGestureRecognizer) {
-        let location = recognizer.location(in: arView)
-        
-        let results = arView.raycast(from: location, allowing: .estimatedPlane, alignment: .horizontal)
-        
-        if let firstResult = results.first {
-            let anchor = ARAnchor(name: "PointCharge", transform: firstResult.worldTransform)
-            arView.session.add(anchor: anchor)
-        } else {
-            print("No horizontal surface found.")
-        }
-    }
-    
-    //    var longPressStarted = false
-    @objc func handleLongPress(recognizer: UILongPressGestureRecognizer) {
-        let location = recognizer.location(in: arView)
-        
-        guard let hitEntity = arView.entity(at: location) else {return}
-        
-        if recognizer.state == .began {
-            if hitEntity == trackedEntity {
-                
-                longPressedEntity = hitEntity
-                
-                pointChargeInteraction(zoom: ZOOM_OUT_4_5, showLabel: true)
-                
-                trackedEntity = Entity()
-                
-                performSegue(withIdentifier: "toCoulombMenuSegue", sender: nil)
-            }
-        }
-        
-        if recognizer.state == .ended {
-            if hitEntity.name == "pointCharge" {
-            }
-        }
-    }
-    
-    // ---------------------------------------------------------------------------------
-    // -------------------------- DRAG & DROP pointCharge ------------------------------
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let location = touches.first?.location(in: arView) else {return}
-        guard let hitEntity = arView.entity(at: location) else {return}
-        
-        if hitEntity.name == "pointCharge" {
-            trackedEntity = hitEntity
-            
-            pointChargeInteraction(zoom: ZOOM_IN_5_4, showLabel: false)
-        }
-    }
-    
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if trackedEntity.name == "pointCharge" {
-            updateArrows()
-        }
-    }
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        /// If tracked entity is a pointCharge, check if its alignment differ less than 0.05m from the other particles.
-        /// If so, align it to them
-        if trackedEntity.name == "pointCharge" {
-            pointChargeInteraction(zoom: ZOOM_OUT_4_5, showLabel: true)
-            
-            let x = trackedEntity.position.x
-            let z = trackedEntity.position.z
-            
-            /// Loop through the scene anchors to find our "Point Charge Scene Anchor"
-            arView.scene.anchors.forEach{ anchor in
-                if anchor.name == "Point Charge Scene AnchorEntity" {
-                    /// Loop through its children (pointChargeEntities) and check their (x, z) differences
-                    anchor.children.forEach{ child in
-                        if child.position.x != x && child.position.z != z{
-                            if abs(child.position.x - x) < 0.02 {
-                                trackedEntity.position.x = child.position.x
-                            }
-                            if abs(child.position.z - z) < 0.02 {
-                                trackedEntity.position.z = child.position.z
-                            }
-                        }
-                    }
-                }
-            }
-            
-            /// Update forces' arrows directions
-            updateArrows()
-            
-            /// When touches end, no entity is tracked by the gesture
-            trackedEntity = Entity()
-        }
-    }
-    
-    
-    
-    
     // ---------------------------------------------------------------------------------
     // -------------------------- Notification OBSERVER --------------------------------
     func createObserver() {
@@ -385,7 +220,7 @@ class ViewController: UIViewController {
     
     // ---------------------------------------------------------------------------------
     // -------------------------- Add FORCE (Obj & Entity) -----------------------------
-    func addForcesEntities() {
+    func addForces() {
         arView.scene.anchors.forEach{ anchor in
             if anchor.name == "Point Charge Scene AnchorEntity" {
                 
@@ -459,19 +294,6 @@ class ViewController: UIViewController {
     //        view.addSubview(coachingView)
     //    }
     
-}
-
-
-
-extension ViewController: ARSessionDelegate {
-    func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
-        for anchor in anchors {
-            if let anchorName = anchor.name, anchorName == "PointCharge" {
-                
-                placeObject(for: anchor)
-            }
-        }
-    }
 }
 
 extension Int {
