@@ -228,6 +228,8 @@ class ViewController: UIViewController {
         
         createObserver()
         
+        addForcesEntities()
+        
     }
     
     
@@ -367,7 +369,37 @@ class ViewController: UIViewController {
         
     }
     
+
+// ---------------------------------------------------------------------------------
+// -------------------------- Add FORCE VECTOR ARROWS ------------------------------
     
+    func addForcesEntities() {
+        arView.scene.anchors.forEach{ anchor in
+            if anchor.name == "Point Charge Scene AnchorEntity" {
+                
+                let arrowAnchor = try! Experience.loadBox()
+                let arrowEntity = arrowAnchor.arrow!
+                
+                anchor.children.forEach{ pointCharge in
+                    anchor.children.forEach{ pointBro in
+                        if pointCharge != pointBro {
+                            let arrow = arrowEntity.clone(recursive: true)
+                            pointCharge.addChild(arrow)
+                            
+                            /// First set look(at:_) cause it reinitialize the scale. Then set the scale x 0.1 and the position again
+                            /// to the center of the pointCharge.
+                            /// CAREFUL: The arrow entity points with its tail, so reverse the look direction to get what you want
+                            arrow.look(at: pointBro.position, from: pointCharge.position, relativeTo: arrow)
+                            arrow.setScale(SIMD3<Float>(0.1, 0.1, 0.1), relativeTo: arrow)
+                            arrow.setPosition(SIMD3<Float>(0, 0, 0), relativeTo: pointCharge)
+                            arrow.setOrientation(simd_quatf(angle: 180.degreesToRadians(), axis: SIMD3<Float>(0, 1.0, 0)), relativeTo: arrow)
+                            
+                        }
+                    }
+                }
+            }
+        }
+    }
     
     
 // ---------------------------------------------------------------------------------
@@ -411,3 +443,10 @@ extension ViewController: ARSessionDelegate {
         
     }
 }
+
+extension Int {
+    func degreesToRadians() -> Float {
+        return Float(self) * Float.pi / 180.0
+    }
+}
+

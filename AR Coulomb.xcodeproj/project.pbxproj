@@ -16,6 +16,7 @@
 		9FD94480249A258600C0E646 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9FD9447E249A258600C0E646 /* LaunchScreen.storyboard */; };
 		9FF77FD724A7993C003477C2 /* BottomPopUpTopolo_ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF77FD624A7993C003477C2 /* BottomPopUpTopolo_ViewController.swift */; };
 		9FF77FD924A7E3EA003477C2 /* CoulombMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF77FD824A7E3EA003477C2 /* CoulombMenu.swift */; };
+		9FF77FDB24AA8470003477C2 /* Force.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF77FDA24AA8470003477C2 /* Force.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		9FD94481249A258600C0E646 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9FF77FD624A7993C003477C2 /* BottomPopUpTopolo_ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomPopUpTopolo_ViewController.swift; sourceTree = "<group>"; };
 		9FF77FD824A7E3EA003477C2 /* CoulombMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoulombMenu.swift; sourceTree = "<group>"; };
+		9FF77FDA24AA8470003477C2 /* Force.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Force.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +74,7 @@
 				9FD94481249A258600C0E646 /* Info.plist */,
 				9FF77FD624A7993C003477C2 /* BottomPopUpTopolo_ViewController.swift */,
 				9FF77FD824A7E3EA003477C2 /* CoulombMenu.swift */,
+				9FF77FDA24AA8470003477C2 /* Force.swift */,
 			);
 			path = "AR Coulomb";
 			sourceTree = "<group>";
@@ -152,6 +155,7 @@
 				9FD94474249A258400C0E646 /* AppDelegate.swift in Sources */,
 				9FD94478249A258400C0E646 /* Experience.rcproject in Sources */,
 				9FF77FD924A7E3EA003477C2 /* CoulombMenu.swift in Sources */,
+				9FF77FDB24AA8470003477C2 /* Force.swift in Sources */,
 				9F368B25249A582000C6E07A /* PointCharge.rcproject in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
