@@ -12,6 +12,9 @@ import ARKit
 
 let cbNotificationKey = "com.leomav.coulombValueChange"
 
+let ZOOM_IN_5_4: Float = 1.25
+let ZOOM_OUT_4_5: Float = 0.8
+
 class PointChargeEntity: Entity, HasModel, HasCollision, HasPhysicsBody {
     required init(color: UIColor, charge: String) {
         super.init()
@@ -31,40 +34,37 @@ class ViewController: UIViewController {
     
     @IBOutlet var arView: ARView!
     
-//    let coulombViewController = CoulombMenu(nibName: nil, bundle: nil)
-//    let coulombViewMenu = coulombViewController.coulombMenuView
+    //    let coulombViewController = CoulombMenu(nibName: nil, bundle: nil)
+    //    let coulombViewMenu = coulombViewController.coulombMenuView
     
+    
+    // !!! Remember to change this, cause currentPos is never used eventually
     var pointsChargeScenesDict: [Int: Dictionary<String, [SIMD3<Float>]>] = [
         1: [
             "startingPos": [SIMD3<Float>(-0.1, 0, 0), SIMD3<Float>(0.1, 0, 0)],
             "currentPos": [SIMD3<Float>(-0.1, 0, 0), SIMD3<Float>(0.1, 0, 0)],
-            ],
+        ],
         2: [
             "startingPos": [SIMD3<Float>(-0.1, 0, 0.1), SIMD3<Float>(0.1, 0, 0.1), SIMD3<Float>(0.1, 0, -0.1)],
             "currentPos": [SIMD3<Float>(-0.1, 0, 0.1), SIMD3<Float>(0.1, 0, 0.1), SIMD3<Float>(0.1, 0, -0.1)]
-            ],
+        ],
         3: [
             "startingPos": [SIMD3<Float>(-0.1, 0, 0.1), SIMD3<Float>(-0.1, 0, -0.1), SIMD3<Float>(0.1, 0, 0.1)],
             "currentPos": [SIMD3<Float>(-0.1, 0, 0.1), SIMD3<Float>(-0.1, 0, -0.1), SIMD3<Float>(0.1, 0, 0.1)]
-            ],
+        ],
         4: [
             "startingPos": [SIMD3<Float>(-0.1, 0, 0.1), SIMD3<Float>(-0.1, 0, -0.1), SIMD3<Float>(0.1, 0, 0.1), SIMD3<Float>(0.1, 0, -0.1)],
             "currentPos": [SIMD3<Float>(-0.1, 0, 0.1), SIMD3<Float>(-0.1, 0, -0.1), SIMD3<Float>(0.1, 0, 0.1), SIMD3<Float>(0.1, 0, -0.1)]
-            ],
+        ],
         5: [
             "startingPos": [SIMD3<Float>(-0.1, 0, 0), SIMD3<Float>(0, 0, 0), SIMD3<Float>(0.1, 0, 0)],
             "currentPos": [SIMD3<Float>(-0.1, 0, 0), SIMD3<Float>(0, 0, 0), SIMD3<Float>(0.1, 0, 0)]
-            ],
+        ],
         6: [
             "startingPos": [SIMD3<Float>(-0.2, 0, 0.1), SIMD3<Float>(0, 0, 0.1), SIMD3<Float>(0, 0, -0.1), SIMD3<Float>(0.2, 0, 0.1)],
             "currentPos": [SIMD3<Float>(-0.2, 0, 0.1), SIMD3<Float>(0, 0, 0.1), SIMD3<Float>(0, 0, -0.1), SIMD3<Float>(0.2, 0, 0.1)]
-            ]
+        ]
     ]
-    
-//    var simpleMaterial = SimpleMaterial()
-//    simpleMaterial.metallic = MaterialScalarParameter(floatLiteral: 0.2)
-//    simpleMaterial.roughness = MaterialScalarParameter(floatLiteral: 0.1)
-//    simpleMaterial.tintColor = UIColor.white
     
     let coulombTextMaterial: SimpleMaterial = {
         var mat = SimpleMaterial()
@@ -76,10 +76,15 @@ class ViewController: UIViewController {
     
     var selectedPositions: [SIMD3<Float>] = []
     
-    var startingWorldPosition: SIMD3<Float> = SIMD3<Float>(0, 0, 0)
-    
     var trackedEntity: Entity = Entity()
     var longPressedEntity: Entity = Entity()
+    
+    // Array of PointChargeClass Objects, that contain pointCharge info all
+    // (id, entity)
+    var pointCharges: [PointChargeClass] = []
+    
+    // Array of Force Objects that contain force info
+    var forces: [Force] = []
     
     // translates autoresizing mask into constraints lets us
     // manually alter the constraints
@@ -139,9 +144,9 @@ class ViewController: UIViewController {
         config.planeDetection = [.horizontal, .vertical]
         config.environmentTexturing = .automatic
         arView.session.run(config)
-
+        
     }
-
+    
     func addStackView() {
         // You simply cannot constrain a view to another view if the view isn’t even on the screen yet.
         arView.addSubview(scrollView)
@@ -149,15 +154,15 @@ class ViewController: UIViewController {
         scrollView.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -150).isActive = true
         scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20).isActive = true
-
+        
         scrollView.addSubview(stackView)
         stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
         stackView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
         stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
         stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
-
+        
         stackView.heightAnchor.constraint(equalTo: scrollView.heightAnchor).isActive = true
-
+        
         // Create the buttons in the scroll-stack view, one for each topology
         for i in 0...5 {
             let btn = UIButton()
@@ -166,11 +171,11 @@ class ViewController: UIViewController {
             btn.isEnabled = true
             btn.tag = i + 1
             btn.widthAnchor.constraint(equalToConstant: 120).isActive = true
-
+            
             // Add the button to the view
             stackView.addArrangedSubview(btn)
         }
-
+        
     }
     
     @objc func buttonAction(sender: UIButton!) {
@@ -183,7 +188,6 @@ class ViewController: UIViewController {
             selectedPositions.append(contentsOf: dict["startingPos"]!)
         }
     }
-    
     
     func placeObject(for anchor: ARAnchor) {
         // Add the anchor of the scene where the user tapped
@@ -200,6 +204,10 @@ class ViewController: UIViewController {
             anchorEntity.addChild(point)
             point.setPosition(pos, relativeTo: anchorEntity)
             
+            // Create new PointChargeClass Object and append it to pointCharges[]
+            let newPoint = PointChargeClass(entity: point, value: 0)
+            pointCharges.append(newPoint)
+            
             // Create Text Entity for the particle
             let textEntity = createTextEntity(pointEntity: point)
             // Load the mesh and material for the model of the text entity
@@ -213,7 +221,7 @@ class ViewController: UIViewController {
         arView.gestureRecognizers?.forEach { recognizer in
             // remove gesture recognizer for the first point of charge
             if recognizer.name == "First Point Recognizer" {
-//                arView.removeGestureRecognizer(recognizer)
+                //                arView.removeGestureRecognizer(recognizer)
                 recognizer.isEnabled = false
             }
             // enable the point long tap recognizer
@@ -242,7 +250,7 @@ class ViewController: UIViewController {
         textEntity.name = "text"
         textEntity.setParent(pointEntity)
         textEntity.setPosition(SIMD3<Float>(-0.02, -0.03, 0.03), relativeTo: pointEntity)
-
+        
         textEntity.setOrientation(simd_quatf(ix: -0.45, iy: 0, iz: 0, r: 0.9), relativeTo: pointEntity)
         
         return textEntity
@@ -277,7 +285,7 @@ class ViewController: UIViewController {
         }
     }
     
-//    var longPressStarted = false
+    //    var longPressStarted = false
     @objc func handleLongPress(recognizer: UILongPressGestureRecognizer) {
         let location = recognizer.location(in: arView)
         
@@ -288,7 +296,7 @@ class ViewController: UIViewController {
                 
                 longPressedEntity = hitEntity
                 
-                pointChargeInteraction(zoom: 2/3, showLabel: true)
+                pointChargeInteraction(zoom: ZOOM_OUT_4_5, showLabel: true)
                 
                 trackedEntity = Entity()
                 
@@ -302,7 +310,6 @@ class ViewController: UIViewController {
         }
     }
     
-    
     // ---------------------------------------------------------------------------------
     // -------------------------- DRAG & DROP pointCharge ------------------------------
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -312,19 +319,21 @@ class ViewController: UIViewController {
         if hitEntity.name == "pointCharge" {
             trackedEntity = hitEntity
             
-            pointChargeInteraction(zoom: 3/2, showLabel: false)
+            pointChargeInteraction(zoom: ZOOM_IN_5_4, showLabel: false)
         }
     }
-
+    
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        //
+        if trackedEntity.name == "pointCharge" {
+            updateArrows()
+        }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         /// If tracked entity is a pointCharge, check if its alignment differ less than 0.05m from the other particles.
         /// If so, align it to them
         if trackedEntity.name == "pointCharge" {
-            pointChargeInteraction(zoom: 2/3, showLabel: true)
+            pointChargeInteraction(zoom: ZOOM_OUT_4_5, showLabel: true)
             
             let x = trackedEntity.position.x
             let z = trackedEntity.position.z
@@ -335,16 +344,20 @@ class ViewController: UIViewController {
                     /// Loop through its children (pointChargeEntities) and check their (x, z) differences
                     anchor.children.forEach{ child in
                         if child.position.x != x && child.position.z != z{
-                            if abs(child.position.x - x) < 0.05 {
+                            if abs(child.position.x - x) < 0.02 {
                                 trackedEntity.position.x = child.position.x
                             }
-                            if abs(child.position.z - z) < 0.05 {
+                            if abs(child.position.z - z) < 0.02 {
                                 trackedEntity.position.z = child.position.z
                             }
                         }
                     }
                 }
             }
+            
+            /// Update forces' arrows directions
+            updateArrows()
+            
             /// When touches end, no entity is tracked by the gesture
             trackedEntity = Entity()
         }
@@ -353,26 +366,25 @@ class ViewController: UIViewController {
     
     
     
-// ---------------------------------------------------------------------------------
-// -------------------------- Notification OBSERVER --------------------------------
+    // ---------------------------------------------------------------------------------
+    // -------------------------- Notification OBSERVER --------------------------------
     func createObserver() {
         let notifName = Notification.Name(rawValue: cbNotificationKey)
         NotificationCenter.default.addObserver(self, selector: #selector(updateCoulombValue(notification:)), name: notifName, object: nil)
     }
     
     @objc func updateCoulombValue(notification: Notification) {
-        if let newValue = (notification.userInfo?["updatedValue"]) as? String {
-            loadText(textEntity: longPressedEntity.children[1], material: coulombTextMaterial, coulombStringValue: newValue)
+        if let newValue = (notification.userInfo?["updatedValue"]) as? Float {
+            loadText(textEntity: longPressedEntity.children[1], material: coulombTextMaterial, coulombStringValue: "\(newValue) Cb")
         } else {
             print("Error: updated coulomb value")
         }
         
     }
     
-
-// ---------------------------------------------------------------------------------
-// -------------------------- Add FORCE VECTOR ARROWS ------------------------------
     
+    // ---------------------------------------------------------------------------------
+    // -------------------------- Add FORCE (Obj & Entity) -----------------------------
     func addForcesEntities() {
         arView.scene.anchors.forEach{ anchor in
             if anchor.name == "Point Charge Scene AnchorEntity" {
@@ -380,30 +392,50 @@ class ViewController: UIViewController {
                 let arrowAnchor = try! Experience.loadBox()
                 let arrowEntity = arrowAnchor.arrow!
                 
-                anchor.children.forEach{ pointCharge in
-                    anchor.children.forEach{ pointBro in
-                        if pointCharge != pointBro {
+                // Add a Force Object and Entity for every pointCharge<->pointCharge combo
+                pointCharges.forEach{ pointChargeObj in
+                    pointCharges.forEach{ otherPointChargeObj in
+                        if pointChargeObj.id != otherPointChargeObj.id {
+                            
                             let arrow = arrowEntity.clone(recursive: true)
-                            pointCharge.addChild(arrow)
+                            pointChargeObj.entity.addChild(arrow)
                             
-                            /// First set look(at:_) cause it reinitialize the scale. Then set the scale x 0.1 and the position again
-                            /// to the center of the pointCharge.
-                            /// CAREFUL: The arrow entity points with its tail, so reverse the look direction to get what you want
-                            arrow.look(at: pointBro.position, from: pointCharge.position, relativeTo: arrow)
-                            arrow.setScale(SIMD3<Float>(0.1, 0.1, 0.1), relativeTo: arrow)
-                            arrow.setPosition(SIMD3<Float>(0, 0, 0), relativeTo: pointCharge)
-                            arrow.setOrientation(simd_quatf(angle: 180.degreesToRadians(), axis: SIMD3<Float>(0, 1.0, 0)), relativeTo: arrow)
-                            
+                            /// Create instance of Force with arrow entity
+                            let force = Force(magnetude: 5, entity: arrow, from: otherPointChargeObj.entity, to: pointChargeObj.entity)
+                            forces.append(force)
                         }
                     }
                 }
+            
+                updateArrows()
             }
         }
     }
     
     
-// ---------------------------------------------------------------------------------
-// -------------------------- pointCharge INTERACTION ------------------------------
+    
+    // ---------------------------------------------------------------------------------
+    // -------------------------- Update FORCES ARROWS ---------------------------------
+    func updateArrows() {
+        forces.forEach{ forceObj in
+            let from = forceObj.sourceEntity
+            let at = forceObj.targetEntity
+            let arrow = forceObj.entity
+            
+            /// First set look(at:_) cause it reinitialize the scale. Then set the scale x 0.1 and the position again
+            /// to the center of the pointCharge.
+            /// CAREFUL: The arrow entity points with its tail, so reverse the look direction to get what you want
+            arrow.look(at: from.position, from: at.position, relativeTo: at)
+            arrow.setScale(SIMD3<Float>(0.1, 0.1, 0.1), relativeTo: arrow)
+            arrow.setPosition(SIMD3<Float>(0, 0, 0), relativeTo: at)
+            arrow.setOrientation(simd_quatf(angle: 180.degreesToRadians(), axis: SIMD3<Float>(0, 1.0, 0)), relativeTo: arrow)
+        }
+                    
+        
+    }
+    
+    // ---------------------------------------------------------------------------------
+    // -------------------------- pointCharge INTERACTION ------------------------------
     // Emphasize or Deemphasize
     func pointChargeInteraction(zoom: Float, showLabel: Bool) {
         /// (De))emphasize the Point Charge by scaling it down/up 50%
@@ -416,16 +448,16 @@ class ViewController: UIViewController {
         }
     }
     
-//    // Add  Coaching View to help user
-//    func overlayCoachingView() {
-//        let coachingView = ARCoachingOverlayView(frame: CGRect(x: 0, y:0, width: arView.frame.width, height: arView.frame.height))
-//
-//        coachingView.session = arView.session
-//        coachingView.activatesAutomatically = true
-//        coachingView.goal = .horizontalPlane
-//
-//        view.addSubview(coachingView)
-//    }
+    //    // Add  Coaching View to help user
+    //    func overlayCoachingView() {
+    //        let coachingView = ARCoachingOverlayView(frame: CGRect(x: 0, y:0, width: arView.frame.width, height: arView.frame.height))
+    //
+    //        coachingView.session = arView.session
+    //        coachingView.activatesAutomatically = true
+    //        coachingView.goal = .horizontalPlane
+    //
+    //        view.addSubview(coachingView)
+    //    }
     
 }
 
@@ -439,8 +471,6 @@ extension ViewController: ARSessionDelegate {
                 placeObject(for: anchor)
             }
         }
-        
-        
     }
 }
 

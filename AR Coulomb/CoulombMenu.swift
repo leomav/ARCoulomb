@@ -205,7 +205,7 @@ class CoulombMenu: UIViewController {
         text.text = newText
         
         let notifName = Notification.Name(rawValue: cbNotificationKey)
-        let valueDict: [String: String] = ["updatedValue": newText]
+        let valueDict: [String: Float] = ["updatedValue": sliderValue]
         NotificationCenter.default.post(name: notifName, object: nil, userInfo: valueDict)
     }
     
