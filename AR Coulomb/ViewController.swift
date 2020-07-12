@@ -22,35 +22,6 @@ class ViewController: UIViewController {
     //    let coulombViewController = CoulombMenu(nibName: nil, bundle: nil)
     //    let coulombViewMenu = coulombViewController.coulombMenuView
     
-    
-    // !!! Remember to change this, cause currentPos is never used eventually
-    var pointsChargeScenesDict: [Int: Dictionary<String, [SIMD3<Float>]>] = [
-        1: [
-            "startingPos": [SIMD3<Float>(-0.1, 0, 0), SIMD3<Float>(0.1, 0, 0)],
-            "currentPos": [SIMD3<Float>(-0.1, 0, 0), SIMD3<Float>(0.1, 0, 0)],
-        ],
-        2: [
-            "startingPos": [SIMD3<Float>(-0.1, 0, 0.1), SIMD3<Float>(0.1, 0, 0.1), SIMD3<Float>(0.1, 0, -0.1)],
-            "currentPos": [SIMD3<Float>(-0.1, 0, 0.1), SIMD3<Float>(0.1, 0, 0.1), SIMD3<Float>(0.1, 0, -0.1)]
-        ],
-        3: [
-            "startingPos": [SIMD3<Float>(-0.1, 0, 0.1), SIMD3<Float>(-0.1, 0, -0.1), SIMD3<Float>(0.1, 0, 0.1)],
-            "currentPos": [SIMD3<Float>(-0.1, 0, 0.1), SIMD3<Float>(-0.1, 0, -0.1), SIMD3<Float>(0.1, 0, 0.1)]
-        ],
-        4: [
-            "startingPos": [SIMD3<Float>(-0.1, 0, 0.1), SIMD3<Float>(-0.1, 0, -0.1), SIMD3<Float>(0.1, 0, 0.1), SIMD3<Float>(0.1, 0, -0.1)],
-            "currentPos": [SIMD3<Float>(-0.1, 0, 0.1), SIMD3<Float>(-0.1, 0, -0.1), SIMD3<Float>(0.1, 0, 0.1), SIMD3<Float>(0.1, 0, -0.1)]
-        ],
-        5: [
-            "startingPos": [SIMD3<Float>(-0.1, 0, 0), SIMD3<Float>(0, 0, 0), SIMD3<Float>(0.1, 0, 0)],
-            "currentPos": [SIMD3<Float>(-0.1, 0, 0), SIMD3<Float>(0, 0, 0), SIMD3<Float>(0.1, 0, 0)]
-        ],
-        6: [
-            "startingPos": [SIMD3<Float>(-0.2, 0, 0.1), SIMD3<Float>(0, 0, 0.1), SIMD3<Float>(0, 0, -0.1), SIMD3<Float>(0.2, 0, 0.1)],
-            "currentPos": [SIMD3<Float>(-0.2, 0, 0.1), SIMD3<Float>(0, 0, 0.1), SIMD3<Float>(0, 0, -0.1), SIMD3<Float>(0.2, 0, 0.1)]
-        ]
-    ]
-    
     let coulombTextMaterial: SimpleMaterial = {
         var mat = SimpleMaterial()
         mat.metallic = MaterialScalarParameter(floatLiteral: 0.2)
@@ -98,7 +69,7 @@ class ViewController: UIViewController {
         return slider
     }()
     
-    let coulombViewController = CoulombMenu(nibName: nil, bundle: nil)
+    let coulombViewController = CoulombMenu_ViewController(nibName: nil, bundle: nil)
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -169,8 +140,8 @@ class ViewController: UIViewController {
             // Empty the current points of charge positions
             selectedPositions.removeAll()
             // Get the new ones
-            let dict = pointsChargeScenesDict[btnsend.tag]!
-            selectedPositions.append(contentsOf: dict["startingPos"]!)
+            let pos = defaultPositions[btnsend.tag]!
+            selectedPositions.append(contentsOf: pos)
         }
     }
     
@@ -181,9 +152,10 @@ class ViewController: UIViewController {
         let textEntity: Entity = Entity()
         textEntity.name = "text"
         textEntity.setParent(pointEntity)
-        textEntity.setPosition(SIMD3<Float>(-0.02, -0.03, 0.03), relativeTo: pointEntity)
-        
-        textEntity.setOrientation(simd_quatf(ix: -0.45, iy: 0, iz: 0, r: 0.9), relativeTo: pointEntity)
+//        textEntity.setPosition(SIMD3<Float>(-0.02, -0.03, 0.03), relativeTo: pointEntity)
+        textEntity.setPosition(SIMD3<Float>(-0.02, -0.03, 0), relativeTo: pointEntity)
+        textEntity.setOrientation(simd_quatf(angle: Int(90).degreesToRadians(), axis: SIMD3<Float>(1, 0, 0)), relativeTo: pointEntity)
+//        textEntity.setOrientation(simd_quatf(ix: -0.45, iy: 0, iz: 0, r: 0.9), relativeTo: pointEntity)
         
         return textEntity
     }
