@@ -17,7 +17,7 @@
                     </arView>
                     <connections>
                         <outlet property="arView" destination="8bC-Xf-vdC" id="TPV-4x-avp"/>
-                        <segue destination="CP3-1e-AVB" kind="presentation" id="IrW-fv-JQH"/>
+                        <segue destination="CP3-1e-AVB" kind="presentation" identifier="toTopoMenuSegue" id="IrW-fv-JQH"/>
                         <segue destination="6yA-tf-0n3" kind="presentation" identifier="toCoulombMenuSegue" id="nK6-If-US0"/>
                     </connections>
                 </viewController>
@@ -28,22 +28,26 @@
         <!--bottomTopologiesView-->
         <scene sceneID="Agt-hJ-Q0d">
             <objects>
-                <viewController title="bottomTopologiesView" modalPresentationStyle="currentContext" id="CP3-1e-AVB" customClass="BottomPopUpTopo_ViewController" customModule="AR_Coulomb" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="bottomTopologiesView" modalPresentationStyle="overCurrentContext" id="CP3-1e-AVB" customClass="BottomTopo_ViewController" customModule="AR_Coulomb" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Thp-Zh-a2v">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="displayP3"/>
                         <viewLayoutGuide key="safeArea" id="BB6-59-cFy"/>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <connections>
+                        <outlet property="bottomTopoMenuView" destination="Thp-Zh-a2v" id="0JP-EP-ZKd"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2TS-E7-458" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1183" y="546"/>
         </scene>
-        <!--Coulomb Menu-->
+        <!--Coulomb Menu View Controller-->
         <scene sceneID="XrY-V4-QDd">
             <objects>
-                <viewController modalPresentationStyle="overCurrentContext" id="6yA-tf-0n3" customClass="CoulombMenu" customModule="AR_Coulomb" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="overCurrentContext" id="6yA-tf-0n3" customClass="CoulombMenu_ViewController" customModule="AR_Coulomb" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="WSJ-eg-Nkl">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

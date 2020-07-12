@@ -56,7 +56,7 @@ extension ViewController: ARSessionDelegate {
             recognizer.cancelsTouchesInView = false
         }
         
-        createObserver()
+        createCbObserver()
         addForces()
     }
     

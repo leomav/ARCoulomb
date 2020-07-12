@@ -11,6 +11,7 @@ import RealityKit
 import ARKit
 
 let cbNotificationKey = "com.leomav.coulombValueChange"
+let topoNotificationKey = "com.leomav.topologyChange"
 
 let ZOOM_IN_5_4: Float = 1.25
 let ZOOM_OUT_4_5: Float = 0.8
@@ -42,34 +43,20 @@ class ViewController: UIViewController {
     // Array of Force Objects that contain force info
     var forces: [Force] = []
     
-    // translates autoresizing mask into constraints lets us
-    // manually alter the constraints
-    let stackView: UIStackView = {
-        let stack = UIStackView()
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.axis = .horizontal
-        stack.spacing = 8
-        stack.backgroundColor = .white
-        stack.distribution = .fillEqually
-        //stack.alignment = .fill
+    // Button for appearing topos !!!!! CHANGE
+    let btn: UIButton = {
+        let btn = UIButton(frame: CGRect(x: 50, y: 50, width: 150, height: 50))
+        btn.setTitle("Choose Topo", for: .normal)
+        btn.titleLabel?.font = UIFont.systemFont(ofSize: 30)
+        btn.addTarget(self, action: #selector(chooseTopoButtonAction(sender:)), for: .touchUpInside)
+        btn.isEnabled = true
         
-        return stack
+        return btn
     }()
+    @objc func chooseTopoButtonAction(sender: UIButton) {
+        performSegue(withIdentifier: "toTopoMenuSegue", sender: nil)
+    }
     
-    let scrollView: UIScrollView = {
-        let scroll = UIScrollView()
-        // When the next line was not present, the ScrollView crashed
-        scroll.translatesAutoresizingMaskIntoConstraints = false
-        
-        return scroll
-    }()
-    
-    let slider: UISlider = {
-        let slider = UISlider()
-        return slider
-    }()
-    
-    let coulombViewController = CoulombMenu_ViewController(nibName: nil, bundle: nil)
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -78,7 +65,8 @@ class ViewController: UIViewController {
         
         setupARView()
         
-        addStackView()
+//        addStackView()
+        createTopoObserver()
         
         // First tap gesture recognizer, will be deleted after first point of charge is added
         let firstPointTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(recognizer:)))
@@ -92,6 +80,11 @@ class ViewController: UIViewController {
         arView.addGestureRecognizer(longPressRecognizer)
         longPressRecognizer.isEnabled =  false
         
+        // !!!!!!!!!!!!!!!! ADD BUTTON
+        arView.addSubview(btn)
+        btn.topAnchor.constraint(equalTo: arView.topAnchor).isActive = true
+        btn.leadingAnchor.constraint(equalTo: arView.leadingAnchor).isActive = true
+
     }
     
     func setupARView() {
@@ -100,49 +93,6 @@ class ViewController: UIViewController {
         config.planeDetection = [.horizontal, .vertical]
         config.environmentTexturing = .automatic
         arView.session.run(config)
-        
-    }
-    
-    func addStackView() {
-        // You simply cannot constrain a view to another view if the view isn’t even on the screen yet.
-        arView.addSubview(scrollView)
-        scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        scrollView.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -150).isActive = true
-        scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20).isActive = true
-        
-        scrollView.addSubview(stackView)
-        stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
-        stackView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
-        stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
-        
-        stackView.heightAnchor.constraint(equalTo: scrollView.heightAnchor).isActive = true
-        
-        // Create the buttons in the scroll-stack view, one for each topology
-        for i in 0...5 {
-            let btn = UIButton()
-            btn.setBackgroundImage(UIImage(named: "kobe"), for: .normal)
-            btn.addTarget(self, action: #selector(self.buttonAction(sender:)), for: .touchUpInside)
-            btn.isEnabled = true
-            btn.tag = i + 1
-            btn.widthAnchor.constraint(equalToConstant: 120).isActive = true
-            
-            // Add the button to the view
-            stackView.addArrangedSubview(btn)
-        }
-        
-    }
-    
-    @objc func buttonAction(sender: UIButton!) {
-        let btnsend: UIButton = sender
-        if btnsend.tag > 0 && btnsend.tag < 7 {
-            // Empty the current points of charge positions
-            selectedPositions.removeAll()
-            // Get the new ones
-            let pos = defaultPositions[btnsend.tag]!
-            selectedPositions.append(contentsOf: pos)
-        }
     }
     
     
@@ -153,9 +103,10 @@ class ViewController: UIViewController {
         textEntity.name = "text"
         textEntity.setParent(pointEntity)
 //        textEntity.setPosition(SIMD3<Float>(-0.02, -0.03, 0.03), relativeTo: pointEntity)
+//        textEntity.setOrientation(simd_quatf(ix: -0.45, iy: 0, iz: 0, r: 0.9), relativeTo: pointEntity)
         textEntity.setPosition(SIMD3<Float>(-0.02, -0.03, 0), relativeTo: pointEntity)
         textEntity.setOrientation(simd_quatf(angle: Int(90).degreesToRadians(), axis: SIMD3<Float>(1, 0, 0)), relativeTo: pointEntity)
-//        textEntity.setOrientation(simd_quatf(ix: -0.45, iy: 0, iz: 0, r: 0.9), relativeTo: pointEntity)
+
         
         return textEntity
     }
@@ -174,8 +125,8 @@ class ViewController: UIViewController {
     
     
     // ---------------------------------------------------------------------------------
-    // -------------------------- Notification OBSERVER --------------------------------
-    func createObserver() {
+    // -------------------------- Notification OBSERVERS -------------------------------
+    func createCbObserver() {
         let notifName = Notification.Name(rawValue: cbNotificationKey)
         NotificationCenter.default.addObserver(self, selector: #selector(updateCoulombValue(notification:)), name: notifName, object: nil)
     }
@@ -184,9 +135,23 @@ class ViewController: UIViewController {
         if let newValue = (notification.userInfo?["updatedValue"]) as? Float {
             loadText(textEntity: longPressedEntity.children[1], material: coulombTextMaterial, coulombStringValue: "\(newValue) Cb")
         } else {
-            print("Error: updated coulomb value")
+            print("Error: Not updated coulomb value!")
         }
-        
+    }
+    
+    func createTopoObserver() {
+        let notifName = Notification.Name(rawValue: topoNotificationKey)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTopology(notification:)), name: notifName, object: nil)
+    }
+    
+    @objc func updateTopology(notification: Notification) {
+        if let newValue = (notification.userInfo?["updatedValue"]) as? [SIMD3<Float>] {
+            /// Empty current selectedPositionsArray and fill it again with the new positions
+            selectedPositions.removeAll()
+            selectedPositions.append(contentsOf: newValue)
+        } else {
+            print("Error: Not updated topology!")
+        }
     }
     
     

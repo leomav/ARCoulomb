@@ -31,7 +31,7 @@ class CoulombMenu_ViewController: UIViewController {
         return tab
     }()
     
-    var text: UILabel = {
+    let text: UILabel = {
         let text = UILabel()
         
         return text
@@ -62,7 +62,7 @@ class CoulombMenu_ViewController: UIViewController {
     
     var coulombValue: Float = 0
     
-    @IBOutlet public var coulombMenuView: UIView!
+    @IBOutlet var coulombMenuView: UIView!
     
     // MARK: - On Load Method
     
