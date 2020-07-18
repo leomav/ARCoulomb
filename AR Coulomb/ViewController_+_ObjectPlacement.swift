@@ -30,7 +30,7 @@ extension ViewController: ARSessionDelegate {
             point.setPosition(pos, relativeTo: anchorEntity)
             
             // Create new PointChargeClass Object and append it to pointCharges[]
-            let newPoint = PointChargeClass(entity: point, value: 0)
+            let newPoint = PointChargeClass(entity: point, value: 0.000005)
             pointCharges.append(newPoint)
             
             // Create Text Entity for the particle
