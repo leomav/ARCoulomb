@@ -34,9 +34,23 @@ class NetForce {
         self.pointEntity = pointEntity
         self.arrowEntity = arrowEntity
         self.forces = forces
+        
+        self.initializeArrowEntity()
     }
     
-    func calculate() {
+    // Gets called at the init() phase, sets the scale and position of the arrowEntity
+    private func initializeArrowEntity() {
+        self.arrowEntity.setScale(SIMD3<Float>(0.1, 0.1, 0.1), relativeTo: self.arrowEntity)
+        self.arrowEntity.setPosition(SIMD3<Float>(0, 0, 0), relativeTo: self.pointEntity)
+    }
+    
+    // Update the ORIENTATION of the arrowEntity
+    func updateNetForceArrow() {
+        self.arrowEntity.setOrientation(simd_quatf(angle: self.angle, axis: SIMD3<Float>(0, 1.0, 0)), relativeTo: self.pointEntity)
+    }
+    
+    // CALCULATE the net force
+    func calculateNetForce() {
         var (f1, f1_angle) = (self.forces[0].magnetude, self.forces[0].angle)
         var iterator = 1
         while iterator < self.forces.count {
@@ -46,27 +60,28 @@ class NetForce {
             
             iterator += 1
         }
-        
         self.magnetude = f1
         self.angle = f1_angle
         
-        print(f1, f1_angle)
-        
     }
     
-    // Always f1 as the reference force
-    func netForceOfTwo(f1: Float, f1_angle: Float, f2: Float, f2_angle: Float) -> (Float, Float) {
+    // Input: 2 forces' magnetudes and angles
+    // Set as reference force the one with the smaller angle
+    // Then proceed to finding the netForceMagnetude and netForceAngle.
+    // CAREFUL: Don't forget to add the reference force's angle to the resulted netForceAngle.
+    private func netForceOfTwo(f1: Float, f1_angle: Float, f2: Float, f2_angle: Float) -> (Float, Float) {
         let angle: Float
+        let netMagnetude: Float
+        let netAngle: Float
         if f1_angle <= f2_angle {
             angle = f2_angle - f1_angle
+            netMagnetude = netForceMagnetude(f1: f1, f2: f2, angle: angle)
+            netAngle = netForceAngle(f1: f1, f2: f2, angle: angle) + f1_angle
         } else {
-            
-            angle = Float(360).degreesToRadians + f2_angle - f1_angle
+            angle = f1_angle - f2_angle
+            netMagnetude = netForceMagnetude(f1: f2, f2: f1, angle: angle)
+            netAngle = netForceAngle(f1: f2, f2: f1, angle: angle) + f2_angle
         }
-        
-        let netMagnetude = netForceMagnetude(f1: f1, f2: f2, angle: angle)
-        let netAngle = netForceAngle(f1: f1, f2: f2, angle: angle)
-        
         return (netMagnetude, netAngle)
     }
     

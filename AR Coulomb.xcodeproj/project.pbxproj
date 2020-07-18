@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9F368B25249A582000C6E07A /* PointCharge.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 9F368B24249A582000C6E07A /* PointCharge.rcproject */; };
+		9F474FA824C37B3E004E1B54 /* ViewController_+_Forces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F474FA724C37B3E004E1B54 /* ViewController_+_Forces.swift */; };
 		9F6D256524BDFCCE00F25D06 /* NetForce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F6D256424BDFCCE00F25D06 /* NetForce.swift */; };
 		9F8E5A4924BB390900C69C27 /* DefaultPositions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F8E5A4824BB390900C69C27 /* DefaultPositions.swift */; };
 		9FACABBF24C24D2A0024962B /* Force.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FACABBE24C24D2A0024962B /* Force.swift */; };
@@ -28,6 +29,7 @@
 
 /* Begin PBXFileReference section */
 		9F368B24249A582000C6E07A /* PointCharge.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = PointCharge.rcproject; sourceTree = "<group>"; };
+		9F474FA724C37B3E004E1B54 /* ViewController_+_Forces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController_+_Forces.swift"; sourceTree = "<group>"; };
 		9F6D256424BDFCCE00F25D06 /* NetForce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetForce.swift; sourceTree = "<group>"; };
 		9F8E5A4824BB390900C69C27 /* DefaultPositions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPositions.swift; sourceTree = "<group>"; };
 		9FACABBE24C24D2A0024962B /* Force.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Force.swift; sourceTree = "<group>"; };
@@ -82,6 +84,7 @@
 				9FD94475249A258400C0E646 /* ViewController.swift */,
 				9FFD6FCB24ABFE2400D8DE89 /* ViewController_+_Gestures.swift */,
 				9FFD6FCD24ABFFB800D8DE89 /* ViewController_+_ObjectPlacement.swift */,
+				9F474FA724C37B3E004E1B54 /* ViewController_+_Forces.swift */,
 				9FF77FD824A7E3EA003477C2 /* CoulombMenu_ViewController.swift */,
 				9FF77FD624A7993C003477C2 /* BottomTopo_ViewController.swift */,
 				9FD94479249A258400C0E646 /* Main.storyboard */,
@@ -180,6 +183,7 @@
 				9FD94478249A258400C0E646 /* Experience.rcproject in Sources */,
 				9F8E5A4924BB390900C69C27 /* DefaultPositions.swift in Sources */,
 				9FF77FD924A7E3EA003477C2 /* CoulombMenu_ViewController.swift in Sources */,
+				9F474FA824C37B3E004E1B54 /* ViewController_+_Forces.swift in Sources */,
 				9FF77FDB24AA8470003477C2 /* SingleForce.swift in Sources */,
 				9FFD6FC824ABA5BF00D8DE89 /* ArrowHead.rcproject in Sources */,
 				9FFD6FCC24ABFE2400D8DE89 /* ViewController_+_Gestures.swift in Sources */,

@@ -98,6 +98,12 @@ extension ViewController {
             /// Update forces' arrows directions
             updateArrows()
             
+            print(trackedEntity.children[3].orientation(relativeTo: trackedEntity).imag.y)
+            print(trackedEntity.children[3].orientation(relativeTo: trackedEntity).angle.radiansToDegrees)
+            print(trackedEntity.children[4].orientation(relativeTo: trackedEntity).imag.y)
+            print(trackedEntity.children[4].orientation(relativeTo: trackedEntity).angle.radiansToDegrees)
+            print(trackedEntity.children[2].orientation(relativeTo: trackedEntity).imag.y)
+            print(trackedEntity.children[2].orientation(relativeTo: trackedEntity).angle.radiansToDegrees)
             // !!!!!!!!!!!! DELETE AFTER TESTING !!!!!!!!!!!!!
 //            var tempbool = false
 //            var temp1: Entity = Entity()
