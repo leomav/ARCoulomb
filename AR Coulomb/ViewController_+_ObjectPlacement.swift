@@ -13,6 +13,7 @@ import RealityKit
 extension ViewController: ARSessionDelegate {
     
     func placeObject(for anchor: ARAnchor) {
+        
         /// Add the anchor of the scene where the user tapped
         let anchorEntity = AnchorEntity(anchor: anchor)
         anchorEntity.name = "Point Charge Scene AnchorEntity"

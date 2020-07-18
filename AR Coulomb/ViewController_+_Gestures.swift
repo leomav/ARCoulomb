@@ -70,7 +70,7 @@ extension ViewController {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        /// If tracked entity is a pointCharge, check if its alignment differ less than 0.05m from the other particles.
+        /// If tracked entity is a pointCharge, check if its alignment differ less than 0.02m from the other particles.
         /// If so, align it to them
         if trackedEntity.name == "pointCharge" {
             pointChargeInteraction(zoom: ZOOM_OUT_4_5, showLabel: true)
@@ -98,8 +98,44 @@ extension ViewController {
             /// Update forces' arrows directions
             updateArrows()
             
+            // !!!!!!!!!!!! DELETE AFTER TESTING !!!!!!!!!!!!!
+//            var tempbool = false
+//            var temp1: Entity = Entity()
+//            var temp2: Entity = Entity()
+//            trackedEntity.children.forEach{ child in
+//                
+//                if child.name == "Force Arrow" {
+//                    if tempbool == false {
+//                        temp1 = child
+//                        print(temp1)
+//                        print(trackedEntity.children.firstIndex(of: child)!)
+//                        tempbool = true
+//                    } else {
+//                        temp2 = child
+//                        print(temp2)
+//                        print(trackedEntity.children.firstIndex(of: child)!)
+//                    }
+//                }
+//            }
+//            print("-------------------------- ORIENTATION --------------------------")
+//            print(temp1.orientation(relativeTo: trackedEntity).angle.radiansToDegrees)
+//            
+//            print("angle")
+//            print(netForces[0].forces[0].angle.radiansToDegrees)
+//            
+//            print("------- --------- --------")
+//            print(temp2.orientation(relativeTo: trackedEntity).angle.radiansToDegrees)
+//            print("angle")
+//            print(netForces[0].forces[1].angle.radiansToDegrees)
+//            
+//            print("net force (magnetude, angle)")
+//            print(netForces[0].magnetude, netForces[0].angle.radiansToDegrees)
+//            print("-------------------------- ORIENTATION --------------------------")
+
+            
             /// When touches end, no entity is tracked by the gesture
             trackedEntity = Entity()
         }
     }
 }
+

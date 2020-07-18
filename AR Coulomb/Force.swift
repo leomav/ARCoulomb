@@ -2,7 +2,7 @@
 //  Force.swift
 //  AR Coulomb
 //
-//  Created by Leonidas Mavrotas on 29/6/20.
+//  Created by Leonidas Mavrotas on 18/7/20.
 //  Copyright © 2020 Leonidas Mavrotas. All rights reserved.
 //
 
@@ -11,19 +11,18 @@ import RealityKit
 
 class Force {
     static var volume: Int = 0
-    let forceId: Int
-    var magnetude: Float
+    var forceId: Int = 0
+    var magnetude: Float = 0.0
+    var angle: Float = 0.0
     var length: Float = 0.05
-    let entity: Entity
-    var sourceEntity: Entity
-    var targetEntity: Entity
-    init(magnetude: Float, entity: Entity, from: Entity, to: Entity) {
+    var arrowEntity: Entity = Entity()
+    
+    init(magnetude: Float, angle: Float, arrowEntity: Entity) {
         Force.volume += 1
         self.forceId = Force.volume
         self.magnetude = magnetude
-        
-        self.entity = entity
-        self.sourceEntity = from
-        self.targetEntity = to
+        self.angle = angle
+        self.arrowEntity = arrowEntity
     }
+    
 }
