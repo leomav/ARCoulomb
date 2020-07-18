@@ -14,8 +14,8 @@ import RealityKit
 /// angle:      Angle (rads) of the force (arrowEntity) relativily to the pointChargeEntity (target)
 /// length:     Length of the arrow entity
 /// arrowEntity:    The Arrow Entity of the force
-/// sourceEntity:      The source of the force coming to this pointChargeEntity
-/// targetEntity:     This pointChargeEntity
+/// sourcePointCharge:      The source PointChargeClass object  which the force is coming from
+/// targetPointCharge:     This PointChargeClass host object
 
 class SingleForce {
     static var volume: Int = 0
@@ -24,25 +24,27 @@ class SingleForce {
     var angle: Float
     var length: Float = 0.05
     let arrowEntity: Entity
-    var sourceEntity: Entity
-    var targetEntity: Entity
-    init(magnetude: Float, angle: Float, arrowEntity: Entity, from: Entity, to: Entity) {
+//    var sourceEntity: Entity
+    var sourcePointCharge: PointChargeClass
+//    var targetEntity: Entity
+    var targetPointCharge: PointChargeClass
+    init(magnetude: Float, angle: Float, arrowEntity: Entity, from: PointChargeClass, to: PointChargeClass) {
         SingleForce.volume += 1
         self.forceId = SingleForce.volume
         self.magnetude = magnetude
         self.angle = angle
         self.arrowEntity = arrowEntity
-        self.sourceEntity = from
-        self.targetEntity = to
+        self.sourcePointCharge = from
+        self.targetPointCharge = to
     }
     
     func updateForceArrow() {
         // First set look(at:_) cause it reinitialize the scale. Then set the scale x 0.05 and the position again
         // to the center of the pointCharge.
         // CAREFUL: The arrow entity points with its tail, so REVERSE the look DIRECTION to get what you want
-        self.arrowEntity.look(at: self.sourceEntity.position, from: self.targetEntity.position, relativeTo: self.targetEntity)
+        self.arrowEntity.look(at: self.sourcePointCharge.entity.position, from: self.targetPointCharge.entity.position, relativeTo: self.targetPointCharge.entity)
         self.arrowEntity.setScale(SIMD3<Float>(0.05, 0.05, 0.05), relativeTo: self.arrowEntity)
-        self.arrowEntity.setPosition(SIMD3<Float>(0, 0, 0), relativeTo: self.targetEntity)
+        self.arrowEntity.setPosition(SIMD3<Float>(0, 0, 0), relativeTo: self.targetPointCharge.entity)
         // MARK: - ORIENTATION: Look TO or AWAY ?
         // If you want the arrows to look to the other coulomb insted of looking away
         // add the following line so that it reverses its direction
@@ -64,5 +66,26 @@ class SingleForce {
         } else {
             self.angle = Float(360).degreesToRadians - orientation.angle
         }
+    }
+    
+    func updateForceMagnetude(){
+        self.magnetude = coulombsLaw()
+    }
+    
+    private func coulombsLaw() -> Float{
+        let coulombsProduct = self.sourcePointCharge.value * self.targetPointCharge.value
+        let distance = twoPointsDistance(x1: sourcePointCharge.entity.position.x,
+                                         x2: targetPointCharge.entity.position.x,
+                                         y1: sourcePointCharge.entity.position.z,
+                                         y2: targetPointCharge.entity.position.z)
+        let distance_pow = distance * distance
+        let constant = Ke / distance_pow
+        return constant * coulombsProduct
+    }
+    
+    private func twoPointsDistance(x1: Float, x2: Float, y1: Float, y2: Float) -> Float {
+        let distance: Float
+        distance = sqrt(pow(x2-x1, 2) + pow(y2-y1, 2))
+        return distance
     }
 }

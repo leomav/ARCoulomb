@@ -25,7 +25,7 @@ extension ViewController {
                     arrow.name = "NetForce Arrow"
                     pointChargeObj.entity.addChild(arrow)
                     // Initialize net force
-                    let netForce = NetForce(magnetude: 0, angle: 0, arrowEntity: arrow ,pointEntity: pointChargeObj.entity, forces: [])
+                    let netForce = NetForce(magnetude: 0, angle: 0, arrowEntity: arrow ,point: pointChargeObj, forces: [])
                     netForces.append(netForce)
                     
                     // Initialize and add a force to the pointChargeObj for every neighbor
@@ -37,7 +37,7 @@ extension ViewController {
                             pointChargeObj.entity.addChild(arrow)
                             
                             // Create instance of Force with arrow entity
-                            let force = SingleForce(magnetude: 5, angle:0, arrowEntity: arrow, from: otherPointChargeObj.entity, to: pointChargeObj.entity)
+                            let force = SingleForce(magnetude: 5, angle:0, arrowEntity: arrow, from: otherPointChargeObj, to: pointChargeObj)
                             
                             // Integrate force to the net force of the object
                             netForce.forces.append(force)
@@ -87,6 +87,7 @@ extension ViewController {
 //                }
                 forceObj.updateForceArrow()
                 forceObj.updateForceAngle()
+                forceObj.updateForceMagnetude()
             }
             netForceObj.calculateNetForce()
             

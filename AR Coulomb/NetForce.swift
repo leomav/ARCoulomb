@@ -14,8 +14,10 @@ import RealityKit
 /// angle:      Angle (rads) of the force (arrowEntity) relativily to the pointEntity
 /// length:     Length of the arrow entity
 /// arrowEntity:    The Arrow Entity of the force
-/// entity:      pointChargeEntity
+/// pointChargeObj:      The PointChargeClass host object
 /// forces:     An array of the forces that the netforce is constructed from
+
+
 
 class NetForce {
     static var volume: Int = 0
@@ -23,15 +25,15 @@ class NetForce {
     var magnetude: Float
     var angle: Float
     var length: Float = 0.05
-     let arrowEntity: Entity
-    let pointEntity: Entity
+    let arrowEntity: Entity
+    let pointChargeObj: PointChargeClass
     var forces: [SingleForce]
-    init(magnetude: Float, angle: Float, arrowEntity: Entity, pointEntity: Entity, forces: [SingleForce]) {
+    init(magnetude: Float, angle: Float, arrowEntity: Entity, point: PointChargeClass, forces: [SingleForce]) {
         NetForce.volume += 1
         self.forceId = NetForce.volume
         self.magnetude = magnetude
         self.angle = angle
-        self.pointEntity = pointEntity
+        self.pointChargeObj = point
         self.arrowEntity = arrowEntity
         self.forces = forces
         
@@ -41,12 +43,12 @@ class NetForce {
     // Gets called at the init() phase, sets the scale and position of the arrowEntity
     private func initializeArrowEntity() {
         self.arrowEntity.setScale(SIMD3<Float>(0.1, 0.1, 0.1), relativeTo: self.arrowEntity)
-        self.arrowEntity.setPosition(SIMD3<Float>(0, 0, 0), relativeTo: self.pointEntity)
+        self.arrowEntity.setPosition(SIMD3<Float>(0, 0, 0), relativeTo: self.pointChargeObj.entity)
     }
     
     // Update the ORIENTATION of the arrowEntity
     func updateNetForceArrow() {
-        self.arrowEntity.setOrientation(simd_quatf(angle: self.angle, axis: SIMD3<Float>(0, 1.0, 0)), relativeTo: self.pointEntity)
+        self.arrowEntity.setOrientation(simd_quatf(angle: self.angle, axis: SIMD3<Float>(0, 1.0, 0)), relativeTo: self.pointChargeObj.entity)
     }
     
     // CALCULATE the net force

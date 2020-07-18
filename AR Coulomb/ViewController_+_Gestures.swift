@@ -104,6 +104,9 @@ extension ViewController {
             print(trackedEntity.children[4].orientation(relativeTo: trackedEntity).angle.radiansToDegrees)
             print(trackedEntity.children[2].orientation(relativeTo: trackedEntity).imag.y)
             print(trackedEntity.children[2].orientation(relativeTo: trackedEntity).angle.radiansToDegrees)
+            print("Forces")
+            print(netForces[0].forces[0].magnetude)
+            print(netForces[0].forces[1].magnetude)
             // !!!!!!!!!!!! DELETE AFTER TESTING !!!!!!!!!!!!!
 //            var tempbool = false
 //            var temp1: Entity = Entity()

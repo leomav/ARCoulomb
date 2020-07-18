@@ -16,6 +16,8 @@ let topoNotificationKey = "com.leomav.topologyChange"
 let ZOOM_IN_5_4: Float = 1.25
 let ZOOM_OUT_4_5: Float = 0.8
 
+let Ke: Float = 9 * pow(10, 9)
+
 class ViewController: UIViewController {
     
     @IBOutlet var arView: ARView!
