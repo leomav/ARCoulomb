@@ -52,47 +52,80 @@ class NetForce {
     }
     
     // CALCULATE the net force
+    // Analyze every force of the pointChargeObj to Fx, Fy components
+    // Add all the Fx components, then all the Fy components
+    // Finally, calculate the netforce between the sumFx, sumFy
     func calculateNetForce() {
-        var (f1, f1_angle) = (self.forces[0].magnetude, self.forces[0].angle)
-        var iterator = 1
-        while iterator < self.forces.count {
-            let (f2, f2_angle) = (self.forces[iterator].magnetude, self.forces[iterator].angle)
-            let (temp, temp_angle) = netForceOfTwo(f1: f1, f1_angle: f1_angle, f2: f2, f2_angle: f2_angle)
-            f1 = temp; f1_angle = temp_angle
-            
-            iterator += 1
+        var netFx: Float = 0
+        var netFy: Float = 0
+        self.forces.forEach{ force in
+            let fx: Float; let fy: Float
+            (fx, fy) = self.calculateForceComponents(f: force.magnetude, f_angle: force.angle)
+            netFx += fx
+            netFy += fy
         }
-        self.magnetude = f1
-        self.angle = f1_angle
         
+        self.magnetude = self.netForceMagnetude(fx: netFx, fy: netFy)
+        self.angle = self.netForceAngle(fx: netFx, fy: netFy)
     }
     
-    // Input: 2 forces' magnetudes and angles
-    // Set as reference force the one with the smaller angle
-    // Then proceed to finding the netForceMagnetude and netForceAngle.
-    // CAREFUL: Don't forget to add the reference force's angle to the resulted netForceAngle.
-    private func netForceOfTwo(f1: Float, f1_angle: Float, f2: Float, f2_angle: Float) -> (Float, Float) {
-        let angle: Float
-        let netMagnetude: Float
-        let netAngle: Float
-        if f1_angle <= f2_angle {
-            angle = f2_angle - f1_angle
-            netMagnetude = netForceMagnetude(f1: f1, f2: f2, angle: angle)
-            netAngle = netForceAngle(f1: f1, f2: f2, angle: angle) + f1_angle
+    // CALCULATE the Fx, Fy components of Force f with angle f_angle
+    private func calculateForceComponents(f: Float, f_angle: Float) -> (Float, Float){
+        let quarter = f_angle.radiansToDegrees / 90
+        let f_angleMod = (f_angle.radiansToDegrees.truncatingRemainder(dividingBy: 90)).degreesToRadians
+
+        let fx: Float
+        let fy: Float
+        
+        if quarter < 1 {
+            // 4th quarter
+            fx = f * sin(f_angleMod)
+            fy = -f * cos(f_angleMod)
+        } else if quarter < 2 {
+            // 1st quarter
+            fx = f * cos(f_angleMod)
+            fy = f * sin(f_angleMod)
+        } else if quarter < 3 {
+            // 2nd quarter
+            fx = -f * sin(f_angleMod)
+            fy = f * cos(f_angleMod)
         } else {
-            angle = f1_angle - f2_angle
-            netMagnetude = netForceMagnetude(f1: f2, f2: f1, angle: angle)
-            netAngle = netForceAngle(f1: f2, f2: f1, angle: angle) + f2_angle
+            // 3rd quarter
+            fx = -f * cos(f_angleMod)
+            fy = -f * sin(f_angleMod)
+            //
+            if self.forceId == 3 {
+                print("components: " + String(fx) + ", " + String(fy))
+            }
         }
-        return (netMagnetude, netAngle)
+        return (fx, fy)
     }
     
-    private func netForceMagnetude(f1: Float, f2: Float, angle: Float) -> Float {
-        return sqrt(f1*f1 + f2*f2 + 2*f1*f2*cos(angle))
+    private func netForceMagnetude(fx: Float, fy: Float) -> Float {
+        return sqrt(fx*fx + fy*fy)
     }
     
-    private func netForceAngle(f1: Float, f2: Float, angle: Float) -> Float {
-        return atan((f2 * sin(angle)) / (f1 + f2 * cos(angle)))
+    private func netForceAngle(fx: Float, fy: Float) -> Float {
+        if fx >= 0 && fy >= 0 {
+            // 1st quarter
+            return Float(90.degreesToRadians) + atan(fy / fx)
+        } else if fx <= 0 && fy >= 0 {
+            // 2nd quarter
+            return Float(180.degreesToRadians) + atan(-fx / fy)
+        } else if fx <= 0 && fy <= 0 {
+            // 3rd quarter
+            //
+            if self.forceId == 3 {
+                print("netFy: " + String(fy) + ", /netFx: " + String(fx))
+            }
+            return Float(270.degreesToRadians) + atan(-fy / -fx)
+            
+        } else if fx >= 0 && fy <= 0 {
+            // 4th quarter
+            return atan(fx / -fy)
+        } else {
+            return 0
+        }
     }
     
 }

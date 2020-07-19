@@ -14,6 +14,7 @@ class PointChargeClass {
     let id: Int
     let entity: Entity
     var value: Float
+    var multiplier: Float = 0.000001
     
     init(entity: Entity, value: Float) {
         PointChargeClass.volume += 1

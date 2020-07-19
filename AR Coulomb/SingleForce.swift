@@ -65,15 +65,20 @@ class SingleForce {
             self.angle = orientation.angle
         } else {
             self.angle = Float(360).degreesToRadians - orientation.angle
+            // BUG: angle was too close to 0 that the above made rounded up to 360
+            // So if angle is set to 360, reset it to 0.
+            if self.angle.radiansToDegrees == 360 {
+                self.angle = 0
+            }
         }
     }
     
     func updateForceMagnetude(){
-        self.magnetude = coulombsLaw()
+        self.magnetude = self.coulombsLaw()
     }
     
     private func coulombsLaw() -> Float{
-        let coulombsProduct = self.sourcePointCharge.value * self.targetPointCharge.value
+        let coulombsProduct = self.sourcePointCharge.value * self.sourcePointCharge.multiplier * self.targetPointCharge.value * self.targetPointCharge.multiplier
         let distance = twoPointsDistance(x1: sourcePointCharge.entity.position.x,
                                          x2: targetPointCharge.entity.position.x,
                                          y1: sourcePointCharge.entity.position.z,

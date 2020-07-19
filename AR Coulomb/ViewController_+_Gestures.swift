@@ -34,13 +34,9 @@ extension ViewController {
         
         if recognizer.state == .began {
             if hitEntity == trackedEntity {
-                
                 longPressedEntity = hitEntity
-                
                 pointChargeInteraction(zoom: ZOOM_OUT_4_5, showLabel: true)
-                
                 trackedEntity = Entity()
-                
                 performSegue(withIdentifier: "toCoulombMenuSegue", sender: nil)
             }
         }
@@ -65,7 +61,7 @@ extension ViewController {
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         if trackedEntity.name == "pointCharge" {
-            updateArrows()
+            updateForces()
         }
     }
     
@@ -78,10 +74,10 @@ extension ViewController {
             let x = trackedEntity.position.x
             let z = trackedEntity.position.z
             
-            /// Loop through the scene anchors to find our "Point Charge Scene Anchor"
+            // Loop through the scene anchors to find our "Point Charge Scene Anchor"
             arView.scene.anchors.forEach{ anchor in
                 if anchor.name == "Point Charge Scene AnchorEntity" {
-                    /// Loop through its children (pointChargeEntities) and check their (x, z) differences
+                    // Loop through its children (pointChargeEntities) and check their (x, z) differences
                     anchor.children.forEach{ child in
                         if child.position.x != x && child.position.z != z{
                             if abs(child.position.x - x) < 0.02 {
@@ -95,55 +91,22 @@ extension ViewController {
                 }
             }
             
-            /// Update forces' arrows directions
-            updateArrows()
-            
-            print(trackedEntity.children[3].orientation(relativeTo: trackedEntity).imag.y)
-            print(trackedEntity.children[3].orientation(relativeTo: trackedEntity).angle.radiansToDegrees)
-            print(trackedEntity.children[4].orientation(relativeTo: trackedEntity).imag.y)
-            print(trackedEntity.children[4].orientation(relativeTo: trackedEntity).angle.radiansToDegrees)
-            print(trackedEntity.children[2].orientation(relativeTo: trackedEntity).imag.y)
-            print(trackedEntity.children[2].orientation(relativeTo: trackedEntity).angle.radiansToDegrees)
-            print("Forces")
-            print(netForces[0].forces[0].magnetude)
-            print(netForces[0].forces[1].magnetude)
-            // !!!!!!!!!!!! DELETE AFTER TESTING !!!!!!!!!!!!!
-//            var tempbool = false
-//            var temp1: Entity = Entity()
-//            var temp2: Entity = Entity()
-//            trackedEntity.children.forEach{ child in
-//                
-//                if child.name == "Force Arrow" {
-//                    if tempbool == false {
-//                        temp1 = child
-//                        print(temp1)
-//                        print(trackedEntity.children.firstIndex(of: child)!)
-//                        tempbool = true
-//                    } else {
-//                        temp2 = child
-//                        print(temp2)
-//                        print(trackedEntity.children.firstIndex(of: child)!)
-//                    }
-//                }
-//            }
-//            print("-------------------------- ORIENTATION --------------------------")
-//            print(temp1.orientation(relativeTo: trackedEntity).angle.radiansToDegrees)
-//            
-//            print("angle")
-//            print(netForces[0].forces[0].angle.radiansToDegrees)
-//            
-//            print("------- --------- --------")
-//            print(temp2.orientation(relativeTo: trackedEntity).angle.radiansToDegrees)
-//            print("angle")
-//            print(netForces[0].forces[1].angle.radiansToDegrees)
-//            
-//            print("net force (magnetude, angle)")
-//            print(netForces[0].magnetude, netForces[0].angle.radiansToDegrees)
-//            print("-------------------------- ORIENTATION --------------------------")
-
-            
-            /// When touches end, no entity is tracked by the gesture
+            // Update all forces magnetudes and directions
+            updateForces()
+           
+            // When touches end, no entity is tracked by the gesture
             trackedEntity = Entity()
+            
+            // DELETE AFTER !!!!!!!!!!!!
+            netForces.forEach{ netForce in
+                print("PointCharge: " + String(netForce.pointChargeObj.id) + " with value= " + String(netForce.pointChargeObj.value))
+                netForce.forces.forEach{ force in
+                    print("Force " + String(force.forceId) + ": " + String(force.magnetude) + " - " + String(force.angle.radiansToDegrees))
+                }
+                let y = netForce.arrowEntity.orientation.imag.y
+                let net_angle = netForce.arrowEntity.orientation.angle.radiansToDegrees
+                print("NetForce: " + String(netForce.magnetude) + " - " + String(netForce.angle.radiansToDegrees) + "(arrow_angle: " + String(net_angle) + ", " + String(y) + ")") 
+            }
         }
     }
 }
