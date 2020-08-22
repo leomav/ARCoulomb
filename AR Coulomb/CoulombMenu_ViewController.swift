@@ -60,9 +60,9 @@ class CoulombMenu_ViewController: UIViewController {
     
     let step: Float = 0.5
     
-    var coulombValue: Float = 0
-    
     @IBOutlet var coulombMenuView: UIView!
+    
+    var coulombValue: Float = selectedPointChargeObj.value
     
     // MARK: - On Load Method
     
@@ -73,8 +73,8 @@ class CoulombMenu_ViewController: UIViewController {
         
         self.configureTabView()
         self.configureStackView_V()
-        self.configureTextLabel()
-        self.configureSlider()
+        self.configureTextLabel(coulombValue: coulombValue)
+        self.configureSlider(coulombValue: coulombValue)
         self.configureButtons()
         self.configureStackView_H()
         
@@ -105,9 +105,9 @@ class CoulombMenu_ViewController: UIViewController {
         vStackView.centerYAnchor.constraint(equalTo: tabView.centerYAnchor).isActive = true
     }
     
-    func configureTextLabel() {
+    func configureTextLabel(coulombValue: Float) {
         text.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        text.text = "0 Cb"
+        text.text = "\(coulombValue) Cb"
         text.textColor = .white
         text.font = UIFont.systemFont(ofSize: 25)
         
@@ -127,10 +127,10 @@ class CoulombMenu_ViewController: UIViewController {
         hStackView.addArrangedSubview(btns[1])
     }
     
-    func configureSlider() {
+    func configureSlider(coulombValue: Float) {
         slider.heightAnchor.constraint(equalToConstant: 20).isActive = true
         slider.widthAnchor.constraint(equalToConstant: 200).isActive = true
-        slider.setValue(0, animated: true)
+        slider.setValue(coulombValue, animated: true)
         slider.minimumValue = -100
         slider.maximumValue = 100
         slider.isContinuous = true
@@ -157,7 +157,6 @@ class CoulombMenu_ViewController: UIViewController {
         }
     }
     
-    
     // MARK: - OBJC Action Functions
     
     @objc func buttonAction(sender: UIButton) {
@@ -179,8 +178,13 @@ class CoulombMenu_ViewController: UIViewController {
     
     @objc func sliderValueDidChange(_ sender: UISlider!) {
         let roundedStepValue = round(sender.value / step) * step
-        sender.value = roundedStepValue
+        slider.value = roundedStepValue
         textUpdate(sliderValue: slider.value)
+        
+        // Notify selectedPointChargeObj for new Value
+        let notifName = Notification.Name(rawValue: cbNotificationKey)
+        let valueDict: [String: Float] = ["updatedValue": slider.value]
+        NotificationCenter.default.post(name: notifName, object: nil, userInfo: valueDict)
     }
     
     // Check if touch occured outside the tabView, if so, dismiss the view

@@ -36,7 +36,17 @@ extension ViewController {
             if hitEntity == trackedEntity {
                 longPressedEntity = hitEntity
                 pointChargeInteraction(zoom: ZOOM_OUT_4_5, showLabel: true)
+                
                 trackedEntity = Entity()
+                
+                // Find and set the new Selected PointChargeObj
+                pointCharges.forEach{ pointChargeObj in
+                    if pointChargeObj.entity == longPressedEntity {
+                        print("Point Charge selected")
+                        selectedPointChargeObj = pointChargeObj
+                    }
+                }
+                
                 performSegue(withIdentifier: "toCoulombMenuSegue", sender: nil)
             }
         }
@@ -96,17 +106,6 @@ extension ViewController {
            
             // When touches end, no entity is tracked by the gesture
             trackedEntity = Entity()
-            
-            // DELETE AFTER !!!!!!!!!!!!
-            netForces.forEach{ netForce in
-                print("PointCharge: " + String(netForce.pointChargeObj.id) + " with value= " + String(netForce.pointChargeObj.value))
-                netForce.forces.forEach{ force in
-                    print("Force " + String(force.forceId) + ": " + String(force.magnetude) + " - " + String(force.angle.radiansToDegrees))
-                }
-                let y = netForce.arrowEntity.orientation.imag.y
-                let net_angle = netForce.arrowEntity.orientation.angle.radiansToDegrees
-                print("NetForce: " + String(netForce.magnetude) + " - " + String(netForce.angle.radiansToDegrees) + "(arrow_angle: " + String(net_angle) + ", " + String(y) + ")") 
-            }
         }
     }
 }

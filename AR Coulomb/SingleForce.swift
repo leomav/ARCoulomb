@@ -24,9 +24,7 @@ class SingleForce {
     var angle: Float
     var length: Float = 0.05
     let arrowEntity: Entity
-//    var sourceEntity: Entity
     var sourcePointCharge: PointChargeClass
-//    var targetEntity: Entity
     var targetPointCharge: PointChargeClass
     init(magnetude: Float, angle: Float, arrowEntity: Entity, from: PointChargeClass, to: PointChargeClass) {
         SingleForce.volume += 1
@@ -65,7 +63,7 @@ class SingleForce {
             self.angle = orientation.angle
         } else {
             self.angle = Float(360).degreesToRadians - orientation.angle
-            // BUG: angle was too close to 0 that the above made rounded up to 360
+            // *** FIXED BUG: angle was too close to 0 that the above made rounded up to 360
             // So if angle is set to 360, reset it to 0.
             if self.angle.radiansToDegrees == 360 {
                 self.angle = 0

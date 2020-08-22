@@ -10,13 +10,28 @@ import UIKit
 import RealityKit
 import ARKit
 
+// MARK: - Notification Keys
+
 let cbNotificationKey = "com.leomav.coulombValueChange"
 let topoNotificationKey = "com.leomav.topologyChange"
+
+// MARK: - PointCharges: selected, trackedEntity, array, positions, forces
+
+var selectedPointChargeObj: PointChargeClass = PointChargeClass(entity: Entity(), value: 0)
+var longPressedEntity: Entity = Entity()
+var trackedEntity: Entity = Entity()
+var selectedPositions: [SIMD3<Float>] = []
+var pointCharges: [PointChargeClass] = []
+var netForces: [NetForce] = []
 
 let ZOOM_IN_5_4: Float = 1.25
 let ZOOM_OUT_4_5: Float = 0.8
 
+// MARK: - Ke
+
 let Ke: Float = 9 * pow(10, 9)
+
+// MARK: - ViewController (main)
 
 class ViewController: UIViewController {
     
@@ -29,18 +44,6 @@ class ViewController: UIViewController {
         mat.tintColor = UIColor.white
         return mat
     }()
-    
-    var selectedPositions: [SIMD3<Float>] = []
-    
-    var trackedEntity: Entity = Entity()
-    var longPressedEntity: Entity = Entity()
-    
-    // Array of PointChargeClass Objects, that contain pointCharge info all
-    // (id, entity)
-    var pointCharges: [PointChargeClass] = []
-    
-    // Array of Force Objects that contain force info
-    var netForces: [NetForce] = []
     
     // Button for appearing topos !!!!! CHANGE
     let btn: UIButton = {
@@ -64,7 +67,6 @@ class ViewController: UIViewController {
         
         setupARView()
         
-//        addStackView()
         createTopoObserver()
         
         // First tap gesture recognizer, will be deleted after first point of charge is added
@@ -95,18 +97,17 @@ class ViewController: UIViewController {
     }
     
     
-    // ---------------------------------------------------------------------------------
-    // --------------------------- TEXT ENTITY -----------------------------------------
+    // MARK: - Text Entity
+    
     func createTextEntity(pointEntity: Entity) -> Entity {
         let textEntity: Entity = Entity()
         textEntity.name = "text"
         textEntity.setParent(pointEntity)
-//        textEntity.setPosition(SIMD3<Float>(-0.02, -0.03, 0.03), relativeTo: pointEntity)
-//        textEntity.setOrientation(simd_quatf(ix: -0.45, iy: 0, iz: 0, r: 0.9), relativeTo: pointEntity)
+        // textEntity.setPosition(SIMD3<Float>(-0.02, -0.03, 0.03), relativeTo: pointEntity)
+        // textEntity.setOrientation(simd_quatf(ix: -0.45, iy: 0, iz: 0, r: 0.9), relativeTo: pointEntity)
         textEntity.setPosition(SIMD3<Float>(-0.02, -0.03, 0), relativeTo: pointEntity)
         textEntity.setOrientation(simd_quatf(angle: Int(90).degreesToRadians(), axis: SIMD3<Float>(1, 0, 0)), relativeTo: pointEntity)
 
-        
         return textEntity
     }
     
@@ -123,26 +124,31 @@ class ViewController: UIViewController {
     
     
     
-    // ---------------------------------------------------------------------------------
-    // -------------------------- Notification OBSERVERS -------------------------------
+    // MARK: - Notification Observers
+    
+    // Coulomb Observer: When new value occurs for the selected PointChargeObj
     func createCbObserver() {
         let notifName = Notification.Name(rawValue: cbNotificationKey)
         NotificationCenter.default.addObserver(self, selector: #selector(updateCoulombValue(notification:)), name: notifName, object: nil)
     }
-    
+    // Set the new selected Point Charge obj's value, update its text, update its text, update all forces
     @objc func updateCoulombValue(notification: Notification) {
         if let newValue = (notification.userInfo?["updatedValue"]) as? Float {
+            selectedPointChargeObj.value = newValue
             loadText(textEntity: longPressedEntity.children[1], material: coulombTextMaterial, coulombStringValue: "\(newValue) Cb")
+            
+            updateForces()
         } else {
             print("Error: Not updated coulomb value!")
         }
     }
     
+    // Topology Observer: When new topology is selected
     func createTopoObserver() {
         let notifName = Notification.Name(rawValue: topoNotificationKey)
         NotificationCenter.default.addObserver(self, selector: #selector(updateTopology(notification:)), name: notifName, object: nil)
     }
-    
+    // update the selected Positions
     @objc func updateTopology(notification: Notification) {
         if let newValue = (notification.userInfo?["updatedValue"]) as? [SIMD3<Float>] {
             /// Empty current selectedPositionsArray and fill it again with the new positions
@@ -169,6 +175,7 @@ class ViewController: UIViewController {
             }
         }
     }
+    
     
     //    // Add  Coaching View to help user
     //    func overlayCoachingView() {

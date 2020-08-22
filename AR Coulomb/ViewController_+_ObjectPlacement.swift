@@ -36,7 +36,7 @@ extension ViewController: ARSessionDelegate {
             // Create Text Entity for the particle
             let textEntity = createTextEntity(pointEntity: point)
             // Load the mesh and material for the model of the text entity
-            loadText(textEntity: textEntity, material: coulombTextMaterial, coulombStringValue: "0 Cb")
+            loadText(textEntity: textEntity, material: coulombTextMaterial, coulombStringValue: "\(newPoint.value) Cb")
             
             // Install gestures
             point.generateCollisionShapes(recursive: false)

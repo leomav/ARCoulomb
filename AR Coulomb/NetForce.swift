@@ -94,9 +94,11 @@ class NetForce {
             fx = -f * cos(f_angleMod)
             fy = -f * sin(f_angleMod)
             //
-            if self.forceId == 3 {
-                print("components: " + String(fx) + ", " + String(fy))
-            }
+            
+            
+            //if self.forceId == 3 {
+            //    print("components: " + String(fx) + ", " + String(fy))
+            //}
         }
         return (fx, fy)
     }
@@ -115,9 +117,13 @@ class NetForce {
         } else if fx <= 0 && fy <= 0 {
             // 3rd quarter
             //
-            if self.forceId == 3 {
-                print("netFy: " + String(fy) + ", /netFx: " + String(fx))
-            }
+            
+            
+            //if self.forceId == 3 {
+            //    print("netFy: " + String(fy) + ", /netFx: " + String(fx))
+            //}
+            
+            
             return Float(270.degreesToRadians) + atan(-fy / -fx)
             
         } else if fx >= 0 && fy <= 0 {
