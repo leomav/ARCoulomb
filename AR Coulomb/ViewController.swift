@@ -67,6 +67,8 @@ class ViewController: UIViewController {
         
         setupARView()
         
+        //addCoaching()
+        
         createTopoObserver()
         
         // First tap gesture recognizer, will be deleted after first point of charge is added
