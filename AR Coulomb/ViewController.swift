@@ -10,12 +10,10 @@ import UIKit
 import RealityKit
 import ARKit
 
-// MARK: - Notification Keys
+// MARK: - Global Properties
 
 let cbNotificationKey = "com.leomav.coulombValueChange"
 let topoNotificationKey = "com.leomav.topologyChange"
-
-// MARK: - PointCharges: selected, trackedEntity, array, positions, forces
 
 var selectedPointChargeObj: PointChargeClass = PointChargeClass(entity: Entity(), value: 0)
 var longPressedEntity: Entity = Entity()
@@ -27,25 +25,17 @@ var netForces: [NetForce] = []
 let ZOOM_IN_5_4: Float = 1.25
 let ZOOM_OUT_4_5: Float = 0.8
 
-// MARK: - Ke
-
 let Ke: Float = 9 * pow(10, 9)
 
 // MARK: - ViewController (main)
 
 class ViewController: UIViewController {
     
+    // MARK: - IBOutlets
+    
     @IBOutlet var arView: ARView!
     
-    let coulombTextMaterial: SimpleMaterial = {
-        var mat = SimpleMaterial()
-        mat.metallic = MaterialScalarParameter(floatLiteral: 0.2)
-        mat.roughness = MaterialScalarParameter(floatLiteral: 0.1)
-        mat.tintColor = UIColor.white
-        return mat
-    }()
-    
-    // Button for appearing topos !!!!! CHANGE
+    /// Button for appearing topos !!!!! CHANGE
     let btn: UIButton = {
         let btn = UIButton(frame: CGRect(x: 50, y: 50, width: 150, height: 50))
         btn.setTitle("Choose Topo", for: .normal)
@@ -55,9 +45,25 @@ class ViewController: UIViewController {
         
         return btn
     }()
+    
     @objc func chooseTopoButtonAction(sender: UIButton) {
         performSegue(withIdentifier: "toTopoMenuSegue", sender: nil)
     }
+    
+    // MARK: - UI Elements
+    
+    let coachingOverlay = ARCoachingOverlayView()
+    
+    let coulombTextMaterial: SimpleMaterial = {
+        var mat = SimpleMaterial()
+        mat.metallic = MaterialScalarParameter(floatLiteral: 0.2)
+        mat.roughness = MaterialScalarParameter(floatLiteral: 0.1)
+        mat.tintColor = UIColor.white
+        return mat
+    }()
+    
+    /// Add object Interaction and Gestures
+    lazy var virtualObjectInteraction = VirtualObjectInteraction(view: arView, controller: self)
     
     
     override func viewDidAppear(_ animated: Bool) {
@@ -67,7 +73,8 @@ class ViewController: UIViewController {
         
         setupARView()
         
-        //addCoaching()
+        /// Set up coaching overlay.
+        setupCoachingOverlay()
         
         createTopoObserver()
         
@@ -167,7 +174,7 @@ class ViewController: UIViewController {
     // ---------------------------------------------------------------------------------
     // -------------------------- pointCharge INTERACTION ------------------------------
     // Emphasize or Deemphasize
-    func pointChargeInteraction(zoom: Float, showLabel: Bool) {
+    func interact(zoom: Float, showLabel: Bool) {
         // (De)emphasize the Point Charge by scaling it down/up 50%
         trackedEntity.setScale(SIMD3<Float>(zoom, zoom, zoom), relativeTo: trackedEntity)
         // Show/Hide the value label
@@ -178,17 +185,6 @@ class ViewController: UIViewController {
         }
     }
     
-    
-    //    // Add  Coaching View to help user
-    //    func overlayCoachingView() {
-    //        let coachingView = ARCoachingOverlayView(frame: CGRect(x: 0, y:0, width: arView.frame.width, height: arView.frame.height))
-    //
-    //        coachingView.session = arView.session
-    //        coachingView.activatesAutomatically = true
-    //        coachingView.goal = .horizontalPlane
-    //
-    //        view.addSubview(coachingView)
-    //    }
     
 }
 

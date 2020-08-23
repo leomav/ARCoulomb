@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9F1FAA2124F1D95600BF6137 /* ARCoachingOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1FAA2024F1D95600BF6137 /* ARCoachingOverlay.swift */; };
+		9F1FAA2124F1D95600BF6137 /* ViewController_+_ARCoachingOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1FAA2024F1D95600BF6137 /* ViewController_+_ARCoachingOverlay.swift */; };
+		9F2FC67224F2983000D0BA7D /* VirtualObjectInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2FC67124F2983000D0BA7D /* VirtualObjectInteraction.swift */; };
 		9F368B25249A582000C6E07A /* PointCharge.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 9F368B24249A582000C6E07A /* PointCharge.rcproject */; };
 		9F474FA824C37B3E004E1B54 /* ViewController_+_Forces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F474FA724C37B3E004E1B54 /* ViewController_+_Forces.swift */; };
 		9F6D256524BDFCCE00F25D06 /* NetForce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F6D256424BDFCCE00F25D06 /* NetForce.swift */; };
@@ -29,7 +30,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		9F1FAA2024F1D95600BF6137 /* ARCoachingOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARCoachingOverlay.swift; sourceTree = "<group>"; };
+		9F1FAA2024F1D95600BF6137 /* ViewController_+_ARCoachingOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController_+_ARCoachingOverlay.swift"; sourceTree = "<group>"; };
+		9F2FC67124F2983000D0BA7D /* VirtualObjectInteraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualObjectInteraction.swift; sourceTree = "<group>"; };
 		9F368B24249A582000C6E07A /* PointCharge.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = PointCharge.rcproject; sourceTree = "<group>"; };
 		9F474FA724C37B3E004E1B54 /* ViewController_+_Forces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController_+_Forces.swift"; sourceTree = "<group>"; };
 		9F6D256424BDFCCE00F25D06 /* NetForce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetForce.swift; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 				9FFD6FCB24ABFE2400D8DE89 /* ViewController_+_Gestures.swift */,
 				9FFD6FCD24ABFFB800D8DE89 /* ViewController_+_ObjectPlacement.swift */,
 				9F474FA724C37B3E004E1B54 /* ViewController_+_Forces.swift */,
+				9F1FAA2024F1D95600BF6137 /* ViewController_+_ARCoachingOverlay.swift */,
 				9FF77FD824A7E3EA003477C2 /* CoulombMenu_ViewController.swift */,
 				9FF77FD624A7993C003477C2 /* BottomTopo_ViewController.swift */,
 				9FD94479249A258400C0E646 /* Main.storyboard */,
@@ -101,7 +104,7 @@
 				9F6D256424BDFCCE00F25D06 /* NetForce.swift */,
 				9F8E5A4824BB390900C69C27 /* DefaultPositions.swift */,
 				9FACABBE24C24D2A0024962B /* Force.swift */,
-				9F1FAA2024F1D95600BF6137 /* ARCoachingOverlay.swift */,
+				9F2FC67124F2983000D0BA7D /* VirtualObjectInteraction.swift */,
 			);
 			path = "AR Coulomb";
 			sourceTree = "<group>";
@@ -180,7 +183,8 @@
 				9FD94476249A258400C0E646 /* ViewController.swift in Sources */,
 				9FF77FD724A7993C003477C2 /* BottomTopo_ViewController.swift in Sources */,
 				9FD94474249A258400C0E646 /* AppDelegate.swift in Sources */,
-				9F1FAA2124F1D95600BF6137 /* ARCoachingOverlay.swift in Sources */,
+				9F1FAA2124F1D95600BF6137 /* ViewController_+_ARCoachingOverlay.swift in Sources */,
+				9F2FC67224F2983000D0BA7D /* VirtualObjectInteraction.swift in Sources */,
 				9FFD6FCE24ABFFB800D8DE89 /* ViewController_+_ObjectPlacement.swift in Sources */,
 				9FFD6FCA24ABAE1500D8DE89 /* PointChargeClass.swift in Sources */,
 				9FACABBF24C24D2A0024962B /* Force.swift in Sources */,
