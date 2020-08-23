@@ -80,22 +80,22 @@ class BottomTopo_ViewController: UIViewController {
             // Add the button to the view
             stackView.addArrangedSubview(btn)
         }
-        
     }
     
-    @objc func buttonAction(sender: UIButton!) {
+    @objc
+    func buttonAction(sender: UIButton!) {
         let btnsend: UIButton = sender
         if btnsend.tag > 0 && btnsend.tag < 7 {
             
-            // Set the new topology (new positions)
+            /// Set the new topology (new positions)
             let pos = defaultPositions[btnsend.tag]!
             
-            // Notify for new positions
+            /// Notify for new positions
             let notifName = Notification.Name(rawValue: topoNotificationKey)
             let valueDict: [String: [SIMD3<Float>]] = ["updatedValue": pos]
             NotificationCenter.default.post(name: notifName, object: nil, userInfo: valueDict)
             
-            //Dismiss the menu view
+            ///Dismiss the menu view
             dismiss(animated: true, completion: nil)
             
         }

@@ -11,7 +11,7 @@ import RealityKit
 extension ViewController {
     // ---------------------------------------------------------------------------------
     // -------------------------- Add FORCE (Obj & Entity) -----------------------------
-    func addForces() {
+    func addAllForces() {
         arView.scene.anchors.forEach{ anchor in
             if anchor.name == "Point Charge Scene AnchorEntity" {
                 

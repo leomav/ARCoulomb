@@ -28,7 +28,7 @@ extension ViewController: ARCoachingOverlayViewDelegate {
         }
 
         func setupCoachingOverlay() {
-            // Set up coaching view
+            /// Set up coaching view
             coachingOverlay.session = arView.session
             coachingOverlay.delegate = self
             
@@ -44,8 +44,8 @@ extension ViewController: ARCoachingOverlayViewDelegate {
             
             setActivatesAutomatically()
             
-            // Most of the virtual objects in this sample require a horizontal surface,
-            // therefore coach the user to find a horizontal plane.
+            /// Most of the virtual objects in this sample require a horizontal surface,
+            /// therefore coach the user to find a horizontal plane.
             setGoal()
         }
         

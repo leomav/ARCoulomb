@@ -130,13 +130,13 @@ class CoulombMenu_ViewController: UIViewController {
     func configureSlider(coulombValue: Float) {
         slider.heightAnchor.constraint(equalToConstant: 20).isActive = true
         slider.widthAnchor.constraint(equalToConstant: 200).isActive = true
-        slider.setValue(coulombValue, animated: true)
         slider.minimumValue = -100
         slider.maximumValue = 100
         slider.isContinuous = true
         slider.tintColor = .white
         slider.thumbTintColor = .white
         slider.addTarget(self, action: #selector(sliderValueDidChange(_:)), for: .valueChanged)
+        slider.setValue(coulombValue, animated: true)
     }
     
     func configureButtons() {
@@ -147,7 +147,7 @@ class CoulombMenu_ViewController: UIViewController {
             } else {
                 btn.setTitle("+", for: .normal)
             }
-            btn.titleLabel?.font = UIFont.systemFont(ofSize: 30)
+            btn.titleLabel?.font = UIFont.systemFont(ofSize: 50)
             btn.addTarget(self, action: #selector(self.buttonAction(sender:)), for: .touchUpInside)
             btn.isEnabled = true
             btn.tag = i
@@ -159,7 +159,8 @@ class CoulombMenu_ViewController: UIViewController {
     
     // MARK: - OBJC Action Functions
     
-    @objc func buttonAction(sender: UIButton) {
+    @objc
+    func buttonAction(sender: UIButton) {
         if sender.tag == 0 {
             print("-")
             if (slider.value > slider.minimumValue) {
