@@ -172,7 +172,7 @@ class ViewController: UIViewController {
             
             PointChargeClass.loadText(textEntity: longPressedEntity.children[1], material: coulombTextMaterial, coulombStringValue: "\(newValue) Cb")
             
-            self.updateForces()
+            self.topology?.updateForces()
         } else {
             print("Error: Not updated coulomb value!")
         }

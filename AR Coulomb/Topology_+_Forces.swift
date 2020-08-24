@@ -8,12 +8,12 @@
 
 import RealityKit
 
-extension ViewController {
+extension Topology {
     
     // ---------------------------------------------------------------------------------
     // -------------------------- Add FORCE (Obj & Entity) -----------------------------
     func addAllForces() {
-        arView.scene.anchors.forEach{ anchor in
+        self.viewController.arView.scene.anchors.forEach{ anchor in
             if anchor.name == "Point Charge Scene AnchorEntity" {
                 
                 /// Get the ArrowEntity out of the ArrowAnchor
@@ -21,23 +21,48 @@ extension ViewController {
                 let arrowEntity = arrowAnchor.arrow!
                 
                 // Add a Force Object and Entity for every pointCharge<->pointCharge combo
-                topology?.pointCharges.forEach{ pointChargeObj in
+                self.pointCharges.forEach{ pointChargeObj in
                     
                     /// Create NetForce Object
-                    let netForce = createNetForce(for: pointChargeObj, arrowEntity: arrowEntity)
+                    let netForce = self.createNetForce(for: pointChargeObj, arrowEntity: arrowEntity)
                     
                     /// Initialize and add a force to the pointChargeObj for every neighbor
-                    topology?.pointCharges.forEach{ otherPointChargeObj in
+                    self.pointCharges.forEach{ otherPointChargeObj in
                         if pointChargeObj.id != otherPointChargeObj.id {
                             
-                            createSingleForce(from: otherPointChargeObj, to: pointChargeObj, netForce: netForce, arrowEntity: arrowEntity)
+                            self.createSingleForce(from: otherPointChargeObj, to: pointChargeObj, netForce: netForce, arrowEntity: arrowEntity)
                         }
                     }
                 }
-                updateForces()
+                self.updateForces()
             }
         }
     }
+        
+    // ---------------------------------------------------------------------------------
+    // -------------------------- Update FORCES ----------------------------------------
+    func updateForces() {
+        self.netForces.forEach{ netForceObj in
+            netForceObj.forces.forEach{ forceObj in
+                forceObj.updateForceArrow()
+                forceObj.updateForceAngle()
+                forceObj.updateForceMagnetude()
+            }
+            netForceObj.calculateNetForce()
+            
+            // Update Net Force Arrow orientation
+            netForceObj.updateNetForceArrow()
+        }
+    }
+    
+    func clearAllForces() {
+        // TODO
+        self.netForces.removeAll()
+    }
+    
+    
+    
+    // MARK: - Private functions
     
     private func createArrowEntity(for pointChargeObj: PointChargeClass, arrowEntity: Entity) -> Entity {
         /// Initialize and add NetForce Arrow Entity to the pointChargeObj
@@ -54,7 +79,7 @@ extension ViewController {
         
         /// Initialize NetForce Object with Arrow Entity
         let netForce = NetForce(magnetude: 0, angle: 0, arrowEntity: arrow ,point: pointChargeObj, forces: [])
-        topology?.netForces.append(netForce)
+        self.netForces.append(netForce)
         
         return netForce
     }
@@ -68,26 +93,5 @@ extension ViewController {
         
         /// Integrate Force Obj to the Net Force Obj of the PointChargeObj
         netForce.forces.append(force)
-    }
-        
-    
-    func clearAllForces() {
-        
-    }
-    
-    // ---------------------------------------------------------------------------------
-    // -------------------------- Update FORCES ARROWS ---------------------------------
-    func updateForces() {
-        topology?.netForces.forEach{ netForceObj in
-            netForceObj.forces.forEach{ forceObj in
-                forceObj.updateForceArrow()
-                forceObj.updateForceAngle()
-                forceObj.updateForceMagnetude()
-            }
-            netForceObj.calculateNetForce()
-            
-            // Update Net Force Arrow orientation
-            netForceObj.updateNetForceArrow()
-        }
     }
 }

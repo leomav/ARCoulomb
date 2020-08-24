@@ -24,6 +24,10 @@ class PointChargeClass {
         self.value = value
     }
     
+    static func ==(lhs: PointChargeClass, rhs: PointChargeClass) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
     // MARK: - Text Entity
     
     func createTextEntity(pointEntity: Entity) -> Entity {

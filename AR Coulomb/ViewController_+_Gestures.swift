@@ -73,7 +73,7 @@ extension ViewController {
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         if trackedEntity.name == "pointCharge" {
-            updateForces()
+            self.topology?.updateForces()
         }
     }
 
@@ -104,7 +104,7 @@ extension ViewController {
             }
 
             /// Update all forces magnetudes and directions
-            updateForces()
+            self.topology?.updateForces()
 
             /// When touches end, no entity is tracked by the gesture
             trackedEntity = Entity()

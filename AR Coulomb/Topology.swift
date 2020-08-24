@@ -132,10 +132,10 @@ class Topology {
         self.viewController.createCbObserver()
         
         /// Add all forces to all the pointCharge Objects
-        self.viewController.addAllForces()
+        self.addAllForces()
     }
     
-    private func addPointCharge(to pos: SIMD3<Float>, pointChargeEntity: Entity, onAnchorEntity anchorEntity: Entity) {
+    func addPointCharge(to pos: SIMD3<Float>, pointChargeEntity: Entity, onAnchorEntity anchorEntity: Entity) {
         /// Load the PointChargeEntity by cloning it
         let point = pointChargeEntity.clone(recursive: true)
         
@@ -159,7 +159,21 @@ class Topology {
         self.viewController.arView.installGestures([.translation, .rotation], for: point as! HasCollision)
     }
     
-    private func removePointCharge() {
+    func removePointCharge() {
         // TODO
+        /// Remove all netForces (so all forces also)
+        self.clearAllForces()
+        
+        /// Find the selectedPointChargeObj and remove it from pointCharges[]
+        for i in 0...self.pointCharges.count {
+            if selectedPointChargeObj == self.pointCharges[i] {
+                self.pointCharges.remove(at: i)
+                break
+            }
+        }
+        
+        /// Remove longPressedEntity (selected Entity)
+        longPressedEntity.removeFromParent()
+        
     }
 }
