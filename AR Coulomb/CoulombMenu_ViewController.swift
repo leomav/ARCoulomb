@@ -119,7 +119,7 @@ class CoulombMenu_ViewController: UIViewController {
         
         hStackView.axis = .horizontal
         hStackView.spacing = 5
-//        hStackView.distribution = .fillEqually
+        // hStackView.distribution = .fillEqually
         hStackView.alignment = .center
         
         hStackView.addArrangedSubview(btns[0])
@@ -152,7 +152,7 @@ class CoulombMenu_ViewController: UIViewController {
             btn.isEnabled = true
             btn.tag = i
             btn.widthAnchor.constraint(equalToConstant: 30).isActive = true
-//            btn.heightAnchor.constraint(equalToConstant: 30).isActive = true
+            // btn.heightAnchor.constraint(equalToConstant: 30).isActive = true
             btns.append(btn)
         }
     }
@@ -177,7 +177,8 @@ class CoulombMenu_ViewController: UIViewController {
         }
     }
     
-    @objc func sliderValueDidChange(_ sender: UISlider!) {
+    @objc
+    func sliderValueDidChange(_ sender: UISlider!) {
         let roundedStepValue = round(sender.value / step) * step
         slider.value = roundedStepValue
         textUpdate(sliderValue: slider.value)

@@ -15,7 +15,7 @@ extension ViewController: ARSessionDelegate {
     
     func placeObject(for anchor: ARAnchor) {
         
-        /// Add the anchor of the scene where the user tapped
+        /// Add the Anchor Entity to the scene (where the user tapped)
         let anchorEntity = AnchorEntity(anchor: anchor)
         anchorEntity.name = "Point Charge Scene AnchorEntity"
         arView.scene.addAnchor(anchorEntity)
@@ -72,7 +72,7 @@ extension ViewController: ARSessionDelegate {
                 /// Open the bottom Coulomb Topology menu to choose topology
                 performSegue(withIdentifier: "toTopoMenuSegue", sender: nil)
                 
-                /// Set the AnchorEntity for the topology of the scene (where the user tapped)
+                /// Set the Anchor for the topology of the scene (where the user tapped)
                 topoAnchor = anchor
             }
         }

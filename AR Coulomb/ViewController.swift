@@ -18,9 +18,12 @@ let topoNotificationKey = "com.leomav.topologyChange"
 ///// Add object Interaction and Gestures
 //var virtualObjectInteraction: VirtualObjectInteraction?
 
+/// PointCharge
 var selectedPointChargeObj: PointChargeClass = PointChargeClass(entity: Entity(), value: 0)
 var longPressedEntity: Entity = Entity()
 var trackedEntity: Entity = Entity()
+
+/// PointCarge Topology
 var topoAnchor: ARAnchor?
 var selectedPositions: [SIMD3<Float>] = []
 var pointCharges: [PointChargeClass] = []
@@ -82,6 +85,7 @@ class ViewController: UIViewController {
         /// Set up coaching overlay.
         setupCoachingOverlay()
         
+        /// Create the Topology Notification Observer
         createTopoObserver()
         
         /// First tap gesture recognizer, will be deleted after first point of charge is added
@@ -121,54 +125,9 @@ class ViewController: UIViewController {
         arView.session.run(config)
     }
     
-    
-    // MARK: - Text Entity
-    
-    func createTextEntity(pointEntity: Entity) -> Entity {
-        let textEntity: Entity = Entity()
-        textEntity.name = "text"
-        textEntity.setParent(pointEntity)
-        // textEntity.setPosition(SIMD3<Float>(-0.02, -0.03, 0.03), relativeTo: pointEntity)
-        // textEntity.setOrientation(simd_quatf(ix: -0.45, iy: 0, iz: 0, r: 0.9), relativeTo: pointEntity)
-        textEntity.setPosition(SIMD3<Float>(-0.02, -0.03, 0), relativeTo: pointEntity)
-        textEntity.setOrientation(simd_quatf(angle: Int(90).degreesToRadians(), axis: SIMD3<Float>(1, 0, 0)), relativeTo: pointEntity)
-
-        return textEntity
-    }
-    
-    func loadText(textEntity: Entity, material: SimpleMaterial, coulombStringValue: String) {
-        let model: ModelComponent = ModelComponent(mesh: .generateText(coulombStringValue,
-                                                                       extrusionDepth: 0.003,
-                                                                       font: .systemFont(ofSize: 0.02),
-                                                                       containerFrame: CGRect.zero,
-                                                                       alignment: .left,
-                                                                       lineBreakMode: .byCharWrapping),
-                                                   materials: [material])
-        textEntity.components.set(model)
-    }
-    
-    
-    
     // MARK: - Notification Observers
     
-    /// Coulomb Observer: When new value occurs for the selected PointChargeObj
-    func createCbObserver() {
-        let notifName = Notification.Name(rawValue: cbNotificationKey)
-        NotificationCenter.default.addObserver(self, selector: #selector(updateCoulombValue(notification:)), name: notifName, object: nil)
-    }
-    /// Set the new selected Point Charge obj's value, update its text, update its text, update all forces
-    @objc
-    func updateCoulombValue(notification: Notification) {
-        if let newValue = (notification.userInfo?["updatedValue"]) as? Float {
-            
-            selectedPointChargeObj.value = newValue
-            loadText(textEntity: longPressedEntity.children[1], material: coulombTextMaterial, coulombStringValue: "\(newValue) Cb")
-            
-            updateForces()
-        } else {
-            print("Error: Not updated coulomb value!")
-        }
-    }
+    
     
     /// Topology Observer: When new topology is selected
     func createTopoObserver() {
