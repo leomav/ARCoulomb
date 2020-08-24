@@ -12,37 +12,16 @@ import RealityKit
 class PointChargeClass {
     static var volume: Int = 0
     let id: Int
-    let viewController: ViewController
     let entity: Entity
     var value: Float
     var multiplier: Float = 0.000001
     
-    init(in viewController: ViewController, onEntity entity: Entity, withValue value: Float) {
+    init(onEntity entity: Entity, withValue value: Float) {
         PointChargeClass.volume += 1
         
-        self.viewController = viewController
         self.id = PointChargeClass.volume
         self.entity = entity
         self.value = value
-    }
-    
-    /// Coulomb Observer: When new value occurs for the selected PointChargeObj
-    func createCbObserver() {
-        let notifName = Notification.Name(rawValue: cbNotificationKey)
-        NotificationCenter.default.addObserver(self.viewController, selector: #selector(updateCoulombValue(notification:)), name: notifName, object: nil)
-    }
-    /// Set the new selected Point Charge obj's value, update its text, update its text, update all forces
-    @objc
-    func updateCoulombValue(notification: Notification) {
-        if let newValue = (notification.userInfo?["updatedValue"]) as? Float {
-            
-            selectedPointChargeObj.value = newValue
-            loadText(textEntity: longPressedEntity.children[1], material: viewController.coulombTextMaterial, coulombStringValue: "\(newValue) Cb")
-            
-            viewController.updateForces()
-        } else {
-            print("Error: Not updated coulomb value!")
-        }
     }
     
     // MARK: - Text Entity
@@ -59,7 +38,7 @@ class PointChargeClass {
         return textEntity
     }
     
-    func loadText(textEntity: Entity, material: SimpleMaterial, coulombStringValue: String) {
+    static func loadText(textEntity: Entity, material: SimpleMaterial, coulombStringValue: String) {
         let model: ModelComponent = ModelComponent(mesh: .generateText(coulombStringValue,
                                                                        extrusionDepth: 0.003,
                                                                        font: .systemFont(ofSize: 0.02),

@@ -19,15 +19,24 @@ let topoNotificationKey = "com.leomav.topologyChange"
 //var virtualObjectInteraction: VirtualObjectInteraction?
 
 /// PointCharge
-var selectedPointChargeObj: PointChargeClass = PointChargeClass(entity: Entity(), value: 0)
+var selectedPointChargeObj: PointChargeClass = PointChargeClass(onEntity: Entity(), withValue: 0)
 var longPressedEntity: Entity = Entity()
 var trackedEntity: Entity = Entity()
 
 /// PointCarge Topology
-var topoAnchor: ARAnchor?
-var selectedPositions: [SIMD3<Float>] = []
-var pointCharges: [PointChargeClass] = []
-var netForces: [NetForce] = []
+//var topoAnchor: ARAnchor?
+//var selectedPositions: [SIMD3<Float>] = []
+//var pointCharges: [PointChargeClass] = []
+//var netForces: [NetForce] = []
+
+/// Coulomb Text Material
+let coulombTextMaterial: SimpleMaterial = {
+    var mat = SimpleMaterial()
+    mat.metallic = MaterialScalarParameter(floatLiteral: 0.2)
+    mat.roughness = MaterialScalarParameter(floatLiteral: 0.1)
+    mat.tintColor = UIColor.white
+    return mat
+}()
 
 let ZOOM_IN_5_4: Float = 1.25
 let ZOOM_OUT_4_5: Float = 0.8
@@ -62,15 +71,9 @@ class ViewController: UIViewController {
     
     let coachingOverlay = ARCoachingOverlayView()
     
-    let coulombTextMaterial: SimpleMaterial = {
-        var mat = SimpleMaterial()
-        mat.metallic = MaterialScalarParameter(floatLiteral: 0.2)
-        mat.roughness = MaterialScalarParameter(floatLiteral: 0.1)
-        mat.tintColor = UIColor.white
-        return mat
-    }()
+    // MARK: - Properties
     
-    
+    var topology: Topology?
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -127,8 +130,6 @@ class ViewController: UIViewController {
     
     // MARK: - Notification Observers
     
-    
-    
     /// Topology Observer: When new topology is selected
     func createTopoObserver() {
         let notifName = Notification.Name(rawValue: topoNotificationKey)
@@ -138,19 +139,42 @@ class ViewController: UIViewController {
     @objc
     func updateTopology(notification: Notification) {
         if let newValue = (notification.userInfo?["updatedValue"]) as? [SIMD3<Float>] {
+
             /// Empty current selectedPositionsArray and fill it again with the new positions
-            selectedPositions.removeAll()
-            selectedPositions.append(contentsOf: newValue)
+            topology!.selectedPositions.removeAll()
+            topology!.selectedPositions.append(contentsOf: newValue)
             
             /// Place the selected Topology on the AnchorEntity placed in scene
-            if topoAnchor != nil {
-                placeObject(for: topoAnchor!)
+            if topology!.topoAnchor != nil {
+                topology!.placeTopology(for: topology!.topoAnchor!)
             } else {
                 print("Error: No anchor is selected for topology placement!")
             }
 
         } else {
             print("Error: Not updated topology!")
+        }
+    }
+    
+    // MARK: - Coulomb Observer:
+    
+    /// When new value occurs for the selected PointChargeObj
+    func createCbObserver() {
+        let notifName = Notification.Name(rawValue: cbNotificationKey)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateCoulombValue(notification:)), name: notifName, object: nil)
+    }
+    /// Set the new selected Point Charge obj's value, update its text, update its text, update all forces
+    @objc
+    func updateCoulombValue(notification: Notification) {
+        if let newValue = (notification.userInfo?["updatedValue"]) as? Float {
+            
+            selectedPointChargeObj.value = newValue
+            
+            PointChargeClass.loadText(textEntity: longPressedEntity.children[1], material: coulombTextMaterial, coulombStringValue: "\(newValue) Cb")
+            
+            self.updateForces()
+        } else {
+            print("Error: Not updated coulomb value!")
         }
     }
     

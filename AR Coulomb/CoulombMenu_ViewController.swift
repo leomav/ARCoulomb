@@ -181,12 +181,20 @@ class CoulombMenu_ViewController: UIViewController {
     func sliderValueDidChange(_ sender: UISlider!) {
         let roundedStepValue = round(sender.value / step) * step
         slider.value = roundedStepValue
+        
         textUpdate(sliderValue: slider.value)
         
-        // Notify selectedPointChargeObj for new Value
-        let notifName = Notification.Name(rawValue: cbNotificationKey)
-        let valueDict: [String: Float] = ["updatedValue": slider.value]
-        NotificationCenter.default.post(name: notifName, object: nil, userInfo: valueDict)
+//        print("notif not created")
+//        // Notify selectedPointChargeObj for new Value
+//        let notifName = Notification.Name(rawValue: cbNotificationKey)
+//        print("notif name created")
+//        let valueDict: [String: Float] = ["updatedValue": slider.value]
+//        print("notif dic created")
+//        NotificationCenter.default.post(name: notifName, object: nil, userInfo: valueDict)
+//        
+//        
+//        
+//        print("notif sent")
     }
     
     // Check if touch occured outside the tabView, if so, dismiss the view
@@ -206,7 +214,7 @@ class CoulombMenu_ViewController: UIViewController {
     }
     
     // MARK: - Used over code in one function (when slider changes value)
-    func textUpdate(sliderValue: Float) {
+    private func textUpdate(sliderValue: Float) {
         let newText = "\(sliderValue) Cb"
         text.text = newText
         

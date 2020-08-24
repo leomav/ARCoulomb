@@ -22,6 +22,7 @@ extension ViewController {
         if let firstResult = results.first {
             let anchor = ARAnchor(name: "PointCharge", transform: firstResult.worldTransform)
             arView.session.add(anchor: anchor)
+            
         } else {
             print("No horizontal surface found.")
         }
@@ -42,9 +43,8 @@ extension ViewController {
                 trackedEntity = Entity()
 
                 // Find and set the new Selected PointChargeObj
-                pointCharges.forEach{ pointChargeObj in
+                topology!.pointCharges.forEach{ pointChargeObj in
                     if pointChargeObj.entity == longPressedEntity {
-                        print("Point Charge selected")
                         selectedPointChargeObj = pointChargeObj
                     }
                 }
