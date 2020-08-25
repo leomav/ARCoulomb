@@ -45,27 +45,64 @@ let Ke: Float = 9 * pow(10, 9)
 
 // MARK: - ViewController (main)
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: - IBOutlets
     
     @IBOutlet var arView: ARView!
     
     /// Button for appearing topos !!!!! CHANGE
-//    let btn: UIButton = {
-//        let btn = UIButton(frame: CGRect(x: 50, y: 50, width: 150, height: 50))
-//        btn.setTitle("Choose Topo", for: .normal)
-//        btn.titleLabel?.font = UIFont.systemFont(ofSize: 30)
-//        btn.addTarget(self, action: #selector(chooseTopoButtonAction(sender:)), for: .touchUpInside)
-//        btn.isEnabled = true
-//
-//        return btn
-//    }()
-//    
-//    @objc
-//    func chooseTopoButtonAction(sender: UIButton) {
-//        performSegue(withIdentifier: "toTopoMenuSegue", sender: nil)
-//    }
+    let btn: UIButton = {
+        let btn = UIButton()
+        
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        
+        btn.addTarget(self, action: #selector(performDeletion(sender:)), for: .touchUpInside)
+        
+        btn.layer.borderColor = UIColor.red.cgColor
+        btn.layer.borderWidth = 1
+        
+        btn.backgroundColor = UIColor.white
+        
+        let config = UIImage.SymbolConfiguration(pointSize: 30, weight: .light, scale: .large)
+        
+        let image = UIImage(systemName: "trash", withConfiguration: config)
+        image?.withTintColor(UIColor.red)
+        
+        btn.setImage(image, for: .normal)
+        
+        
+        
+        btn.isEnabled = true
+        
+        return btn
+    }()
+    
+    let trashImageView: UIImageView = {
+        
+        let config = UIImage.SymbolConfiguration(pointSize: 30, weight: .light, scale: .large)
+        
+        let image = UIImage(systemName: "trash", withConfiguration: config)
+        
+        let padding: CGFloat = -3.0
+        
+        let imageView = UIImageView(image: image?.resizableImage(withCapInsets: UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)))
+        
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = 10
+        imageView.clipsToBounds = true
+        imageView.backgroundColor = UIColor.white
+        imageView.tintColor = UIColor.red
+        
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return imageView
+    }()
+    
+    @objc
+    func performDeletion(sender: UIButton) {
+        print("Perform Deletion")
+    }
     
     // MARK: - UI Elements
     
@@ -83,8 +120,6 @@ class ViewController: UIViewController {
         /// Set up ARView
         setupARView()
         
-//        virtualObjectInteraction = VirtualObjectInteraction(view: arView, controller: self)
-        
         /// Set up coaching overlay.
         setupCoachingOverlay()
         
@@ -97,10 +132,16 @@ class ViewController: UIViewController {
         /// Long Press Recognizer to enable parameters interaction with Point Charge (min press 1 sec)
         setupLongPressRecognizer()
         
-        // !!!!!!!!!!!!!!!! ADD BUTTON
-        //arView.addSubview(btn)
-        //btn.topAnchor.constraint(equalTo: arView.topAnchor).isActive = true
-        //btn.leadingAnchor.constraint(equalTo: arView.leadingAnchor).isActive = true
+        /// Add Trash ImageView with constraints
+        self.arView.addSubview(self.trashImageView)
+        trashImageView.topAnchor.constraint(equalTo: self.arView.topAnchor, constant: 50).isActive = true
+        trashImageView.trailingAnchor.constraint(equalTo: arView.trailingAnchor, constant: -15).isActive = true
+        
+        /// Turn the Trash ImageView into a Button using a TapGestureRecognizer
+        let imgViewTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(performDeletion(sender:)))
+        imgViewTapRecognizer.delegate = self
+        trashImageView.addGestureRecognizer(imgViewTapRecognizer)
+        trashImageView.isUserInteractionEnabled = true
 
     }
     

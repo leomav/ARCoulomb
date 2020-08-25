@@ -34,54 +34,7 @@ class Topology {
         //createCbObserver()
     }
     
-//    /// Topology Observer: When new topology is selected
-//    func createTopoObserver() {
-//        let notifName = Notification.Name(rawValue: topoNotificationKey)
-//        NotificationCenter.default.addObserver(self, selector: #selector(updateTopology(notification:)), name: notifName, object: nil)
-//    }
-//    /// update the selected Positions
-//    @objc
-//    func updateTopology(notification: Notification) {
-//        if let newValue = (notification.userInfo?["updatedValue"]) as? [SIMD3<Float>] {
-//            /// Empty current selectedPositionsArray and fill it again with the new positions
-//            self.selectedPositions.removeAll()
-//            self.selectedPositions.append(contentsOf: newValue)
-//
-//            /// Place the selected Topology on the AnchorEntity placed in scene
-//            if self.topoAnchor != nil {
-//                viewController.placeObject(for: self.topoAnchor!)
-//            } else {
-//                print("Error: No anchor is selected for topology placement!")
-//            }
-//
-//        } else {
-//            print("Error: Not updated topology!")
-//        }
-//    }
-    
-//    // MARK: - Coulomb Observer:
-//    
-//    /// When new value occurs for the selected PointChargeObj
-//    func createCbObserver() {
-//        let notifName = Notification.Name(rawValue: cbNotificationKey)
-//        NotificationCenter.default.addObserver(self.viewController, selector: #selector(updateCoulombValue(notification:)), name: notifName, object: nil)
-//    }
-//    /// Set the new selected Point Charge obj's value, update its text, update its text, update all forces
-//    @objc
-//    func updateCoulombValue(notification: Notification) {
-//        if let newValue = (notification.userInfo?["updatedValue"]) as? Float {
-//            
-//            selectedPointChargeObj.value = newValue
-//            
-//            PointChargeClass.loadText(textEntity: longPressedEntity.children[1], material: coulombTextMaterial, coulombStringValue: "\(newValue) Cb")
-//            
-//            self.viewController.updateForces()
-//        } else {
-//            print("Error: Not updated coulomb value!")
-//        }
-//    }
-    
-    // MARK: - Topology private functions
+    // MARK: - Topology functions
     
     func placeTopology(for topoAnchor: ARAnchor) {
         /// Add the Anchor Entity to the scene (where the user tapped)
@@ -95,22 +48,6 @@ class Topology {
         
         for pos in selectedPositions {
             addPointCharge(to: pos, pointChargeEntity: pointChargeEntity, onAnchorEntity: anchorEntity)
-//            let point = pointChargeEntity.clone(recursive: true)
-//            anchorEntity.addChild(point)
-//            point.setPosition(pos, relativeTo: anchorEntity)
-//
-//            /// Create new PointChargeClass Object and append it to pointCharges[]
-//            let newPoint = PointChargeClass(in: viewController, onEntity: point, withValue: 5)
-//            pointCharges.append(newPoint)
-//
-//            /// Create Text Entity for the pointCharge
-//            let textEntity = createTextEntity(pointEntity: point)
-//            /// Load the mesh and material for the model of the text entity
-//            loadText(textEntity: textEntity, material: coulombTextMaterial, coulombStringValue: "\(newPoint.value) Cb")
-//
-//            /// Install gestures
-//            point.generateCollisionShapes(recursive: false)
-//            viewController.arView.installGestures([.translation, .rotation], for: point as! HasCollision)
         }
         
         self.viewController.arView.gestureRecognizers?.forEach { recognizer in
