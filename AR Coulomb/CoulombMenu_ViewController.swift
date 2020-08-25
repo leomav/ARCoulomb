@@ -56,6 +56,14 @@ class CoulombMenu_ViewController: UIViewController {
         return btns
     }()
     
+    let trashButton: UIButton = {
+        let btn = UIButton()
+        
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        
+        return btn
+    }()
+    
     // MARK: - Properties
     
     let step: Float = 0.5
@@ -78,6 +86,9 @@ class CoulombMenu_ViewController: UIViewController {
         self.configureButtons()
         self.configureStackView_H()
         
+        coulombMenuView.addSubview(trashButton)
+        
+        self.configureTrashButton()
     }
     
     // MARK: - ViewsSetup Functions
@@ -148,7 +159,7 @@ class CoulombMenu_ViewController: UIViewController {
                 btn.setTitle("+", for: .normal)
             }
             btn.titleLabel?.font = UIFont.systemFont(ofSize: 50)
-            btn.addTarget(self, action: #selector(self.buttonAction(sender:)), for: .touchUpInside)
+            btn.addTarget(self, action: #selector(self.sliderButtonAction(sender:)), for: .touchUpInside)
             btn.isEnabled = true
             btn.tag = i
             btn.widthAnchor.constraint(equalToConstant: 30).isActive = true
@@ -157,22 +168,40 @@ class CoulombMenu_ViewController: UIViewController {
         }
     }
     
+    func configureTrashButton() {
+        let config = UIImage.SymbolConfiguration(pointSize: 30, weight: .light, scale: .large)
+        
+        let image = UIImage(systemName: "trash", withConfiguration: config)
+        
+        trashButton.setImage(image, for: .normal)
+        
+        let padding: CGFloat = 8.0
+        
+        trashButton.contentEdgeInsets = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
+        
+        trashButton.addTarget(self, action: #selector(performDeletion(sender:)), for: .touchUpInside)
+        trashButton.layer.cornerRadius = 10
+        trashButton.backgroundColor = UIColor(white: 0, alpha: 0.7)
+        trashButton.tintColor = UIColor.white
+        trashButton.isEnabled = true
+        
+        trashButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 50).isActive = true
+        trashButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -15).isActive = true
+    }
+    
     // MARK: - OBJC Action Functions
     
     @objc
-    func buttonAction(sender: UIButton) {
+    func sliderButtonAction(sender: UIButton) {
         if sender.tag == 0 {
             print("-")
             if (slider.value > slider.minimumValue) {
-                slider.setValue(slider.value - 0.5, animated: true)
-                textUpdate(sliderValue: slider.value)
+                updateSlider(constant: -0.5)
             }
         } else if sender.tag == 1 {
             print("+")
             if (slider.value < slider.maximumValue) {
-                slider.setValue(slider.value + 0.5, animated: true)
-                textUpdate(sliderValue: slider.value)
-
+                updateSlider(constant: 0.5)
             }
         }
     }
@@ -182,44 +211,47 @@ class CoulombMenu_ViewController: UIViewController {
         let roundedStepValue = round(sender.value / step) * step
         slider.value = roundedStepValue
         
-        textUpdate(sliderValue: slider.value)
-        
-//        print("notif not created")
-//        // Notify selectedPointChargeObj for new Value
-//        let notifName = Notification.Name(rawValue: cbNotificationKey)
-//        print("notif name created")
-//        let valueDict: [String: Float] = ["updatedValue": slider.value]
-//        print("notif dic created")
-//        NotificationCenter.default.post(name: notifName, object: nil, userInfo: valueDict)
-//        
-//        
-//        
-//        print("notif sent")
+        updateSlider(constant: 0)
     }
     
-    // Check if touch occured outside the tabView, if so, dismiss the view
-    // and go back to the mainView (arView)
+    @objc
+    func performDeletion(sender: UIButton) {
+        print("Perform Deletion.")
+    }
+    
+    // MARK: - TouchesBegan: check if touch happened outside the menu subviews
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touchView = touches.first?.view
-        var exit = false
+        var exit = true
         
+        /// If no subView is touched, dismiss
         coulombMenuView.subviews.forEach{ subView in
             if touchView == subView {
-                exit = true
+                exit = false
             }
         }
-        if exit == false {
+        if exit == true {
             dismiss(animated: true, completion: nil)
         }
     }
     
     // MARK: - Used over code in one function (when slider changes value)
+    
+    private func updateSlider(constant: Float) {
+        slider.setValue(slider.value + constant, animated: true)
+        textUpdate(sliderValue: slider.value)
+        notifyObservers(value: slider.value)
+    }
+    
     private func textUpdate(sliderValue: Float) {
         let newText = "\(sliderValue) Cb"
         text.text = newText
-        
+    }
+    
+    private func notifyObservers(value: Float) {
         let notifName = Notification.Name(rawValue: cbNotificationKey)
-        let valueDict: [String: Float] = ["updatedValue": sliderValue]
+        let valueDict: [String: Float] = ["updatedValue": value]
         NotificationCenter.default.post(name: notifName, object: nil, userInfo: valueDict)
     }
     

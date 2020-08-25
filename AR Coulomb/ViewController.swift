@@ -59,19 +59,17 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         
         btn.addTarget(self, action: #selector(performDeletion(sender:)), for: .touchUpInside)
         
-        btn.layer.borderColor = UIColor.red.cgColor
-        btn.layer.borderWidth = 1
+        btn.layer.cornerRadius = 10
         
         btn.backgroundColor = UIColor.white
         
         let config = UIImage.SymbolConfiguration(pointSize: 30, weight: .light, scale: .large)
         
         let image = UIImage(systemName: "trash", withConfiguration: config)
-        image?.withTintColor(UIColor.red)
         
         btn.setImage(image, for: .normal)
         
-        
+        btn.tintColor = UIColor.red
         
         btn.isEnabled = true
         
@@ -86,7 +84,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         
         let padding: CGFloat = -3.0
         
-        let imageView = UIImageView(image: image?.resizableImage(withCapInsets: UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)))
+        let imageView = UIImageView(image: image)
         
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 10
@@ -131,18 +129,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
 
         /// Long Press Recognizer to enable parameters interaction with Point Charge (min press 1 sec)
         setupLongPressRecognizer()
-        
-        /// Add Trash ImageView with constraints
-        self.arView.addSubview(self.trashImageView)
-        trashImageView.topAnchor.constraint(equalTo: self.arView.topAnchor, constant: 50).isActive = true
-        trashImageView.trailingAnchor.constraint(equalTo: arView.trailingAnchor, constant: -15).isActive = true
-        
-        /// Turn the Trash ImageView into a Button using a TapGestureRecognizer
-        let imgViewTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(performDeletion(sender:)))
-        imgViewTapRecognizer.delegate = self
-        trashImageView.addGestureRecognizer(imgViewTapRecognizer)
-        trashImageView.isUserInteractionEnabled = true
-
     }
     
     // MARK: - Private Setup startup Functions
