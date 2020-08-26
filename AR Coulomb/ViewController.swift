@@ -24,12 +24,6 @@ var selectedPointChargeObj: PointChargeClass = PointChargeClass(onEntity: Entity
 var longPressedEntity: Entity = Entity()
 var trackedEntity: Entity = Entity()
 
-/// PointCarge Topology
-//var topoAnchor: ARAnchor?
-//var selectedPositions: [SIMD3<Float>] = []
-//var pointCharges: [PointChargeClass] = []
-//var netForces: [NetForce] = []
-
 /// Coulomb Text Material
 let coulombTextMaterial: SimpleMaterial = {
     var mat = SimpleMaterial()
@@ -52,6 +46,10 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     @IBOutlet var arView: ARView!
     
+    // MARK: - UI Elements
+    
+    let coachingOverlay = ARCoachingOverlayView()
+    
     /// Button for appearing topos !!!!! CHANGE
     let addButton: UIButton = {
         let btn = UIButton()
@@ -64,11 +62,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     @objc
     func performAddition(sender: UIButton) {
         print("Perform Addition")
+        
+        self.addButton.isEnabled = false
     }
-    
-    // MARK: - UI Elements
-    
-    let coachingOverlay = ARCoachingOverlayView()
     
     // MARK: - Properties
     
@@ -106,7 +102,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         config.planeDetection = [.horizontal, .vertical]
         config.environmentTexturing = .automatic
         arView.session.run(config)
-        
         
         /// Add the Add Button to the arView before the button gets its contstraints (relatively to arView)
         arView.addSubview(addButton)
@@ -194,11 +189,8 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     /// Remove the selected pointCharge
     @objc
     func removePointCharge(notification: Notification) {
-        self.topology?.removePointCharge()
         
-        /// Enable the ADD Button
-        self.addButton.isHidden = false
-        self.addButton.isEnabled = true
+        Alert.showDeletionConfirmation(on: self)
     }
     
     // Coulomb Value Observer
@@ -231,6 +223,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     
     // MARK: - (De)emphasize the tracked pointCharge Entity
+    
     func pointChargeInteract(zoom: Float, showLabel: Bool) {
         /// (De)emphasize the Point Charge by scaling it down/up 0.8/1.25
         trackedEntity.setScale(SIMD3<Float>(zoom, zoom, zoom), relativeTo: trackedEntity)
