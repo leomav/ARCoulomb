@@ -50,8 +50,7 @@ extension ViewController {
                 }
 
                 /// Disable and hide the addButton
-                self.addButton.isHidden = true
-                self.addButton.isEnabled = false
+                self.hideAndDisableButton(btn: addButton)
                 
                 /// Perform seague to CoulombMenu ViewController
                 performSegue(withIdentifier: "toCoulombMenuSegue", sender: nil)

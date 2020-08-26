@@ -133,13 +133,12 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         addButton.contentEdgeInsets = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
         
         addButton.addTarget(self, action: #selector(performAddition(sender:)), for: .touchUpInside)
-        addButton.layer.cornerRadius = 10
+        addButton.layer.cornerRadius = 200
         addButton.backgroundColor = UIColor(white: 0, alpha: 0.7)
         addButton.tintColor = UIColor.white
         
         /// At first, it's hidden and disabled until a topology is placed
-        addButton.isHidden = true
-        addButton.isEnabled = false
+        self.hideAndDisableButton(btn: addButton)
         
         addButton.bottomAnchor.constraint(equalTo: self.arView.bottomAnchor, constant: -50).isActive = true
         addButton.trailingAnchor.constraint(equalTo: self.arView.trailingAnchor, constant: -15).isActive = true
@@ -171,8 +170,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
             }
             
             /// Enable the ADD Button
-            self.addButton.isHidden = false
-            self.addButton.isEnabled = true
+            self.showAndEnableButton(btn: addButton)
 
         } else {
             print("Error: Not updated topology!")
@@ -211,16 +209,10 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
             
             self.topology?.updateForces()
             
-            /// Enable the ADD Button
-            self.addButton.isHidden = false
-            self.addButton.isEnabled = true
         } else {
             print("Error: Not updated coulomb value!")
         }
     }
-    
-    
-    
     
     // MARK: - (De)emphasize the tracked pointCharge Entity
     
@@ -233,6 +225,18 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
                 child.isEnabled = showLabel
             }
         }
+    }
+    
+    // MARK: - Add Button Existance
+    
+    func showAndEnableButton(btn: UIButton) {
+        btn.isHidden = false
+        btn.isEnabled = true
+    }
+    
+    func hideAndDisableButton(btn: UIButton) {
+        btn.isHidden = true
+        btn.isEnabled = false
     }
     
     
