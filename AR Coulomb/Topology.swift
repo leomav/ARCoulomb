@@ -118,6 +118,7 @@ class Topology {
         
         /// And then remove the longPressedEntity (selected Entity)
         longPressedEntity.removeFromParent()
+        longPressedEntity = Entity()
         
         /// Finally, calculate again All Forces
         self.reloadAllForces()

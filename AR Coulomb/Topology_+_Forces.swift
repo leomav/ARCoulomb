@@ -65,9 +65,9 @@ extension Topology {
         /// First clear all Arrow Entities from existing Forces Objects
         self.netForces.forEach{ netForce in
             netForce.forces.forEach{ force in
-                force.arrowEntity = Entity()
+                force.arrowEntity.removeFromParent()
             }
-            netForce.arrowEntity = Entity()
+            netForce.arrowEntity.removeFromParent()
         }
         
         /// Then delete All Forces Objects
