@@ -55,8 +55,22 @@ extension Topology {
         }
     }
     
+    // Recalculate all Forces (after point charge was added/removed)
+    func reloadAllForces() {
+        self.clearAllForces()
+        self.addAllForces()
+    }
+    
     func clearAllForces() {
-        // TODO
+        /// First clear all Arrow Entities from existing Forces Objects
+        self.netForces.forEach{ netForce in
+            netForce.forces.forEach{ force in
+                force.arrowEntity = Entity()
+            }
+            netForce.arrowEntity = Entity()
+        }
+        
+        /// Then delete All Forces Objects
         self.netForces.removeAll()
     }
     

@@ -25,7 +25,7 @@ class NetForce {
     var magnetude: Float
     var angle: Float
     var length: Float = 0.05
-    let arrowEntity: Entity
+    var arrowEntity: Entity
     let pointChargeObj: PointChargeClass
     var forces: [SingleForce]
     init(magnetude: Float, angle: Float, arrowEntity: Entity, point: PointChargeClass, forces: [SingleForce]) {

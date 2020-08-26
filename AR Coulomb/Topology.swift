@@ -68,6 +68,9 @@ class Topology {
         /// Create observer for changes in selected PointChargObj's coulomb Value
         self.viewController.createCbObserver()
         
+        /// Create observer for any PointCharge Removal
+        self.viewController.pointChargeDeletedObserver()
+        
         /// Add all forces to all the pointCharge Objects
         self.addAllForces()
     }
@@ -97,20 +100,27 @@ class Topology {
     }
     
     func removePointCharge() {
-        // TODO
-        /// Remove all netForces (so all forces also)
-        self.clearAllForces()
-        
-        /// Find the selectedPointChargeObj and remove it from pointCharges[]
-        for i in 0...self.pointCharges.count {
+        /// First, find the selectedPointChargeObj and remove it from pointCharges[]
+        for i in 0..<self.pointCharges.count {
             if selectedPointChargeObj == self.pointCharges[i] {
                 self.pointCharges.remove(at: i)
                 break
             }
         }
         
-        /// Remove longPressedEntity (selected Entity)
+        /// Then, remove the position of this longPressedEntity (selected Entity)
+        for i in 0..<self.selectedPositions.count {
+            if longPressedEntity.position == self.selectedPositions[i] {
+                self.selectedPositions.remove(at: i)
+                break
+            }
+        }
+        
+        /// And then remove the longPressedEntity (selected Entity)
         longPressedEntity.removeFromParent()
         
+        /// Finally, calculate again All Forces
+        self.reloadAllForces()
     }
+    
 }

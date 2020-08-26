@@ -14,6 +14,7 @@ import ARKit
 
 let cbNotificationKey = "com.leomav.coulombValueChange"
 let topoNotificationKey = "com.leomav.topologyChange"
+let removalNotificationKey = "com.leomav.coulombRemoval"
 
 ///// Add object Interaction and Gestures
 //var virtualObjectInteraction: VirtualObjectInteraction?
@@ -122,7 +123,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         setupCoachingOverlay()
         
         /// Create the Topology Notification Observer
-        createTopoObserver()
+        newTopoObserver()
         
         /// First tap gesture recognizer, will be deleted after first point of charge is added
         setupTapGestureRecognizer()
@@ -157,14 +158,16 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: - Notification Observers
     
+    // Topology Observer
+    
     /// Topology Observer: When new topology is selected
-    func createTopoObserver() {
+    func newTopoObserver() {
         let notifName = Notification.Name(rawValue: topoNotificationKey)
-        NotificationCenter.default.addObserver(self, selector: #selector(updateTopology(notification:)), name: notifName, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(createTopology(notification:)), name: notifName, object: nil)
     }
     /// update the selected Positions
     @objc
-    func updateTopology(notification: Notification) {
+    func createTopology(notification: Notification) {
         if let newValue = (notification.userInfo?["updatedValue"]) as? [SIMD3<Float>] {
 
             /// Empty current selectedPositionsArray and fill it again with the new positions
@@ -183,7 +186,20 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
-    // MARK: - Coulomb Observer:
+    // Coulomb Removal Observer
+    
+    /// When a coulomb is deleted in the CoulombMenu ViewController
+    func pointChargeDeletedObserver() {
+        let notifName = Notification.Name(rawValue: removalNotificationKey)
+        NotificationCenter.default.addObserver(self, selector: #selector(removePointCharge(notification: )), name: notifName, object: nil)
+    }
+    /// Remove the selected pointCharge
+    @objc
+    func removePointCharge(notification: Notification) {
+        self.topology?.removePointCharge()
+    }
+    
+    // Coulomb Value Observer
     
     /// When new value occurs for the selected PointChargeObj
     func createCbObserver() {

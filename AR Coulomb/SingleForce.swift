@@ -23,7 +23,7 @@ class SingleForce {
     var magnetude: Float
     var angle: Float
     var length: Float = 0.05
-    let arrowEntity: Entity
+    var arrowEntity: Entity
     var sourcePointCharge: PointChargeClass
     var targetPointCharge: PointChargeClass
     init(magnetude: Float, angle: Float, arrowEntity: Entity, from: PointChargeClass, to: PointChargeClass) {

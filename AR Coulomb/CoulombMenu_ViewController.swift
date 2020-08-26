@@ -70,7 +70,7 @@ class CoulombMenu_ViewController: UIViewController {
     
     @IBOutlet var coulombMenuView: UIView!
     
-    var coulombValue: Float = selectedPointChargeObj.value
+    var initialCoulombValue: Float = selectedPointChargeObj.value
     
     // MARK: - On Load Method
     
@@ -81,14 +81,20 @@ class CoulombMenu_ViewController: UIViewController {
         
         self.configureTabView()
         self.configureStackView_V()
-        self.configureTextLabel(coulombValue: coulombValue)
-        self.configureSlider(coulombValue: coulombValue)
+        self.configureTextLabel(coulombValue: initialCoulombValue)
+        self.configureSlider(coulombValue: initialCoulombValue)
         self.configureButtons()
         self.configureStackView_H()
         
         coulombMenuView.addSubview(trashButton)
         
         self.configureTrashButton()
+    }
+    
+    // MARK: - After Dismiss Method
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        
     }
     
     // MARK: - ViewsSetup Functions
@@ -216,7 +222,9 @@ class CoulombMenu_ViewController: UIViewController {
     
     @objc
     func performDeletion(sender: UIButton) {
-        print("Perform Deletion.")
+        dismiss(animated: true) {
+            self.notifyCoulombRemovalObserver()
+        }
     }
     
     // MARK: - TouchesBegan: check if touch happened outside the menu subviews
@@ -241,7 +249,7 @@ class CoulombMenu_ViewController: UIViewController {
     private func updateSlider(constant: Float) {
         slider.setValue(slider.value + constant, animated: true)
         textUpdate(sliderValue: slider.value)
-        notifyObservers(value: slider.value)
+        notifyCoulombValueObserver(value: slider.value)
     }
     
     private func textUpdate(sliderValue: Float) {
@@ -249,11 +257,15 @@ class CoulombMenu_ViewController: UIViewController {
         text.text = newText
     }
     
-    private func notifyObservers(value: Float) {
+    private func notifyCoulombValueObserver(value: Float) {
         let notifName = Notification.Name(rawValue: cbNotificationKey)
         let valueDict: [String: Float] = ["updatedValue": value]
         NotificationCenter.default.post(name: notifName, object: nil, userInfo: valueDict)
     }
     
+    private func notifyCoulombRemovalObserver() {
+        let notifName = Notification.Name(rawValue: removalNotificationKey)
+        NotificationCenter.default.post(name: notifName, object: nil, userInfo: nil)
+    }
     
 }
