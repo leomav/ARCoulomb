@@ -69,7 +69,7 @@ class Topology {
         self.viewController.createCbObserver()
         
         /// Create observer for any PointCharge Removal
-        self.viewController.pointChargeDeletedObserver()
+        self.viewController.setupObserverPointChargeDeletion()
         
         /// Add all forces to all the pointCharge Objects
         self.addAllForces()

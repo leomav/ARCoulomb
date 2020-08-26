@@ -53,54 +53,17 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet var arView: ARView!
     
     /// Button for appearing topos !!!!! CHANGE
-    let btn: UIButton = {
+    let addButton: UIButton = {
         let btn = UIButton()
         
         btn.translatesAutoresizingMaskIntoConstraints = false
         
-        btn.addTarget(self, action: #selector(performDeletion(sender:)), for: .touchUpInside)
-        
-        btn.layer.cornerRadius = 10
-        
-        btn.backgroundColor = UIColor.white
-        
-        let config = UIImage.SymbolConfiguration(pointSize: 30, weight: .light, scale: .large)
-        
-        let image = UIImage(systemName: "trash", withConfiguration: config)
-        
-        btn.setImage(image, for: .normal)
-        
-        btn.tintColor = UIColor.red
-        
-        btn.isEnabled = true
-        
         return btn
     }()
     
-    let trashImageView: UIImageView = {
-        
-        let config = UIImage.SymbolConfiguration(pointSize: 30, weight: .light, scale: .large)
-        
-        let image = UIImage(systemName: "trash", withConfiguration: config)
-        
-        let padding: CGFloat = -3.0
-        
-        let imageView = UIImageView(image: image)
-        
-        imageView.contentMode = .scaleAspectFill
-        imageView.layer.cornerRadius = 10
-        imageView.clipsToBounds = true
-        imageView.backgroundColor = UIColor.white
-        imageView.tintColor = UIColor.red
-        
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        
-        return imageView
-    }()
-    
     @objc
-    func performDeletion(sender: UIButton) {
-        print("Perform Deletion")
+    func performAddition(sender: UIButton) {
+        print("Perform Addition")
     }
     
     // MARK: - UI Elements
@@ -123,16 +86,31 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         setupCoachingOverlay()
         
         /// Create the Topology Notification Observer
-        newTopoObserver()
+        setupObserverNewTopo()
         
         /// First tap gesture recognizer, will be deleted after first point of charge is added
         setupTapGestureRecognizer()
 
         /// Long Press Recognizer to enable parameters interaction with Point Charge (min press 1 sec)
         setupLongPressRecognizer()
+        
+        /// Set up the ADD Button (adds pointcharge to scene)
+        configureAddButton()
     }
     
     // MARK: - Private Setup startup Functions
+    
+    private func setupARView() {
+        arView.automaticallyConfigureSession = false
+        let config = ARWorldTrackingConfiguration()
+        config.planeDetection = [.horizontal, .vertical]
+        config.environmentTexturing = .automatic
+        arView.session.run(config)
+        
+        
+        /// Add the Add Button to the arView before the button gets its contstraints (relatively to arView)
+        arView.addSubview(addButton)
+    }
     
     private func setupTapGestureRecognizer() {
         let firstPointTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(recognizer:)))
@@ -148,12 +126,28 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         longPressRecognizer.isEnabled =  false
     }
     
-    private func setupARView() {
-        arView.automaticallyConfigureSession = false
-        let config = ARWorldTrackingConfiguration()
-        config.planeDetection = [.horizontal, .vertical]
-        config.environmentTexturing = .automatic
-        arView.session.run(config)
+    private func configureAddButton () {
+        let config = UIImage.SymbolConfiguration(pointSize: 30, weight: .light, scale: .large)
+            
+        let image = UIImage(systemName: "plus", withConfiguration: config)
+        
+        addButton.setImage(image, for: .normal)
+        
+        let padding: CGFloat = 8.0
+        
+        addButton.contentEdgeInsets = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
+        
+        addButton.addTarget(self, action: #selector(performAddition(sender:)), for: .touchUpInside)
+        addButton.layer.cornerRadius = 10
+        addButton.backgroundColor = UIColor(white: 0, alpha: 0.7)
+        addButton.tintColor = UIColor.white
+        
+        /// At first, it's hidden and disabled until a topology is placed
+        addButton.isHidden = true
+        addButton.isEnabled = false
+        
+        addButton.bottomAnchor.constraint(equalTo: self.arView.bottomAnchor, constant: -50).isActive = true
+        addButton.trailingAnchor.constraint(equalTo: self.arView.trailingAnchor, constant: -15).isActive = true
     }
     
     // MARK: - Notification Observers
@@ -161,7 +155,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     // Topology Observer
     
     /// Topology Observer: When new topology is selected
-    func newTopoObserver() {
+    func setupObserverNewTopo() {
         let notifName = Notification.Name(rawValue: topoNotificationKey)
         NotificationCenter.default.addObserver(self, selector: #selector(createTopology(notification:)), name: notifName, object: nil)
     }
@@ -180,6 +174,10 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
             } else {
                 print("Error: No anchor is selected for topology placement!")
             }
+            
+            /// Enable the ADD Button
+            self.addButton.isHidden = false
+            self.addButton.isEnabled = true
 
         } else {
             print("Error: Not updated topology!")
@@ -189,7 +187,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     // Coulomb Removal Observer
     
     /// When a coulomb is deleted in the CoulombMenu ViewController
-    func pointChargeDeletedObserver() {
+    func setupObserverPointChargeDeletion() {
         let notifName = Notification.Name(rawValue: removalNotificationKey)
         NotificationCenter.default.addObserver(self, selector: #selector(removePointCharge(notification: )), name: notifName, object: nil)
     }
@@ -197,6 +195,10 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     @objc
     func removePointCharge(notification: Notification) {
         self.topology?.removePointCharge()
+        
+        /// Enable the ADD Button
+        self.addButton.isHidden = false
+        self.addButton.isEnabled = true
     }
     
     // Coulomb Value Observer
@@ -216,6 +218,10 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
             PointChargeClass.loadText(textEntity: longPressedEntity.children[1], material: coulombTextMaterial, coulombStringValue: "\(newValue) Cb")
             
             self.topology?.updateForces()
+            
+            /// Enable the ADD Button
+            self.addButton.isHidden = false
+            self.addButton.isEnabled = true
         } else {
             print("Error: Not updated coulomb value!")
         }
