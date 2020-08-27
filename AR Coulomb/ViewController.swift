@@ -138,11 +138,11 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         
         self.addButton.addTarget(self, action: #selector(performAddition(sender:)), for: .touchUpInside)
         
-        self.addButton.layer.cornerRadius = 0.5 * self.addButton.bounds.size.width
-        self.addButton.clipsToBounds = true
+        self.addButton.layer.cornerRadius = 10
+//        self.addButton.imageView?.clipsToBounds = true
         
-        self.addButton.backgroundColor = UIColor(white: 0, alpha: 0.7)
         self.addButton.tintColor = UIColor.white
+        self.addButton.backgroundColor = UIColor(white: 0, alpha: 0.7)
         
         /// At first, it's hidden and disabled until a topology is placed
         self.hideAndDisableButton(btn: self.addButton)
