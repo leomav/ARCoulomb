@@ -16,54 +16,48 @@ class Topology {
     let viewController: ViewController
     /// Anchor of the topology in the scene
     var topoAnchor: ARAnchor?
+    /// Anchor Entity of the topology
+    var topoAnchorEntity: AnchorEntity
     /// Selected positions for the pointCharges Entities
     var selectedPositions: [SIMD3<Float>]
+    /// Current positions for the pointCharges Entites
+    var currentPositions: [SIMD3<Float>]
     /// All the pointCharge Objects
     var pointCharges: [PointChargeClass]
     /// All the netForces
     var netForces: [NetForce]
+    /// A pointChargeEntity Template that gets used for cloning
+    let pointChargeEntityTemplate: Entity
     
     init(viewController: ViewController, topoAnchor: ARAnchor, selectedPositions: [SIMD3<Float>]) {
         self.viewController = viewController
         self.topoAnchor = topoAnchor
         self.selectedPositions = selectedPositions
+        self.currentPositions = selectedPositions
         self.pointCharges = []
         self.netForces = []
         
-        /// Create an Observer for selectedPointChargeObj's Coulomb Value
-        //createCbObserver()
+        /// Import the Point Charge Model, clone the entity as many times as needed
+        let pointChargeAnchor = try! PointCharge.load_PointCharge()
+        self.pointChargeEntityTemplate = pointChargeAnchor.pointCharge!
+        
+        /// Add the Anchor Entity to the scene (where the user tapped)
+        self.topoAnchorEntity = AnchorEntity(anchor: topoAnchor)
+        self.topoAnchorEntity.name = "Point Charge Scene AnchorEntity"
+        self.viewController.arView.scene.addAnchor(self.topoAnchorEntity)
     }
     
     // MARK: - Topology functions
     
-    func placeTopology(for topoAnchor: ARAnchor) {
-        /// Add the Anchor Entity to the scene (where the user tapped)
-        let anchorEntity = AnchorEntity(anchor: topoAnchor)
-        anchorEntity.name = "Point Charge Scene AnchorEntity"
-        self.viewController.arView.scene.addAnchor(anchorEntity)
-        
-        /// Import the Point Charge Model, clone the entity as many times as needed
-        let pointChargeAnchor = try! PointCharge.load_PointCharge()
-        let pointChargeEntity = pointChargeAnchor.pointCharge!
-        
+    func placeTopology() {
         for pos in selectedPositions {
-            addPointCharge(to: pos, pointChargeEntity: pointChargeEntity, onAnchorEntity: anchorEntity)
+            self.addPointCharge(to: pos)
         }
+        /// Remove gesture recognizer needed for the Topology Anchor Placement
+        self.disableRecognizers(withName: "First Point Recognizer")
         
-        self.viewController.arView.gestureRecognizers?.forEach { recognizer in
-            /// Remove gesture recognizer for the first point of charge
-            if recognizer.name == "First Point Recognizer" {
-                recognizer.isEnabled = false
-            }
-            /// Enable the pointCharge  LongPress Recognizer
-            if recognizer.name == "Long Press Recognizer" {
-                recognizer.isEnabled = true
-            }
-            
-            /// Installed gestures (EntityGesturesRecognizers for each point charge) were cancelling
-            /// other touches, so turn that to false
-            recognizer.cancelsTouchesInView = false
-        }
+        /// Enable the pointCharge LongPress Recognizer
+        self.enableRecognizers(withName: "Long Press Recognizer")
         
         /// Create observer for changes in selected PointChargObj's coulomb Value
         self.viewController.createCbObserver()
@@ -72,56 +66,33 @@ class Topology {
         self.viewController.setupObserverPointChargeDeletion()
         
         /// Add all forces to all the pointCharge Objects
-        self.addAllForces()
-    }
-    
-    func addPointCharge(to pos: SIMD3<Float>, pointChargeEntity: Entity, onAnchorEntity anchorEntity: Entity) {
-        /// Load the PointChargeEntity by cloning it
-        let point = pointChargeEntity.clone(recursive: true)
-        
-        /// Add it to the AnchorEntity of the Topology
-        anchorEntity.addChild(point)
-        
-        /// Set its position relative to the Anchor Entity
-        point.setPosition(pos, relativeTo: anchorEntity)
-        
-        /// Create new PointChargeClass Object and append it to pointCharges[]
-        let newPointChargeObj = PointChargeClass(onEntity: point, withValue: 5)
-        pointCharges.append(newPointChargeObj)
-        
-        /// Create Text Entity for the pointCharge
-        let textEntity = newPointChargeObj.createTextEntity(pointEntity: point)
-        /// Load the mesh and material for the model of the text entity
-        PointChargeClass.loadText(textEntity: textEntity, material: coulombTextMaterial, coulombStringValue: "\(newPointChargeObj.value) Cb")
-        
-        /// Install gestures
-        point.generateCollisionShapes(recursive: false)
-        self.viewController.arView.installGestures([.translation, .rotation], for: point as! HasCollision)
-    }
-    
-    func removePointCharge() {
-        /// First, find the selectedPointChargeObj and remove it from pointCharges[]
-        for i in 0..<self.pointCharges.count {
-            if selectedPointChargeObj == self.pointCharges[i] {
-                self.pointCharges.remove(at: i)
-                break
-            }
-        }
-        
-        /// Then, remove the position of this longPressedEntity (selected Entity)
-        for i in 0..<self.selectedPositions.count {
-            if longPressedEntity.position == self.selectedPositions[i] {
-                self.selectedPositions.remove(at: i)
-                break
-            }
-        }
-        
-        /// And then remove the longPressedEntity (selected Entity)
-        longPressedEntity.removeFromParent()
-        longPressedEntity = Entity()
-        
-        /// Finally, calculate again All Forces
         self.reloadAllForces()
     }
+    
+    func enableRecognizers(withName name: String) {
+        self.viewController.arView.gestureRecognizers?.forEach{ recognizer in
+            
+            /// Enable the pointCharge LongPressRecognizer
+            if recognizer.name == name {
+                recognizer.isEnabled = true
+            }
+            
+            /// Installed gestures (EntityGesturesRecognizers for each point charge) were cancelling
+            /// other touches, so turn that to false
+            recognizer.cancelsTouchesInView = false
+        }
+    }
+    
+    func disableRecognizers(withName name: String) {
+        self.viewController.arView.gestureRecognizers?.forEach{ recognizer in
+            
+            /// Enable the pointCharge LongPressRecognizer
+            if recognizer.name == name {
+                recognizer.isEnabled = false
+            }
+        }
+    }
+    
+    
     
 }

@@ -15,6 +15,7 @@ import ARKit
 let cbNotificationKey = "com.leomav.coulombValueChange"
 let topoNotificationKey = "com.leomav.topologyChange"
 let removalNotificationKey = "com.leomav.coulombRemoval"
+let dismissalNotificationKey = "com.leomav.coulombMenuDismissal"
 
 ///// Add object Interaction and Gestures
 //var virtualObjectInteraction: VirtualObjectInteraction?
@@ -46,10 +47,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     @IBOutlet var arView: ARView!
     
-    // MARK: - UI Elements
-    
-    let coachingOverlay = ARCoachingOverlayView()
-    
     /// Button for appearing topos !!!!! CHANGE
     let addButton: UIButton = {
         let btn = UIButton()
@@ -61,10 +58,14 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     @objc
     func performAddition(sender: UIButton) {
-        print("Perform Addition")
+        self.topology?.addPointChargeWithRandomPosition()
         
-        self.addButton.isEnabled = false
+//        self.addButton.isEnabled = false
     }
+    
+    // MARK: - UI Elements
+    
+    let coachingOverlay = ARCoachingOverlayView()
     
     // MARK: - Properties
     
@@ -73,51 +74,54 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        arView.session.delegate = self
+        self.arView.session.delegate = self
         
         /// Set up ARView
-        setupARView()
+        self.setupARView()
         
         /// Set up coaching overlay.
-        setupCoachingOverlay()
+        self.setupCoachingOverlay()
         
         /// Create the Topology Notification Observer
-        setupObserverNewTopo()
+        self.setupObserverNewTopo()
+        
+        /// Create the CoulombMenu Dismissal Observer
+        self.setupObserverCoulombMenuDismissal()
         
         /// First tap gesture recognizer, will be deleted after first point of charge is added
-        setupTapGestureRecognizer()
+        self.setupTapGestureRecognizer()
 
         /// Long Press Recognizer to enable parameters interaction with Point Charge (min press 1 sec)
-        setupLongPressRecognizer()
+        self.setupLongPressRecognizer()
         
         /// Set up the ADD Button (adds pointcharge to scene)
-        configureAddButton()
+        self.configureAddButton()
     }
     
     // MARK: - Private Setup startup Functions
     
     private func setupARView() {
-        arView.automaticallyConfigureSession = false
+        self.arView.automaticallyConfigureSession = false
         let config = ARWorldTrackingConfiguration()
         config.planeDetection = [.horizontal, .vertical]
         config.environmentTexturing = .automatic
-        arView.session.run(config)
+        self.arView.session.run(config)
         
         /// Add the Add Button to the arView before the button gets its contstraints (relatively to arView)
-        arView.addSubview(addButton)
+        self.arView.addSubview(addButton)
     }
     
     private func setupTapGestureRecognizer() {
         let firstPointTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(recognizer:)))
         firstPointTapRecognizer.name = "First Point Recognizer"
-        arView.addGestureRecognizer(firstPointTapRecognizer)
+        self.arView.addGestureRecognizer(firstPointTapRecognizer)
     }
     
     private func setupLongPressRecognizer() {
         let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(recognizer:)))
         longPressRecognizer.name = "Long Press Recognizer"
         longPressRecognizer.minimumPressDuration = 1
-        arView.addGestureRecognizer(longPressRecognizer)
+        self.arView.addGestureRecognizer(longPressRecognizer)
         longPressRecognizer.isEnabled =  false
     }
     
@@ -126,94 +130,27 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
             
         let image = UIImage(systemName: "plus", withConfiguration: config)
         
-        addButton.setImage(image, for: .normal)
+        self.addButton.setImage(image, for: .normal)
         
         let padding: CGFloat = 8.0
         
-        addButton.contentEdgeInsets = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
+        self.addButton.contentEdgeInsets = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
         
-        addButton.addTarget(self, action: #selector(performAddition(sender:)), for: .touchUpInside)
-        addButton.layer.cornerRadius = 200
-        addButton.backgroundColor = UIColor(white: 0, alpha: 0.7)
-        addButton.tintColor = UIColor.white
+        self.addButton.addTarget(self, action: #selector(performAddition(sender:)), for: .touchUpInside)
+        
+        self.addButton.layer.cornerRadius = 0.5 * self.addButton.bounds.size.width
+        self.addButton.clipsToBounds = true
+        
+        self.addButton.backgroundColor = UIColor(white: 0, alpha: 0.7)
+        self.addButton.tintColor = UIColor.white
         
         /// At first, it's hidden and disabled until a topology is placed
-        self.hideAndDisableButton(btn: addButton)
+        self.hideAndDisableButton(btn: self.addButton)
         
-        addButton.bottomAnchor.constraint(equalTo: self.arView.bottomAnchor, constant: -50).isActive = true
-        addButton.trailingAnchor.constraint(equalTo: self.arView.trailingAnchor, constant: -15).isActive = true
+        self.addButton.bottomAnchor.constraint(equalTo: self.arView.bottomAnchor, constant: -50).isActive = true
+        self.addButton.trailingAnchor.constraint(equalTo: self.arView.trailingAnchor, constant: -15).isActive = true
     }
-    
-    // MARK: - Notification Observers
-    
-    // Topology Observer
-    
-    /// Topology Observer: When new topology is selected
-    func setupObserverNewTopo() {
-        let notifName = Notification.Name(rawValue: topoNotificationKey)
-        NotificationCenter.default.addObserver(self, selector: #selector(createTopology(notification:)), name: notifName, object: nil)
-    }
-    /// update the selected Positions
-    @objc
-    func createTopology(notification: Notification) {
-        if let newValue = (notification.userInfo?["updatedValue"]) as? [SIMD3<Float>] {
 
-            /// Empty current selectedPositionsArray and fill it again with the new positions
-            topology!.selectedPositions.removeAll()
-            topology!.selectedPositions.append(contentsOf: newValue)
-            
-            /// Place the selected Topology on the AnchorEntity placed in scene
-            if topology!.topoAnchor != nil {
-                topology!.placeTopology(for: topology!.topoAnchor!)
-            } else {
-                print("Error: No anchor is selected for topology placement!")
-            }
-            
-            /// Enable the ADD Button
-            self.showAndEnableButton(btn: addButton)
-
-        } else {
-            print("Error: Not updated topology!")
-        }
-    }
-    
-    // Coulomb Removal Observer
-    
-    /// When a coulomb is deleted in the CoulombMenu ViewController
-    func setupObserverPointChargeDeletion() {
-        let notifName = Notification.Name(rawValue: removalNotificationKey)
-        NotificationCenter.default.addObserver(self, selector: #selector(removePointCharge(notification: )), name: notifName, object: nil)
-    }
-    /// Remove the selected pointCharge
-    @objc
-    func removePointCharge(notification: Notification) {
-        
-        Alert.showDeletionConfirmation(on: self)
-    }
-    
-    // Coulomb Value Observer
-    
-    /// When new value occurs for the selected PointChargeObj
-    func createCbObserver() {
-        let notifName = Notification.Name(rawValue: cbNotificationKey)
-        NotificationCenter.default.addObserver(self, selector: #selector(updateCoulombValue(notification:)), name: notifName, object: nil)
-    }
-    /// Set the new selected Point Charge obj's value, update its text, update its text, update all forces
-    @objc
-    func updateCoulombValue(notification: Notification) {
-        if let newValue = (notification.userInfo?["updatedValue"]) as? Float {
-            
-            selectedPointChargeObj.value = newValue
-            
-            PointChargeClass.loadText(textEntity: longPressedEntity.children[1], material: coulombTextMaterial, coulombStringValue: "\(newValue) Cb")
-            
-            self.topology?.updateForces()
-            
-        } else {
-            print("Error: Not updated coulomb value!")
-        }
-    }
-    
     // MARK: - (De)emphasize the tracked pointCharge Entity
     
     func pointChargeInteract(zoom: Float, showLabel: Bool) {

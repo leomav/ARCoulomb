@@ -65,13 +65,13 @@ extension ViewController {
 
     // MARK: - Drag & Drop PointChargeEntities
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let location = touches.first?.location(in: arView) else {return}
-        guard let hitEntity = arView.entity(at: location) else {return}
+        guard let location = touches.first?.location(in: self.arView) else {return}
+        guard let hitEntity = self.arView.entity(at: location) else {return}
 
         if hitEntity.name == "pointCharge" {
             trackedEntity = hitEntity
 
-            pointChargeInteract(zoom: ZOOM_IN_5_4, showLabel: false)
+            self.pointChargeInteract(zoom: ZOOM_IN_5_4, showLabel: false)
         }
     }
 
@@ -85,7 +85,7 @@ extension ViewController {
         /// If tracked entity is a pointCharge, check if its alignment differ less than 0.02m from the other particles.
         /// If so, align it to them
         if trackedEntity.name == "pointCharge" {
-            pointChargeInteract(zoom: ZOOM_OUT_4_5, showLabel: true)
+            self.pointChargeInteract(zoom: ZOOM_OUT_4_5, showLabel: true)
 
             let x = trackedEntity.position.x
             let z = trackedEntity.position.z

@@ -72,6 +72,8 @@ class CoulombMenu_ViewController: UIViewController {
     
     var initialCoulombValue: Float = selectedPointChargeObj.value
     
+    var viewController: ViewController?
+    
     // MARK: - On Load Method
     
     override func viewDidLoad() {
@@ -223,7 +225,7 @@ class CoulombMenu_ViewController: UIViewController {
     @objc
     func performDeletion(sender: UIButton) {
         dismiss(animated: true) {
-            self.notifyCoulombRemovalObserver()
+            self.notifyObserver(withKey: removalNotificationKey)
         }
     }
     
@@ -240,7 +242,9 @@ class CoulombMenu_ViewController: UIViewController {
             }
         }
         if exit == true {
-            dismiss(animated: true, completion: nil)
+            dismiss(animated: true) {
+                self.notifyObserver(withKey: dismissalNotificationKey)
+            }
         }
     }
     
@@ -249,7 +253,9 @@ class CoulombMenu_ViewController: UIViewController {
     private func updateSlider(constant: Float) {
         slider.setValue(slider.value + constant, animated: true)
         textUpdate(sliderValue: slider.value)
-        notifyCoulombValueObserver(value: slider.value)
+        
+        /// Notify Coulomb Value Change Observer
+        notifyObserver(withKey: cbNotificationKey, value: slider.value)
     }
     
     private func textUpdate(sliderValue: Float) {
@@ -257,15 +263,14 @@ class CoulombMenu_ViewController: UIViewController {
         text.text = newText
     }
     
-    private func notifyCoulombValueObserver(value: Float) {
-        let notifName = Notification.Name(rawValue: cbNotificationKey)
+    private func notifyObserver(withKey key: String, value: Float){
+        let notifName = Notification.Name(rawValue: key)
         let valueDict: [String: Float] = ["updatedValue": value]
         NotificationCenter.default.post(name: notifName, object: nil, userInfo: valueDict)
     }
     
-    private func notifyCoulombRemovalObserver() {
-        let notifName = Notification.Name(rawValue: removalNotificationKey)
+    private func notifyObserver(withKey key: String){
+        let notifName = Notification.Name(rawValue: key)
         NotificationCenter.default.post(name: notifName, object: nil, userInfo: nil)
     }
-    
 }

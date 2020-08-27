@@ -20,8 +20,7 @@ struct Alert {
             vc.topology?.removePointCharge()
             
             /// Enable the ADD Button
-            vc.addButton.isHidden = false
-            vc.addButton.isEnabled = true
+            vc.showAndEnableButton(btn: vc.addButton)
         }))
         vc.present(alert, animated: true, completion: nil)
     }
