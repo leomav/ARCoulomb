@@ -11,6 +11,13 @@ import RealityKit
 extension Topology {
     
     func addPointChargeWithRandomPosition() {
+        if self.pointCharges.count == 6 {
+            
+            Alert.showPointChargesLimitReached(on: self.viewController)
+            
+            return
+        }
+        
         /// Get a Random Position
         let randomPos = randomPosition()
         
@@ -22,6 +29,19 @@ extension Topology {
         
         /// ReCalculate all Forces
         self.reloadAllForces()
+        
+        // Find and set the new Selected PointChargeObj
+        self.pointCharges.forEach{ pointChargeObj in
+            if pointChargeObj.entity == longPressedEntity {
+                selectedPointChargeObj = pointChargeObj
+            }
+        }
+
+        /// Disable and hide the addButton
+        self.viewController.hideAndDisableButton(btn: self.viewController.addButton)
+        
+        /// Perform seague to CoulombMenu ViewController
+        self.viewController.performSegue(withIdentifier: "toCoulombMenuSegue", sender: nil)
     }
     
     func addPointCharge(to pos: SIMD3<Float>) {
@@ -33,6 +53,9 @@ extension Topology {
         
         /// Set its position relative to the Anchor Entity
         point.setPosition(pos, relativeTo: self.topoAnchorEntity)
+        
+        /// Set selectedEntity (longPressedEntity)
+        longPressedEntity = point
         
         /// Create new PointChargeClass Object and append it to pointCharges[]
         let newPointChargeObj = PointChargeClass(onEntity: point, withValue: 5)
@@ -57,14 +80,6 @@ extension Topology {
                 break
             }
         }
-        
-//        /// Then, remove the position of this longPressedEntity (selected Entity)
-//        for i in 0..<self.selectedPositions.count {
-//            if longPressedEntity.position == self.selectedPositions[i] {
-//                self.selectedPositions.remove(at: i)
-//                break
-//            }
-//        }
         
         /// And then remove the longPressedEntity (selected Entity)
         longPressedEntity.removeFromParent()

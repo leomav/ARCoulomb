@@ -59,9 +59,16 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     @objc
     func performAddition(sender: UIButton) {
         self.topology?.addPointChargeWithRandomPosition()
-        
-//        self.addButton.isEnabled = false
     }
+    
+    /// Helper guidance Text on top of the view
+    let guideText: UILabel = {
+        let view = UILabel()
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
     
     // MARK: - UI Elements
     
@@ -96,6 +103,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         
         /// Set up the ADD Button (adds pointcharge to scene)
         self.configureAddButton()
+        
+        /// Set up the Top Guide Text (helper text to place the topology)
+        self.configureGuideTextView()
     }
     
     // MARK: - Private Setup startup Functions
@@ -107,8 +117,10 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         config.environmentTexturing = .automatic
         self.arView.session.run(config)
         
-        /// Add the Add Button to the arView before the button gets its contstraints (relatively to arView)
-        self.arView.addSubview(addButton)
+        /// Add the Add Button to the arView before setting the button's contstraints (relatively to arView)
+        self.arView.addSubview(self.addButton)
+        /// Add the guideText TextView to the arView before setting the textView's contsraints (relatively to arView)
+        self.arView.addSubview(self.guideText)
     }
     
     private func setupTapGestureRecognizer() {
@@ -149,6 +161,20 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         
         self.addButton.bottomAnchor.constraint(equalTo: self.arView.bottomAnchor, constant: -50).isActive = true
         self.addButton.trailingAnchor.constraint(equalTo: self.arView.trailingAnchor, constant: -15).isActive = true
+    }
+    
+    private func configureGuideTextView() {
+        self.guideText.text = "Tap the surface to place a topology."
+        self.guideText.textColor = UIColor.white
+        
+        self.guideText.textAlignment = .center
+        self.guideText.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        self.guideText.numberOfLines = 0
+        
+        self.guideText.topAnchor.constraint(equalTo: self.arView.topAnchor, constant: 50).isActive = true
+        self.guideText.centerXAnchor.constraint(equalTo: self.arView.centerXAnchor).isActive = true
+        
+        self.guideText.isHidden = true
     }
 
     // MARK: - (De)emphasize the tracked pointCharge Entity

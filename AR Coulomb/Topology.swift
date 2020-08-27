@@ -67,6 +67,12 @@ class Topology {
         
         /// Add all forces to all the pointCharge Objects
         self.reloadAllForces()
+        
+        /// Set longPressedEntity to nil, no Entity should be selected yet.
+        longPressedEntity = Entity()
+        
+        /// Hide the top Helper Text
+        self.viewController.guideText.isHidden = true
     }
     
     func enableRecognizers(withName name: String) {

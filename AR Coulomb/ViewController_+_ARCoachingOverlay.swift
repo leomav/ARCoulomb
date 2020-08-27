@@ -14,12 +14,12 @@ extension ViewController: ARCoachingOverlayViewDelegate {
         
         /// - Tag: HideUI
         func coachingOverlayViewWillActivate(_ coachingOverlayView: ARCoachingOverlayView) {
-            // upperControlsView.isHidden = true
+            self.guideText.isHidden = true
         }
         
         /// - Tag: PresentUI
         func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
-            // upperControlsView.isHidden = false
+            self.guideText.isHidden = false
         }
 
         /// - Tag: StartOver
@@ -29,11 +29,11 @@ extension ViewController: ARCoachingOverlayViewDelegate {
 
         func setupCoachingOverlay() {
             /// Set up coaching view
-            coachingOverlay.session = arView.session
+            coachingOverlay.session = self.arView.session
             coachingOverlay.delegate = self
             
             coachingOverlay.translatesAutoresizingMaskIntoConstraints = false
-            arView.addSubview(coachingOverlay)
+            self.arView.addSubview(coachingOverlay)
             
             NSLayoutConstraint.activate([
                 coachingOverlay.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -56,7 +56,7 @@ extension ViewController: ARCoachingOverlayViewDelegate {
 
         /// - Tag: CoachingGoal
         func setGoal() {
-        coachingOverlay.goal = .horizontalPlane
+        coachingOverlay.goal = .verticalPlane
     }
     
 }

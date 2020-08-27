@@ -10,7 +10,7 @@ import UIKit
 
 struct Alert {
     
-    private static func showBasicAlert(on vc: ViewController, title: String, message: String) {
+    private static func showConfirmationAlert(on vc: ViewController, title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: { (UIAlertAction) in
             // DO NOTHING
@@ -25,8 +25,20 @@ struct Alert {
         vc.present(alert, animated: true, completion: nil)
     }
     
+    private static func showBasicAlert(on vc: ViewController, title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (UIAlertAction) in
+            // DO NOTHING
+        }))
+        vc.present(alert, animated: true, completion: nil)
+    }
+    
     static func showDeletionConfirmation(on vc: ViewController) {
-        showBasicAlert(on: vc, title: "Confirm", message: "Are you sure you want to delete this Point of Charge?")
+        showConfirmationAlert(on: vc, title: "Confirm", message: "Are you sure you want to delete this Point of Charge?")
+    }
+    
+    static func showPointChargesLimitReached(on vc: ViewController) {
+        showBasicAlert(on: vc, title: "Limit reached", message: "The maximum number (6) of point of Charges has been reached.")
     }
     
     
