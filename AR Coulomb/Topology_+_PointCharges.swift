@@ -31,11 +31,14 @@ extension Topology {
         self.reloadAllForces()
         
         // Find and set the new Selected PointChargeObj
-        self.pointCharges.forEach{ pointChargeObj in
-            if pointChargeObj.entity == longPressedEntity {
-                selectedPointChargeObj = pointChargeObj
-            }
-        }
+//        self.pointCharges.forEach{ pointChargeObj in
+//            if pointChargeObj.entity == longPressedEntity {
+//                selectedPointChargeObj = pointChargeObj
+//            }
+//        }
+        
+        /// Enable Arrows for SingleForces and NetForce of the selectedPointChargeObj (the recently added)
+        self.showForcesFor(for: selectedPointChargeObj)
 
         /// Disable and hide the addButton
         self.viewController.hideAndDisableButton(btn: self.viewController.addButton)
@@ -54,12 +57,13 @@ extension Topology {
         /// Set its position relative to the Anchor Entity
         point.setPosition(pos, relativeTo: self.topoAnchorEntity)
         
-        /// Set selectedEntity (longPressedEntity)
-        longPressedEntity = point
-        
         /// Create new PointChargeClass Object and append it to pointCharges[]
         let newPointChargeObj = PointChargeClass(onEntity: point, withValue: 5)
-        pointCharges.append(newPointChargeObj)
+        self.pointCharges.append(newPointChargeObj)
+        
+        /// Set selectedEntity (longPressedEntity)
+        selectedPointChargeObj = newPointChargeObj
+        longPressedEntity = point
         
         /// Create Text Entity for the pointCharge
         let textEntity = newPointChargeObj.createTextEntity(pointEntity: point)
@@ -83,13 +87,20 @@ extension Topology {
         
         /// And then remove the longPressedEntity (selected Entity)
         longPressedEntity.removeFromParent()
-        //        longPressedEntity = Entity()
-        
+            
         /// Finally, calculate again All Forces
         self.reloadAllForces()
+        
+        /// Set a new random selecrtedPointChargeObj ...
+        if self.pointCharges.count > 0 {
+            selectedPointChargeObj = self.pointCharges.last!
+            longPressedEntity = selectedPointChargeObj.entity
+        }
+        /// ... and show the forces relative to it
+        self.showForcesFor(for: selectedPointChargeObj)
     }
     
-    /// Calculate a random position between the selected positions
+    /// Calculate a random position
     private func randomPosition() -> SIMD3<Float>{
         let randPos: SIMD3<Float>
         
@@ -98,25 +109,50 @@ extension Topology {
         var zmax: Float = -10000
         var zmin: Float = 10000
         
-        pointCharges.forEach{ pointChargeObj in
-            let pos = pointChargeObj.entity.position
-            
-            if pos.x > xmax {
-                xmax = pos.x
+        /// If there are no pointCharges select a random position between the
+        /// initial selected positions.
+        /// Else select one between the current pointCharges' positions
+        if self.pointCharges.count == 0 {
+            self.selectedPositions.forEach{ pos in
+                if pos.x > xmax {
+                    xmax = pos.x
+                }
+                
+                if pos.x < xmin {
+                    xmin = pos.x
+                }
+                
+                if pos.z > zmax {
+                    zmax = pos.z
+                }
+                
+                if pos.z < zmin {
+                    zmin = pos.z
+                }
             }
             
-            if pos.x < xmin {
-                xmin = pos.x
-            }
-            
-            if pos.z > zmax {
-                zmax = pos.z
-            }
-            
-            if pos.z < zmin {
-                zmin = pos.z
+        } else {
+            self.pointCharges.forEach{ pointChargeObj in
+                let pos = pointChargeObj.entity.position
+                
+                if pos.x > xmax {
+                    xmax = pos.x
+                }
+                
+                if pos.x < xmin {
+                    xmin = pos.x
+                }
+                
+                if pos.z > zmax {
+                    zmax = pos.z
+                }
+                
+                if pos.z < zmin {
+                    zmin = pos.z
+                }
             }
         }
+        
         let randPos_x = Float.random(in: xmin ..< xmax)
         let randPos_z = Float.random(in: zmin ..< zmax)
         

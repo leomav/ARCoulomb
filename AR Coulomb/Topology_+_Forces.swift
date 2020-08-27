@@ -38,6 +38,33 @@ extension Topology {
             }
         }
     }
+    
+    func showForcesFor(for pointChargeObj: PointChargeClass) {
+        self.netForces.forEach{ netForce in
+            /// Disable the NetForce Arrow ...
+            netForce.arrowEntity.isEnabled = false
+            
+            netForce.forces.forEach{ force in
+                /// ... and the SingleForce Arrow for every PointChargeObj...
+                force.arrowEntity.isEnabled = false
+                
+                if force.sourcePointCharge.id == pointChargeObj.id {
+                    /// ... except from the Arrow pointing to selectedPointChargeObj
+                    force.arrowEntity.isEnabled = true
+                }
+            }
+        }
+        
+        /// Enable the Arrows for the SingleForces and the NetForce of the selectedPointChargeObj
+        /// EXCEPT IF there are no other pointCharges, then there is no need for Arrows
+        if self.pointCharges.count > 1 {
+            pointChargeObj.entity.children.forEach{ child in
+                if child.name == "NetForce Arrow" || child.name == "SingleForce Arrow" {
+                    child.isEnabled = true
+                }
+            }
+        }
+    }
         
     // ---------------------------------------------------------------------------------
     // -------------------------- Update FORCES ----------------------------------------
@@ -78,18 +105,22 @@ extension Topology {
     
     // MARK: - Private functions
     
-    private func createArrowEntity(for pointChargeObj: PointChargeClass, arrowEntity: Entity) -> Entity {
+    private func createArrowEntity(for pointChargeObj: PointChargeClass, arrowEntity: Entity, name: String) -> Entity {
         /// Initialize and add NetForce Arrow Entity to the pointChargeObj
         let arrow = arrowEntity.clone(recursive: true)
-        arrow.name = "NetForce Arrow"
+        arrow.name = name
         pointChargeObj.entity.addChild(arrow)
+        
+        /// Disable the arrow Entity.
+        /// Later, the arrows relative to the selectedPointChargeObj will be enabled
+        arrow.isEnabled = false
         
         return arrow
     }
     
     private func createNetForce(for pointChargeObj: PointChargeClass, arrowEntity: Entity) -> NetForce {
         /// Create Arrow Entity and add it to the pointChargeObj
-        let arrow = createArrowEntity(for: pointChargeObj, arrowEntity: arrowEntity)
+        let arrow = createArrowEntity(for: pointChargeObj, arrowEntity: arrowEntity, name: "NetForce Arrow")
         
         /// Initialize NetForce Object with Arrow Entity
         let netForce = NetForce(magnetude: 0, angle: 0, arrowEntity: arrow ,point: pointChargeObj, forces: [])
@@ -100,7 +131,7 @@ extension Topology {
     
     private func createSingleForce(from otherPointChargeObj: PointChargeClass, to pointChargeObj: PointChargeClass, netForce: NetForce, arrowEntity: Entity){
         /// Create Arrow Entity and add it to the pointChargeObj
-        let arrow = createArrowEntity(for: pointChargeObj, arrowEntity: arrowEntity)
+        let arrow = createArrowEntity(for: pointChargeObj, arrowEntity: arrowEntity, name: "SingleForce Arrow")
         
         /// Create instance of Force Object with arrow entity
         let force = SingleForce(magnetude: 5, angle:0, arrowEntity: arrow, from: otherPointChargeObj, to: pointChargeObj)

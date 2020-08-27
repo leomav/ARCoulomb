@@ -12,7 +12,7 @@ import ARKit
 
 extension ViewController {
 
-    // MARK: - Initial Tap
+    // MARK: - Initial Tap to place Topology Anchor
     @objc
     func handleTap(recognizer: UITapGestureRecognizer) {
         let location = recognizer.location(in: arView)
@@ -42,12 +42,15 @@ extension ViewController {
 
                 trackedEntity = Entity()
 
-                // Find and set the new Selected PointChargeObj
+                /// Find and set the new Selected PointChargeObj
                 topology!.pointCharges.forEach{ pointChargeObj in
                     if pointChargeObj.entity == longPressedEntity {
                         selectedPointChargeObj = pointChargeObj
                     }
                 }
+                
+                /// Show forces relative to the selectedPointChargeObj
+                self.topology?.showForcesFor(for: selectedPointChargeObj)
 
                 /// Disable and hide the addButton
                 self.hideAndDisableButton(btn: addButton)
@@ -70,7 +73,8 @@ extension ViewController {
 
         if hitEntity.name == "pointCharge" {
             trackedEntity = hitEntity
-
+            
+            /// Show PointCharge Interaction
             self.pointChargeInteract(zoom: ZOOM_IN_5_4, showLabel: false)
         }
     }

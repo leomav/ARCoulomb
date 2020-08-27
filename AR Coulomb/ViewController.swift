@@ -145,7 +145,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         self.addButton.setImage(image, for: .normal)
         
         let padding: CGFloat = 8.0
-        
         self.addButton.contentEdgeInsets = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
         
         self.addButton.addTarget(self, action: #selector(performAddition(sender:)), for: .touchUpInside)
@@ -171,7 +170,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         self.guideText.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         self.guideText.numberOfLines = 0
         
-        self.guideText.topAnchor.constraint(equalTo: self.arView.topAnchor, constant: 50).isActive = true
+        self.guideText.topAnchor.constraint(equalTo: self.arView.topAnchor, constant: 80).isActive = true
         self.guideText.centerXAnchor.constraint(equalTo: self.arView.centerXAnchor).isActive = true
         
         self.guideText.isHidden = true
