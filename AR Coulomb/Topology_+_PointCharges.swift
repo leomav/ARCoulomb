@@ -25,7 +25,7 @@ extension Topology {
         self.addPointCharge(to: randomPos)
         
         /// Enable the new LongPressRecognizer for thisPointCharge and set .cancelsTouchesInView to false
-        self.enableRecognizers(withName: "Long Press Recognizer")
+        self.viewController.enableRecognizers(withName: "Long Press Recognizer")
         
         /// ReCalculate all Forces
         self.reloadAllForces()

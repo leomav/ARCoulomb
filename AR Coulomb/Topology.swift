@@ -57,11 +57,6 @@ class Topology {
         for pos in self.selectedPositions {
             self.addPointCharge(to: pos)
         }
-        /// Remove gesture recognizer needed for the Topology Anchor Placement
-        self.disableRecognizers(withName: "First Point Recognizer")
-        
-        /// Enable the pointCharge LongPress Recognizer
-        self.enableRecognizers(withName: "Long Press Recognizer")
         
         /// Create observer for changes in selected PointChargObj's coulomb Value
         self.viewController.createCbObserver()
@@ -74,8 +69,6 @@ class Topology {
         
         self.showForcesFor(for: selectedPointChargeObj)
         
-        /// Hide the top Helper Text
-        self.viewController.guideText.isHidden = true
     }
     
     private func clearTopology() {
@@ -93,31 +86,5 @@ class Topology {
         trackedEntity = Entity()
         selectedPointChargeObj = PointChargeClass(onEntity: Entity(), withValue: 0)
     }
-    
-    func enableRecognizers(withName name: String) {
-        self.viewController.arView.gestureRecognizers?.forEach{ recognizer in
-            
-            /// Enable the pointCharge LongPressRecognizer
-            if recognizer.name == name {
-                recognizer.isEnabled = true
-            }
-            
-            /// Installed gestures (EntityGesturesRecognizers for each point charge) were cancelling
-            /// other touches, so turn that to false
-            recognizer.cancelsTouchesInView = false
-        }
-    }
-    
-    func disableRecognizers(withName name: String) {
-        self.viewController.arView.gestureRecognizers?.forEach{ recognizer in
-            
-            /// Enable the pointCharge LongPressRecognizer
-            if recognizer.name == name {
-                recognizer.isEnabled = false
-            }
-        }
-    }
-    
-    
     
 }

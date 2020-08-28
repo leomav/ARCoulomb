@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CoulombMenu_ViewController: UIViewController {
+class CoulombMenu_VC: UIViewController {
     
     // MARK: - Views
     
@@ -142,20 +142,20 @@ class CoulombMenu_ViewController: UIViewController {
         hStackView.alignment = .center
         
         hStackView.addArrangedSubview(btns[0])
-        hStackView.addArrangedSubview(slider)
+        hStackView.addArrangedSubview(self.slider)
         hStackView.addArrangedSubview(btns[1])
     }
     
     func configureSlider(coulombValue: Float) {
-        slider.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        slider.widthAnchor.constraint(equalToConstant: 200).isActive = true
-        slider.minimumValue = -100
-        slider.maximumValue = 100
-        slider.isContinuous = true
-        slider.tintColor = .white
-        slider.thumbTintColor = .white
-        slider.addTarget(self, action: #selector(sliderValueDidChange(_:)), for: .valueChanged)
-        slider.setValue(coulombValue, animated: true)
+//        self.slider.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        self.slider.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        self.slider.minimumValue = -100
+        self.slider.maximumValue = 100
+        self.slider.isContinuous = true
+        self.slider.tintColor = .white
+        self.slider.thumbTintColor = .white
+        self.slider.addTarget(self, action: #selector(sliderValueDidChange(_:)), for: .valueChanged)
+        self.slider.setValue(coulombValue, animated: true)
     }
     
     func configureButtons() {
@@ -185,16 +185,16 @@ class CoulombMenu_ViewController: UIViewController {
         
         let padding: CGFloat = 8.0
         
-        trashButton.contentEdgeInsets = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
+        self.trashButton.contentEdgeInsets = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
         
-        trashButton.addTarget(self, action: #selector(performDeletion(sender:)), for: .touchUpInside)
-        trashButton.layer.cornerRadius = 10
-        trashButton.backgroundColor = UIColor(white: 0, alpha: 0.7)
-        trashButton.tintColor = UIColor.white
-        trashButton.isEnabled = true
+        self.trashButton.addTarget(self, action: #selector(performDeletion(sender:)), for: .touchUpInside)
+        self.trashButton.layer.cornerRadius = 10
+        self.trashButton.backgroundColor = UIColor(white: 0, alpha: 0.7)
+        self.trashButton.tintColor = UIColor.white
+        self.trashButton.isEnabled = true
         
-        trashButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 50).isActive = true
-        trashButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -15).isActive = true
+        self.trashButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 50).isActive = true
+        self.trashButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -15).isActive = true
     }
     
     // MARK: - OBJC Action Functions

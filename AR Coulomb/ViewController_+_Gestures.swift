@@ -118,5 +118,31 @@ extension ViewController {
             trackedEntity = Entity()
         }
     }
+    
+    // MARK: - Enable / Disable Observers Functions
+    
+    func enableRecognizers(withName name: String) {
+        self.arView.gestureRecognizers?.forEach{ recognizer in
+            
+            /// Enable the pointCharge LongPressRecognizer
+            if recognizer.name == name {
+                recognizer.isEnabled = true
+            }
+            
+            /// Installed gestures (EntityGesturesRecognizers for each point charge) were cancelling
+            /// other touches, so turn that to false
+            recognizer.cancelsTouchesInView = false
+        }
+    }
+    
+    func disableRecognizers(withName name: String) {
+        self.arView.gestureRecognizers?.forEach{ recognizer in
+            
+            /// Enable the pointCharge LongPressRecognizer
+            if recognizer.name == name {
+                recognizer.isEnabled = false
+            }
+        }
+    }
 }
 

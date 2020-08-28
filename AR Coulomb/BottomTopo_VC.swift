@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BottomTopo_ViewController: UIViewController {
+class BottomTopo_VC: UIViewController {
     
     // translates autoresizing mask into constraints lets us
     // manually alter the constraints
