@@ -34,10 +34,10 @@ class BottomTopo_ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        bottomTopoMenuView.backgroundColor = UIColor(white: 0, alpha: 0.7)
+        self.bottomTopoMenuView.backgroundColor = UIColor(white: 0, alpha: 0.7)
 
         // Do any additional setup after loading the view.
-        bottomTopoMenuView.addSubview(scrollView)
+        self.bottomTopoMenuView.addSubview(self.scrollView)
         
         self.configureScrollView()
         self.configureStackView()
@@ -47,26 +47,26 @@ class BottomTopo_ViewController: UIViewController {
     // MARK: - ScrollView & StackView configuration
     func configureScrollView() {
         // You simply cannot constrain a view to another view if the view isn’t even on the screen yet.
-        scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        scrollView.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -150).isActive = true
-        scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20).isActive = true
+        self.scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+        self.scrollView.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -150).isActive = true
+        self.scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        self.scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20).isActive = true
     }
     func configureStackView() {
-        scrollView.addSubview(stackView)
+        self.scrollView.addSubview(self.stackView)
         
-        stackView.axis = .horizontal
-        stackView.spacing = 8
-        stackView.backgroundColor = .white
-        stackView.distribution = .fillEqually
+        self.stackView.axis = .horizontal
+        self.stackView.spacing = 8
+        self.stackView.backgroundColor = .white
+        self.stackView.distribution = .fillEqually
         //stack.alignment = .fill
         
-        stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
-        stackView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
-        stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
+        self.stackView.leadingAnchor.constraint(equalTo: self.scrollView.leadingAnchor).isActive = true
+        self.stackView.topAnchor.constraint(equalTo: self.scrollView.topAnchor).isActive = true
+        self.stackView.bottomAnchor.constraint(equalTo: self.scrollView.bottomAnchor).isActive = true
+        self.stackView.trailingAnchor.constraint(equalTo: self.scrollView.trailingAnchor).isActive = true
         
-        stackView.heightAnchor.constraint(equalTo: scrollView.heightAnchor).isActive = true
+        self.stackView.heightAnchor.constraint(equalTo: self.scrollView.heightAnchor).isActive = true
         
         // Create the buttons in the scroll-stack view, one for each topology
         for i in 0...5 {
@@ -78,7 +78,7 @@ class BottomTopo_ViewController: UIViewController {
             btn.widthAnchor.constraint(equalToConstant: 120).isActive = true
             
             // Add the button to the view
-            stackView.addArrangedSubview(btn)
+            self.stackView.addArrangedSubview(btn)
         }
     }
     
@@ -101,6 +101,30 @@ class BottomTopo_ViewController: UIViewController {
         }
     }
     
+    
+    // MARK: - TouchesBegan: check if touch happened outside the menu subviews
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touchView = touches.first?.view
+        var exit = true
+        
+        /// If no subView is touched, dismiss
+        self.bottomTopoMenuView.subviews.forEach{ subView in
+            if touchView == subView {
+                exit = false
+            }
+        }
+        if exit == true {
+            dismiss(animated: true) {
+                self.notifyObserver(withKey: dismissalNotificationKey)
+            }
+        }
+    }
+    
+    private func notifyObserver(withKey key: String){
+        let notifName = Notification.Name(rawValue: key)
+        NotificationCenter.default.post(name: notifName, object: nil, userInfo: nil)
+    }
     
 
 }

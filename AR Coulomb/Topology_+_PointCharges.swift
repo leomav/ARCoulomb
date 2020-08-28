@@ -32,7 +32,7 @@ extension Topology {
         
         /// Enable Arrows for SingleForces and NetForce of the selectedPointChargeObj (the recently added)
         self.showForcesFor(for: selectedPointChargeObj)
-
+        
         /// Disable and hide the StackView Buttons (add new pointCharge, add new topo)
         self.viewController.hideAndDisableButtons()
         
@@ -87,7 +87,7 @@ extension Topology {
         
         /// And then remove the longPressedEntity (selected Entity)
         longPressedEntity.removeFromParent()
-            
+        
         /// Finally, calculate again All Forces
         self.reloadAllForces()
         
@@ -109,28 +109,38 @@ extension Topology {
         var zmax: Float = -10000
         var zmin: Float = 10000
         
-        /// If there are no pointCharges select a random position between the
-        /// initial selected positions.
-        /// Else select one between the current pointCharges' positions
-        if self.pointCharges.count == 0 {
-            self.selectedPositions.forEach{ pos in
-                if pos.x > xmax {
-                    xmax = pos.x
-                }
-                
-                if pos.x < xmin {
-                    xmin = pos.x
-                }
-                
-                if pos.z > zmax {
-                    zmax = pos.z
-                }
-                
-                if pos.z < zmin {
-                    zmin = pos.z
+        
+        /// If there are not enough ( less than 2 ) pointCharges select a random position
+        
+        if self.pointCharges.count < 2 {
+            if self.selectedPositions.isEmpty {
+                /// If there are no selectedPositions, no topo was selected from the menu.
+                /// So set a random position in a radius = 0.1 around the Anchor Entity of the topology (around the center)
+                xmin = -0.1
+                xmax = 0.1
+                zmin = -0.1
+                zmax = 0.1
+            } else {
+                /// Else if there are selectedPositions set a random position with them as a radius
+                self.selectedPositions.forEach{ pos in
+                    if pos.x > xmax {
+                        xmax = pos.x
+                    }
+                    
+                    if pos.x < xmin {
+                        xmin = pos.x
+                    }
+                    
+                    if pos.z > zmax {
+                        zmax = pos.z
+                    }
+                    
+                    if pos.z < zmin {
+                        zmin = pos.z
+                    }
                 }
             }
-            
+            /// Else select one between the current pointCharges' positions
         } else {
             self.pointCharges.forEach{ pointChargeObj in
                 let pos = pointChargeObj.entity.position

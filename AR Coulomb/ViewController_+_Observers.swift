@@ -15,7 +15,7 @@ extension ViewController {
     //  MARK: - CoulombMenu ViewController dismissed
     
     /// CoulombMenu Dismissal Observer: When CoulombMenu VC is dismissed without any action (like pointCharge deletion)
-    func setupObserverCoulombMenuDismissal() {
+    func setupObserverMenuDismissal() {
         let notifName = Notification.Name(rawValue: dismissalNotificationKey)
         NotificationCenter.default.addObserver(self, selector: #selector(recoverAddButton(notification:)), name: notifName, object: nil)
     }
@@ -44,9 +44,6 @@ extension ViewController {
     func addTopology(notification: Notification) {
         if let newValue = (notification.userInfo?["updatedValue"]) as? [SIMD3<Float>] {
 
-            /// Empty current selectedPositionsArray and fill it again with the new positions
-//            topology!.selectedPositions.removeAll()
-//            topology!.selectedPositions.append(contentsOf: newValue)
             /// Get the new positions from the Notification
             let newPositions = newValue
             

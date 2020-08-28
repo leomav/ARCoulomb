@@ -65,6 +65,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     @objc
     func performTopoMenuSeague(sender: UIButton) {
+        /// Disable and hide the StackView Buttons (add new pointCharge, add new topo)
+        self.hideAndDisableButtons()
+        
         /// Open the bottom Coulomb Topology menu to choose topology
         performSegue(withIdentifier: "toTopoMenuSegue", sender: nil)
     }
@@ -114,7 +117,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         self.setupObserverNewTopo()
         
         /// Create the CoulombMenu Dismissal Observer
-        self.setupObserverCoulombMenuDismissal()
+        self.setupObserverMenuDismissal()
         
         /// First tap gesture recognizer, will be deleted after first point of charge is added
         self.setupTapGestureRecognizer()
