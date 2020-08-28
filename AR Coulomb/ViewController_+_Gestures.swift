@@ -17,7 +17,7 @@ extension ViewController {
     func handleTap(recognizer: UITapGestureRecognizer) {
         let location = recognizer.location(in: arView)
 
-        let results = arView.raycast(from: location, allowing: .estimatedPlane, alignment: .vertical)
+        let results = arView.raycast(from: location, allowing: .estimatedPlane, alignment: .any)
 
         if let firstResult = results.first {
             let anchor = ARAnchor(name: "PointCharge", transform: firstResult.worldTransform)

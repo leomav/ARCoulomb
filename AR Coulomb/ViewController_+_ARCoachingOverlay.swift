@@ -44,8 +44,8 @@ extension ViewController: ARCoachingOverlayViewDelegate {
             
             setActivatesAutomatically()
             
-            /// Most of the virtual objects in this sample require a horizontal surface,
-            /// therefore coach the user to find a horizontal plane.
+            /// Most of the virtual objects in this sample require a horizontal/vertical surface,
+            /// therefore coach the user to find a horizontal/vertical plane.
             setGoal()
         }
         
@@ -56,7 +56,7 @@ extension ViewController: ARCoachingOverlayViewDelegate {
 
         /// - Tag: CoachingGoal
         func setGoal() {
-        coachingOverlay.goal = .verticalPlane
+            coachingOverlay.goal = .anyPlane
     }
     
 }
