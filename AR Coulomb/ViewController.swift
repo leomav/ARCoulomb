@@ -47,7 +47,28 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     @IBOutlet var arView: ARView!
     
-    /// Button for appearing topos !!!!! CHANGE
+    let stackView: UIStackView = {
+        let stack = UIStackView()
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        return stack
+    }()
+    
+    let newTopoButton: UIButton = {
+        let btn = UIButton()
+        
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        
+        return btn
+    }()
+    
+    @objc
+    func performTopoMenuSeague(sender: UIButton) {
+        /// Open the bottom Coulomb Topology menu to choose topology
+        performSegue(withIdentifier: "toTopoMenuSegue", sender: nil)
+    }
+    
     let addButton: UIButton = {
         let btn = UIButton()
         
@@ -97,12 +118,12 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         
         /// First tap gesture recognizer, will be deleted after first point of charge is added
         self.setupTapGestureRecognizer()
-
+        
         /// Long Press Recognizer to enable parameters interaction with Point Charge (min press 1 sec)
         self.setupLongPressRecognizer()
         
-        /// Set up the ADD Button (adds pointcharge to scene)
-        self.configureAddButton()
+        /// Set up the Buttons Stack View in right hand side
+        self.configureStackView()
         
         /// Set up the Top Guide Text (helper text to place the topology)
         self.configureGuideTextView()
@@ -116,11 +137,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         config.planeDetection = [.horizontal, .vertical]
         config.environmentTexturing = .automatic
         self.arView.session.run(config)
-        
-        /// Add the Add Button to the arView before setting the button's contstraints (relatively to arView)
-        self.arView.addSubview(self.addButton)
-        /// Add the guideText TextView to the arView before setting the textView's contsraints (relatively to arView)
-        self.arView.addSubview(self.guideText)
     }
     
     private func setupTapGestureRecognizer() {
@@ -136,46 +152,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         self.arView.addGestureRecognizer(longPressRecognizer)
         longPressRecognizer.isEnabled =  false
     }
-    
-    private func configureAddButton () {
-        let config = UIImage.SymbolConfiguration(pointSize: 30, weight: .light, scale: .large)
-            
-        let image = UIImage(systemName: "plus", withConfiguration: config)
-        
-        self.addButton.setImage(image, for: .normal)
-        
-        let padding: CGFloat = 8.0
-        self.addButton.contentEdgeInsets = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
-        
-        self.addButton.addTarget(self, action: #selector(performAddition(sender:)), for: .touchUpInside)
-        
-        self.addButton.layer.cornerRadius = 10
-//        self.addButton.imageView?.clipsToBounds = true
-        
-        self.addButton.tintColor = UIColor.white
-        self.addButton.backgroundColor = UIColor(white: 0, alpha: 0.7)
-        
-        /// At first, it's hidden and disabled until a topology is placed
-        self.hideAndDisableButton(btn: self.addButton)
-        
-        self.addButton.bottomAnchor.constraint(equalTo: self.arView.bottomAnchor, constant: -50).isActive = true
-        self.addButton.trailingAnchor.constraint(equalTo: self.arView.trailingAnchor, constant: -15).isActive = true
-    }
-    
-    private func configureGuideTextView() {
-        self.guideText.text = "Tap the surface to place a topology."
-        self.guideText.textColor = UIColor.white
-        
-        self.guideText.textAlignment = .center
-        self.guideText.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
-        self.guideText.numberOfLines = 0
-        
-        self.guideText.topAnchor.constraint(equalTo: self.arView.topAnchor, constant: 80).isActive = true
-        self.guideText.centerXAnchor.constraint(equalTo: self.arView.centerXAnchor).isActive = true
-        
-        self.guideText.isHidden = true
-    }
-
     // MARK: - (De)emphasize the tracked pointCharge Entity
     
     func pointChargeInteract(zoom: Float, showLabel: Bool) {
@@ -188,20 +164,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
             }
         }
     }
-    
-    // MARK: - Add Button Existance
-    
-    func showAndEnableButton(btn: UIButton) {
-        btn.isHidden = false
-        btn.isEnabled = true
-    }
-    
-    func hideAndDisableButton(btn: UIButton) {
-        btn.isHidden = true
-        btn.isEnabled = false
-    }
-    
-    
 }
 
 // MARK: - CONVERTER: Degrees <--> Radians

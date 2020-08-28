@@ -20,8 +20,6 @@ class Topology {
     var topoAnchorEntity: AnchorEntity
     /// Selected positions for the pointCharges Entities
     var selectedPositions: [SIMD3<Float>]
-    /// Current positions for the pointCharges Entites
-    var currentPositions: [SIMD3<Float>]
     /// All the pointCharge Objects
     var pointCharges: [PointChargeClass]
     /// All the netForces
@@ -29,11 +27,10 @@ class Topology {
     /// A pointChargeEntity Template that gets used for cloning
     let pointChargeEntityTemplate: Entity
     
-    init(viewController: ViewController, topoAnchor: ARAnchor, selectedPositions: [SIMD3<Float>]) {
+    init(viewController: ViewController, topoAnchor: ARAnchor) {
         self.viewController = viewController
         self.topoAnchor = topoAnchor
-        self.selectedPositions = selectedPositions
-        self.currentPositions = selectedPositions
+        self.selectedPositions = []
         self.pointCharges = []
         self.netForces = []
         
@@ -49,8 +46,15 @@ class Topology {
     
     // MARK: - Topology functions
     
-    func placeTopology() {
-        for pos in selectedPositions {
+    func placeTopology(positions: [SIMD3<Float>]) {
+        /// Clear the topology, if there was one
+        self.clearTopology()
+        
+        /// Set new selectedPositions
+        self.selectedPositions = positions
+        
+        /// Create PointCharges in the selected Positions
+        for pos in self.selectedPositions {
             self.addPointCharge(to: pos)
         }
         /// Remove gesture recognizer needed for the Topology Anchor Placement
@@ -72,6 +76,22 @@ class Topology {
         
         /// Hide the top Helper Text
         self.viewController.guideText.isHidden = true
+    }
+    
+    private func clearTopology() {
+        /// Clear all Forces
+        self.clearAllForces()
+        
+        /// Clear all PointCharges
+        self.removeAllPointCharges()
+        
+        /// Clear selectedPositions
+        self.selectedPositions.removeAll()
+        
+        /// Set selected objects to none
+        longPressedEntity = Entity()
+        trackedEntity = Entity()
+        selectedPointChargeObj = PointChargeClass(onEntity: Entity(), withValue: 0)
     }
     
     func enableRecognizers(withName name: String) {

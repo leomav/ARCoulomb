@@ -30,18 +30,11 @@ extension Topology {
         /// ReCalculate all Forces
         self.reloadAllForces()
         
-        // Find and set the new Selected PointChargeObj
-//        self.pointCharges.forEach{ pointChargeObj in
-//            if pointChargeObj.entity == longPressedEntity {
-//                selectedPointChargeObj = pointChargeObj
-//            }
-//        }
-        
         /// Enable Arrows for SingleForces and NetForce of the selectedPointChargeObj (the recently added)
         self.showForcesFor(for: selectedPointChargeObj)
 
-        /// Disable and hide the addButton
-        self.viewController.hideAndDisableButton(btn: self.viewController.addButton)
+        /// Disable and hide the StackView Buttons (add new pointCharge, add new topo)
+        self.viewController.hideAndDisableButtons()
         
         /// Perform seague to CoulombMenu ViewController
         self.viewController.performSegue(withIdentifier: "toCoulombMenuSegue", sender: nil)
@@ -74,6 +67,13 @@ extension Topology {
         /// the installed below (I do that in Topology Placement)
         point.generateCollisionShapes(recursive: false)
         self.viewController.arView.installGestures([.translation, .rotation], for: point as! HasCollision)
+    }
+    
+    func removeAllPointCharges() {
+        self.pointCharges.forEach{ pointChargeObj in
+            pointChargeObj.entity.removeFromParent()
+        }
+        self.pointCharges.removeAll()
     }
     
     func removePointCharge() {

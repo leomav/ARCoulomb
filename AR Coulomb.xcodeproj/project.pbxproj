@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9F17B77724F91E3500A98253 /* ViewController_+_UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F17B77624F91E3500A98253 /* ViewController_+_UI.swift */; };
 		9F1FAA2124F1D95600BF6137 /* ViewController_+_ARCoachingOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1FAA2024F1D95600BF6137 /* ViewController_+_ARCoachingOverlay.swift */; };
 		9F2FC67424F4006800D0BA7D /* Topology.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2FC67324F4006800D0BA7D /* Topology.swift */; };
 		9F368B25249A582000C6E07A /* PointCharge.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 9F368B24249A582000C6E07A /* PointCharge.rcproject */; };
@@ -33,6 +34,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9F17B77624F91E3500A98253 /* ViewController_+_UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController_+_UI.swift"; sourceTree = "<group>"; };
 		9F1FAA2024F1D95600BF6137 /* ViewController_+_ARCoachingOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController_+_ARCoachingOverlay.swift"; sourceTree = "<group>"; };
 		9F2FC67324F4006800D0BA7D /* Topology.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Topology.swift; sourceTree = "<group>"; };
 		9F368B24249A582000C6E07A /* PointCharge.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = PointCharge.rcproject; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 			children = (
 				9FD94473249A258400C0E646 /* AppDelegate.swift */,
 				9FD94475249A258400C0E646 /* ViewController.swift */,
+				9F17B77624F91E3500A98253 /* ViewController_+_UI.swift */,
 				9FFD6FCB24ABFE2400D8DE89 /* ViewController_+_Gestures.swift */,
 				9F3E8B7224F79FBB0018D250 /* ViewController_+_Observers.swift */,
 				9FFD6FCD24ABFFB800D8DE89 /* ViewController_+_ObjectPlacement.swift */,
@@ -190,6 +193,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9FD94476249A258400C0E646 /* ViewController.swift in Sources */,
+				9F17B77724F91E3500A98253 /* ViewController_+_UI.swift in Sources */,
 				9FF77FD724A7993C003477C2 /* BottomTopo_ViewController.swift in Sources */,
 				9FD94474249A258400C0E646 /* AppDelegate.swift in Sources */,
 				9F1FAA2124F1D95600BF6137 /* ViewController_+_ARCoachingOverlay.swift in Sources */,

@@ -22,8 +22,13 @@ extension ViewController {
     
     @objc
     func recoverAddButton(notification: Notification) {
-        /// Enable the ADD Button
-        self.showAndEnableButton(btn: self.addButton)
+        /// Enable the StackView Buttons (add new pointCharge, add new topo)
+        self.showAndEnableButtons()
+        
+        /// If the Limit Number is reached, disable the Add Button
+        if self.topology?.pointCharges.count == 6 {
+            self.addButton.isEnabled = false
+        }
     }
     
     //  (2)
@@ -32,26 +37,33 @@ extension ViewController {
     /// Topology Observer: When new topology is selected
     func setupObserverNewTopo() {
         let notifName = Notification.Name(rawValue: topoNotificationKey)
-        NotificationCenter.default.addObserver(self, selector: #selector(createTopology(notification:)), name: notifName, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(addTopology(notification:)), name: notifName, object: nil)
     }
     /// update the selected Positions
     @objc
-    func createTopology(notification: Notification) {
+    func addTopology(notification: Notification) {
         if let newValue = (notification.userInfo?["updatedValue"]) as? [SIMD3<Float>] {
 
             /// Empty current selectedPositionsArray and fill it again with the new positions
-            topology!.selectedPositions.removeAll()
-            topology!.selectedPositions.append(contentsOf: newValue)
+//            topology!.selectedPositions.removeAll()
+//            topology!.selectedPositions.append(contentsOf: newValue)
+            /// Get the new positions from the Notification
+            let newPositions = newValue
             
             /// Place the selected Topology on the AnchorEntity placed in scene
             if topology!.topoAnchor != nil {
-                topology!.placeTopology()
+                topology!.placeTopology(positions: newPositions)
             } else {
                 print("Error: No anchor is selected for topology placement!")
             }
             
-            /// Enable the ADD Button
-            self.showAndEnableButton(btn: self.addButton)
+            /// Enable the StackView Buttons (add new pointCharge, add new topo)
+            self.showAndEnableButtons()
+            
+            /// If the Limit Number is reached, disable the Add Button
+            if self.topology?.pointCharges.count == 6 {
+                self.addButton.isEnabled = false
+            }
 
         } else {
             print("Error: Not updated topology!")

@@ -52,8 +52,8 @@ extension ViewController {
                 /// Show forces relative to the selectedPointChargeObj
                 self.topology?.showForcesFor(for: selectedPointChargeObj)
 
-                /// Disable and hide the addButton
-                self.hideAndDisableButton(btn: addButton)
+                /// Disable and hide the StackView Buttons (add new pointCharge, add new topo)
+                self.hideAndDisableButtons()
                 
                 /// Perform seague to CoulombMenu ViewController
                 performSegue(withIdentifier: "toCoulombMenuSegue", sender: nil)
