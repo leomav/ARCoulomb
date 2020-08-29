@@ -42,6 +42,11 @@ class Topology {
         self.topoAnchorEntity = AnchorEntity(anchor: topoAnchor)
         self.topoAnchorEntity.name = "Point Charge Scene AnchorEntity"
         self.viewController.arView.scene.addAnchor(self.topoAnchorEntity)
+        
+        /// Create the Coulomb's Observers (value change or deletion)
+        self.viewController.createCbObserver()
+        self.viewController.setupObserverPointChargeDeletion()
+        
     }
     
     // MARK: - Topology functions
@@ -57,12 +62,6 @@ class Topology {
         for pos in self.selectedPositions {
             self.addPointCharge(to: pos)
         }
-        
-        /// Create observer for changes in selected PointChargObj's coulomb Value
-        self.viewController.createCbObserver()
-        
-        /// Create observer for any PointCharge Removal
-        self.viewController.setupObserverPointChargeDeletion()
         
         /// Add all forces to all the pointCharge Objects
         self.reloadAllForces()

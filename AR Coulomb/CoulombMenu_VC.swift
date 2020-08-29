@@ -225,6 +225,7 @@ class CoulombMenu_VC: UIViewController {
     @objc
     func performDeletion(sender: UIButton) {
         dismiss(animated: true) {
+            print("--------- CoulombMenu: Before sending Delete Notification.")
             self.notifyObserver(withKey: removalNotificationKey)
         }
     }

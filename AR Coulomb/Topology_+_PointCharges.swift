@@ -67,6 +67,11 @@ extension Topology {
         /// the installed below (I do that in Topology Placement)
         point.generateCollisionShapes(recursive: false)
         self.viewController.arView.installGestures([.translation, .rotation], for: point as! HasCollision)
+        
+        /// Enable the pointCharge LongPress Recognizer
+        /// Careful that the above installedGesutres for translation and rotation disable the rest recognizers
+        /// so for them set ".cancelsTouchesInView" to false, so that LongPress Recognizer is active
+        self.viewController.enableRecognizers(withName: "Long Press Recognizer")
     }
     
     func removeAllPointCharges() {

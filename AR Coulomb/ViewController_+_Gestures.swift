@@ -121,6 +121,7 @@ extension ViewController {
     
     // MARK: - Enable / Disable Observers Functions
     
+    // Should be called every time a pointCharge is created
     func enableRecognizers(withName name: String) {
         self.arView.gestureRecognizers?.forEach{ recognizer in
             
@@ -134,11 +135,13 @@ extension ViewController {
             recognizer.cancelsTouchesInView = false
         }
     }
-    
+    /*  Should be called after the First Touch happened and the Topology
+        Anchor is placed
+    */
     func disableRecognizers(withName name: String) {
         self.arView.gestureRecognizers?.forEach{ recognizer in
             
-            /// Enable the pointCharge LongPressRecognizer
+            /// Disable the First Touch Topology Anchor Placement recognizer
             if recognizer.name == name {
                 recognizer.isEnabled = false
             }

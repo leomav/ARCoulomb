@@ -79,6 +79,7 @@ extension ViewController {
     @objc
     func removePointCharge(notification: Notification) {
         
+        print("--------- Observer: Delete.")
         Alert.showDeletionConfirmation(on: self)
     }
     
