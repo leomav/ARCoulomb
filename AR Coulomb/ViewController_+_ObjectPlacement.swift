@@ -10,14 +10,13 @@ import Foundation
 import ARKit
 import RealityKit
 
-extension ViewController: ARSessionDelegate {
+extension ViewController: ARSessionDelegate, ARSCNViewDelegate {
 
+    
+    
     func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
         for anchor in anchors {
             if let anchorName = anchor.name, anchorName == "PointCharge" {
-
-                /// Hide the top Helper Text since the user has just touched and placed the Anchor
-                self.guideText.isHidden = true
 
                 /// Remove gesture recognizer needed for the First Tap -> Topology Anchor Placement
                 self.disableRecognizers(withName: "First Point Recognizer")
@@ -28,6 +27,18 @@ extension ViewController: ARSessionDelegate {
                 /// Open the bottom Coulomb Topology menu to choose topology
                 performSegue(withIdentifier: "toTopoMenuSegue", sender: nil)
             }
+        }
+    }
+    
+    /// Changes to the quality of ARKit's device position tracking
+    func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
+        self.status?.showTrackingQualityInfo(for: camera.trackingState, autoHide: true)
+        switch camera.trackingState {
+        case .notAvailable, .limited:
+            self.status?.escalateFeedback(for: camera.trackingState, inSeconds: 3.0)
+        case .normal:
+            self.status?.cancelScheduledMessage(for: .trackingStateEscalation)
+            self.topology?.toggleTopology(show: false)
         }
     }
 }

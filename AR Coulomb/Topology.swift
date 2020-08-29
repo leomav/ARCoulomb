@@ -70,7 +70,7 @@ class Topology {
         
     }
     
-    private func clearTopology() {
+    func clearTopology() {
         /// Clear all Forces
         self.clearAllForces()
         
@@ -84,6 +84,12 @@ class Topology {
         longPressedEntity = Entity()
         trackedEntity = Entity()
         selectedPointChargeObj = PointChargeClass(onEntity: Entity(), withValue: 0)
+    }
+    
+    // Show or Hide topology
+    func toggleTopology(show: Bool) {
+        self.toggleAllForces(show: false)
+        self.toggleAllForces(show: false)
     }
     
 }

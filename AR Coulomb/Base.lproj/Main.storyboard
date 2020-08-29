@@ -28,7 +28,7 @@
         <!--bottomTopologiesView-->
         <scene sceneID="Agt-hJ-Q0d">
             <objects>
-                <viewController title="bottomTopologiesView" modalPresentationStyle="overCurrentContext" id="CP3-1e-AVB" customClass="BottomTopo_VC" customModule="AR_Coulomb" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="bottomTopologiesView" modalPresentationStyle="overCurrentContext" id="CP3-1e-AVB" customClass="BottomTopoMenuVC" customModule="AR_Coulomb" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Thp-Zh-a2v">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -47,7 +47,7 @@
         <!--Coulomb MenuVC-->
         <scene sceneID="XrY-V4-QDd">
             <objects>
-                <viewController modalPresentationStyle="overCurrentContext" id="6yA-tf-0n3" customClass="CoulombMenu_VC" customModule="AR_Coulomb" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="overCurrentContext" id="6yA-tf-0n3" customClass="CoulombMenuVC" customModule="AR_Coulomb" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="WSJ-eg-Nkl">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

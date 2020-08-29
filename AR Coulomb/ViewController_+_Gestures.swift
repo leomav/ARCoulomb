@@ -43,7 +43,7 @@ extension ViewController {
                 trackedEntity = Entity()
 
                 /// Find and set the new Selected PointChargeObj
-                selectedPointChargeObj = topology?.pointCharges.first(where: {$0.entity == longPressedEntity})! as! PointChargeClass
+                selectedPointChargeObj = topology!.pointCharges.first(where: {$0.entity == longPressedEntity})! 
                     
 //                topology!.pointCharges.forEach{ pointChargeObj in
 //                    if pointChargeObj.entity == longPressedEntity {
@@ -57,6 +57,8 @@ extension ViewController {
                 /// Disable and hide the StackView Buttons (add new pointCharge, add new topo)
                 self.hideAndDisableButtons()
                 
+                self.status?.cancelScheduledMessage(for: .contentPlacement)
+
                 /// Perform seague to CoulombMenu ViewController
                 performSegue(withIdentifier: "toCoulombMenuSegue", sender: nil)
             }

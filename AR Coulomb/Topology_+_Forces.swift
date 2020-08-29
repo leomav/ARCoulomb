@@ -101,6 +101,15 @@ extension Topology {
         self.netForces.removeAll()
     }
     
+    // Show or Hide all forces
+    func toggleAllForces(show: Bool) {
+        self.netForces.forEach{ netForce in
+            netForce.forces.forEach{ force in
+                force.arrowEntity.isEnabled = show
+            }
+            netForce.arrowEntity.isEnabled = show
+        }
+    }
     
     
     // MARK: - Private functions

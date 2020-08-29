@@ -20,6 +20,15 @@ extension ViewController: ARCoachingOverlayViewDelegate {
         /// - Tag: PresentUI
         func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
             self.guideText.isHidden = false
+            
+            /// Helping Message in MessagePanel when surface is detected
+            self.status?.cancelScheduledMessage(for: .planeEstimation)
+            self.status?.showMessage("SURFACE DETECTED")
+            if self.topology != nil {
+                if self.topology?.pointCharges.count == 0 {
+                    self.status?.scheduleMessage("TAP TO PLACE A TOPOLOGY", inSeconds: 7.5, messageType: .contentPlacement)
+                }
+            }
         }
 
         /// - Tag: StartOver

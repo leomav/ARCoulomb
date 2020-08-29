@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BottomTopo_VC: UIViewController {
+class BottomTopoMenuVC: UIViewController {
     
     // translates autoresizing mask into constraints lets us
     // manually alter the constraints
@@ -37,7 +37,6 @@ class BottomTopo_VC: UIViewController {
         self.bottomTopoMenuView.backgroundColor = UIColor(white: 0, alpha: 0.7)
 
         // Do any additional setup after loading the view.
-        self.bottomTopoMenuView.addSubview(self.scrollView)
         
         self.configureScrollView()
         self.configureStackView()
@@ -46,6 +45,8 @@ class BottomTopo_VC: UIViewController {
     
     // MARK: - ScrollView & StackView configuration
     func configureScrollView() {
+        self.bottomTopoMenuView.addSubview(self.scrollView)
+        
         // You simply cannot constrain a view to another view if the view isn’t even on the screen yet.
         self.scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
         self.scrollView.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -150).isActive = true

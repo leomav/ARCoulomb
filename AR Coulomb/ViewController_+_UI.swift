@@ -10,9 +10,63 @@ import UIKit
 
 extension ViewController {
     
+    func configureMessagePanel() {
+        /// Add the Stack View to the arView
+        self.arView.addSubview(self.messagePanel)
+        
+        // Set Background Color to Transparent
+        self.messagePanel.backgroundColor = UIColor(white: 0, alpha: 0)
+        
+        self.messagePanel.leadingAnchor.constraint(equalTo: self.arView.leadingAnchor).isActive = true
+        self.messagePanel.topAnchor.constraint(equalTo: self.arView.topAnchor).isActive = true
+        self.messagePanel.trailingAnchor.constraint(equalTo: self.arView.trailingAnchor).isActive = true
+        self.messagePanel.heightAnchor.constraint(equalToConstant: CGFloat(80)).isActive = true
+        
+        self.configureMessageLabel()
+        self.configureRestartExperienceButton()
+    }
+    
+    private func configureMessageLabel() {
+        self.messagePanel.addSubview(self.messageLabel)
+        
+        self.messageLabel.textColor = UIColor.black
+        self.messageLabel.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+        
+        self.messageLabel.backgroundColor = UIColor(white: 1, alpha: 1)
+        self.messageLabel.layer.cornerRadius = 10
+
+//        self.messageLabel.textAlignment = .center
+//        self.messageLabel.numberOfLines = 0
+        
+        self.messageLabel.centerYAnchor.constraint(equalTo: self.messagePanel.centerYAnchor).isActive = true
+        self.messageLabel.leadingAnchor.constraint(equalTo: self.messagePanel.leadingAnchor, constant: 30).isActive = true
+        
+//        self.messageLabel.isHidden = true
+    }
+    
+    private func configureRestartExperienceButton() {
+        self.messagePanel.addSubview(self.restartExperienceButton)
+        
+        let config = UIImage.SymbolConfiguration(pointSize: 15, weight: .light, scale: .large)
+        
+        let image = UIImage(systemName: "arrow.clockwise", withConfiguration: config)
+        
+        self.restartExperienceButton.setImage(image, for: .normal)
+        
+        let padding: CGFloat = 8.0
+        self.restartExperienceButton.contentEdgeInsets = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
+        
+        self.restartExperienceButton.addTarget(self, action: #selector(restartExperience(sender:)), for: .touchUpInside)
+        
+        self.restartExperienceButton.tintColor = UIColor.white
+        
+        self.restartExperienceButton.centerYAnchor.constraint(equalTo: self.messagePanel.centerYAnchor).isActive = true
+        self.restartExperienceButton.trailingAnchor.constraint(equalTo: self.messagePanel.trailingAnchor, constant: -15).isActive = true
+    }
+    
     func configureStackView() {
         /// Add the Stack View to the arView
-        self.arView.addSubview(stackView)
+        self.arView.addSubview(self.stackView)
         
         self.stackView.axis = .vertical
         self.stackView.spacing = 20

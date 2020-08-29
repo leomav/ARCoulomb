@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CoulombMenu_VC: UIViewController {
+class CoulombMenuVC: UIViewController {
     
     // MARK: - Views
     

@@ -55,17 +55,32 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         return stack
     }()
     
-    let resetButton: UIButton = {
+    let messagePanel: UIView = {
+        let panel = UIView()
+        
+        panel.translatesAutoresizingMaskIntoConstraints = false
+        
+        return panel
+    }()
+    
+    let messageLabel: UIPaddingLabel = {
+        let label = UIPaddingLabel()
+        
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
+    }()
+    
+    let restartExperienceButton: UIButton = {
         let btn = UIButton()
         
         btn.translatesAutoresizingMaskIntoConstraints = false
         
         return btn
     }()
-    
     @objc
     func restartExperience(sender: UIButton) {
-        // TODO:
+        self.restartExperience()
     }
     
     let newTopoButton: UIButton = {
@@ -81,6 +96,8 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         /// Disable and hide the StackView Buttons (add new pointCharge, add new topo)
         self.hideAndDisableButtons()
         
+        self.status?.cancelScheduledMessage(for: .contentPlacement)
+
         /// Open the bottom Coulomb Topology menu to choose topology
         performSegue(withIdentifier: "toTopoMenuSegue", sender: nil)
     }
@@ -95,6 +112,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     @objc
     func performAddition(sender: UIButton) {
+        
+        self.status?.cancelScheduledMessage(for: .contentPlacement)
+        
         self.topology?.addPointChargeWithRandomPosition()
     }
     
@@ -111,10 +131,15 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     let coachingOverlay = ARCoachingOverlayView()
     
-    /// The view controller that displays the status and "restart experience" UI.
-    lazy var statusViewController: StatusViewController = {
-        return children.lazy.compactMap({ $0 as? StatusViewController }).first!
-    }()
+    /// Marks if the AR experience is available for restart.
+    var isRestartAvailable = true
+    
+//    /// The view controller that displays the status and "restart experience" UI.
+//    lazy var statusViewController: StatusVC = {
+//        return children.lazy.compactMap({ $0 as? StatusVC }).first!
+//    }()
+    
+    var status: Status?
     
     // MARK: - Properties
     
@@ -124,6 +149,18 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         super.viewDidAppear(animated)
         
         self.arView.session.delegate = self
+        
+        /// Intialize status
+        self.status = Status(for: self)
+        
+        // Hook up status view controller callback(s).
+//        self.statusViewController.restartExperienceHandler = { [unowned self] in
+////            self.restartExperience()
+//        }
+        
+        self.status!.restartExperienceHandler = { [self] in
+            self.restartExperience()
+        }
         
         /// Set up ARView
         self.setupARView()
@@ -146,8 +183,11 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         /// Set up the Buttons Stack View in right hand side
         self.configureStackView()
         
-        /// Set up the Top Guide Text (helper text to place the topology)
-        self.configureGuideTextView()
+        /// Set up  the Top Message Panel
+        self.configureMessagePanel()
+        
+//        /// Set up the Top Guide Text (helper text to place the topology)
+//        self.configureGuideTextView()
     }
     
     // MARK: - Private Setup startup Functions
@@ -159,7 +199,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         config.environmentTexturing = .automatic
         
         self.arView.session.run(config, options: [.resetTracking, .removeExistingAnchors])
-//        self.arView.session.run(config)
     }
     
     private func setupTapGestureRecognizer() {
@@ -176,6 +215,26 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         longPressRecognizer.isEnabled =  false
     }
     
+    // MARK: - Restart Experience
+    
+    func restartExperience() {
+        //        guard isRestartAvailable, !virtualObjectLoader.isLoading else { return }
+        guard isRestartAvailable else { return }
+        isRestartAvailable = false
+
+        status!.cancelAllScheduledMessages()
+
+        topology?.clearTopology()
+
+        resetTracking()
+
+        // Disable restart for a while in order to give the session time to restart.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+            self.isRestartAvailable = true
+            self.messagePanel.isHidden = false
+        }
+    }
+    
     // MARK: - Reset Tracking
     
     func resetTracking() {
@@ -185,7 +244,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         
         self.setupARView()
         
-//        statusViewController.scheduleMessage("FIND A SURFACE TO PLACE AN OBJECT", inSeconds: 7.5, messageType: .planeEstimation)
+        self.status?.scheduleMessage("FIND A SURFACE TO PLACE A TOPOLOGY", inSeconds: 7.5, messageType: .planeEstimation)
     }
     
     // MARK: - (De)emphasize the tracked pointCharge Entity
@@ -210,4 +269,22 @@ extension BinaryInteger {
 extension FloatingPoint {
     var degreesToRadians: Self { self * .pi / 180 }
     var radiansToDegrees: Self { self * 180 / .pi }
+}
+
+@IBDesignable class UIPaddingLabel: UILabel {
+    @IBInspectable var topInset: CGFloat = 8.0
+    @IBInspectable var bottomInset: CGFloat = 8.0
+    @IBInspectable var leftInset: CGFloat = 8.0
+    @IBInspectable var rightInset: CGFloat = 8.0
+    
+    override func drawText(in rect: CGRect) {
+        let insets = UIEdgeInsets.init(top: topInset, left: leftInset, bottom: bottomInset, right: rightInset)
+        super.drawText(in: rect.inset(by: insets))
+    }
+    
+    override var intrinsicContentSize: CGSize {
+        let size = super.intrinsicContentSize
+        return CGSize(width: size.width + leftInset + rightInset,
+                      height: size.height + topInset + bottomInset)
+    }
 }

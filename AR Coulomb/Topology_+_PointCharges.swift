@@ -105,6 +105,13 @@ extension Topology {
         self.showForcesFor(for: selectedPointChargeObj)
     }
     
+    // Show or Hide all PointCharges
+    func togglePointCharge(show: Bool) {
+        self.pointCharges.forEach{ pointChargeObj in
+            pointChargeObj.entity.isEnabled = show
+        }
+    }
+    
     /// Calculate a random position
     private func randomPosition() -> SIMD3<Float>{
         let randPos: SIMD3<Float>
