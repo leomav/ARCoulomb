@@ -55,6 +55,19 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         return stack
     }()
     
+    let resetButton: UIButton = {
+        let btn = UIButton()
+        
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        
+        return btn
+    }()
+    
+    @objc
+    func restartExperience(sender: UIButton) {
+        // TODO:
+    }
+    
     let newTopoButton: UIButton = {
         let btn = UIButton()
         
@@ -98,6 +111,11 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     let coachingOverlay = ARCoachingOverlayView()
     
+    /// The view controller that displays the status and "restart experience" UI.
+    lazy var statusViewController: StatusViewController = {
+        return children.lazy.compactMap({ $0 as? StatusViewController }).first!
+    }()
+    
     // MARK: - Properties
     
     var topology: Topology?
@@ -139,7 +157,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         let config = ARWorldTrackingConfiguration()
         config.planeDetection = [.horizontal, .vertical]
         config.environmentTexturing = .automatic
-        self.arView.session.run(config)
+        
+        self.arView.session.run(config, options: [.resetTracking, .removeExistingAnchors])
+//        self.arView.session.run(config)
     }
     
     private func setupTapGestureRecognizer() {
@@ -155,6 +175,19 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         self.arView.addGestureRecognizer(longPressRecognizer)
         longPressRecognizer.isEnabled =  false
     }
+    
+    // MARK: - Reset Tracking
+    
+    func resetTracking() {
+        selectedPointChargeObj = PointChargeClass(onEntity: Entity(), withValue: 0)
+        longPressedEntity = Entity()
+        trackedEntity = Entity()
+        
+        self.setupARView()
+        
+//        statusViewController.scheduleMessage("FIND A SURFACE TO PLACE AN OBJECT", inSeconds: 7.5, messageType: .planeEstimation)
+    }
+    
     // MARK: - (De)emphasize the tracked pointCharge Entity
     
     func pointChargeInteract(zoom: Float, showLabel: Bool) {

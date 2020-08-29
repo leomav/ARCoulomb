@@ -11,6 +11,7 @@
 		9F1FAA2124F1D95600BF6137 /* ViewController_+_ARCoachingOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1FAA2024F1D95600BF6137 /* ViewController_+_ARCoachingOverlay.swift */; };
 		9F2FC67424F4006800D0BA7D /* Topology.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2FC67324F4006800D0BA7D /* Topology.swift */; };
 		9F368B25249A582000C6E07A /* PointCharge.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 9F368B24249A582000C6E07A /* PointCharge.rcproject */; };
+		9F37040624FA867C00960422 /* Status_VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F37040524FA867C00960422 /* Status_VC.swift */; };
 		9F3E8B7324F79FBB0018D250 /* ViewController_+_Observers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3E8B7224F79FBB0018D250 /* ViewController_+_Observers.swift */; };
 		9F3E8B7524F7AD980018D250 /* Topology_+_PointCharges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3E8B7424F7AD980018D250 /* Topology_+_PointCharges.swift */; };
 		9F474FA824C37B3E004E1B54 /* Topology_+_Forces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F474FA724C37B3E004E1B54 /* Topology_+_Forces.swift */; };
@@ -38,6 +39,7 @@
 		9F1FAA2024F1D95600BF6137 /* ViewController_+_ARCoachingOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController_+_ARCoachingOverlay.swift"; sourceTree = "<group>"; };
 		9F2FC67324F4006800D0BA7D /* Topology.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Topology.swift; sourceTree = "<group>"; };
 		9F368B24249A582000C6E07A /* PointCharge.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = PointCharge.rcproject; sourceTree = "<group>"; };
+		9F37040524FA867C00960422 /* Status_VC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Status_VC.swift; sourceTree = "<group>"; };
 		9F3E8B7224F79FBB0018D250 /* ViewController_+_Observers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController_+_Observers.swift"; sourceTree = "<group>"; };
 		9F3E8B7424F7AD980018D250 /* Topology_+_PointCharges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Topology_+_PointCharges.swift"; sourceTree = "<group>"; };
 		9F474FA724C37B3E004E1B54 /* Topology_+_Forces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Topology_+_Forces.swift"; sourceTree = "<group>"; };
@@ -73,6 +75,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9F37040424FA864700960422 /* Additional View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				9FF77FD824A7E3EA003477C2 /* CoulombMenu_VC.swift */,
+				9FF77FD624A7993C003477C2 /* BottomTopo_VC.swift */,
+				9F37040524FA867C00960422 /* Status_VC.swift */,
+			);
+			path = "Additional View Controllers";
+			sourceTree = "<group>";
+		};
 		9FD94467249A258400C0E646 = {
 			isa = PBXGroup;
 			children = (
@@ -99,11 +111,10 @@
 				9F3E8B7224F79FBB0018D250 /* ViewController_+_Observers.swift */,
 				9FFD6FCD24ABFFB800D8DE89 /* ViewController_+_ObjectPlacement.swift */,
 				9F1FAA2024F1D95600BF6137 /* ViewController_+_ARCoachingOverlay.swift */,
+				9F37040424FA864700960422 /* Additional View Controllers */,
 				9F2FC67324F4006800D0BA7D /* Topology.swift */,
 				9F474FA724C37B3E004E1B54 /* Topology_+_Forces.swift */,
 				9F3E8B7424F7AD980018D250 /* Topology_+_PointCharges.swift */,
-				9FF77FD824A7E3EA003477C2 /* CoulombMenu_VC.swift */,
-				9FF77FD624A7993C003477C2 /* BottomTopo_VC.swift */,
 				9FD94479249A258400C0E646 /* Main.storyboard */,
 				9FD9447C249A258600C0E646 /* Assets.xcassets */,
 				9FD9447E249A258600C0E646 /* LaunchScreen.storyboard */,
@@ -196,6 +207,7 @@
 				9F17B77724F91E3500A98253 /* ViewController_+_UI.swift in Sources */,
 				9FF77FD724A7993C003477C2 /* BottomTopo_VC.swift in Sources */,
 				9FD94474249A258400C0E646 /* AppDelegate.swift in Sources */,
+				9F37040624FA867C00960422 /* Status_VC.swift in Sources */,
 				9F1FAA2124F1D95600BF6137 /* ViewController_+_ARCoachingOverlay.swift in Sources */,
 				9F3E8B7324F79FBB0018D250 /* ViewController_+_Observers.swift in Sources */,
 				9F68AAD724F6FF95004F1A3C /* Alert.swift in Sources */,

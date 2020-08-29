@@ -43,11 +43,13 @@ extension ViewController {
                 trackedEntity = Entity()
 
                 /// Find and set the new Selected PointChargeObj
-                topology!.pointCharges.forEach{ pointChargeObj in
-                    if pointChargeObj.entity == longPressedEntity {
-                        selectedPointChargeObj = pointChargeObj
-                    }
-                }
+                selectedPointChargeObj = topology?.pointCharges.first(where: {$0.entity == longPressedEntity})! as! PointChargeClass
+                    
+//                topology!.pointCharges.forEach{ pointChargeObj in
+//                    if pointChargeObj.entity == longPressedEntity {
+//                        selectedPointChargeObj = pointChargeObj
+//                    }
+//                }
                 
                 /// Show forces relative to the selectedPointChargeObj
                 self.topology?.showForcesFor(for: selectedPointChargeObj)
