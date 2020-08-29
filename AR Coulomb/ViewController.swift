@@ -165,7 +165,20 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         /// Set up ARView
         self.setupARView()
         
+        /// First tap gesture recognizer, will be deleted after first point of charge is added
+        self.setupTapGestureRecognizer()
+        
+        /// Long Press Recognizer to enable parameters interaction with Point Charge (min press 1 sec)
+        self.setupLongPressRecognizer()
+        
+        /// Set up  the Top Message Panel
+        self.configureMessagePanel()
+        
+        /// Set up the Buttons Stack View in right hand side
+        self.configureStackView()
+        
         /// Set up coaching overlay.
+        /// Careful to set it up after setting up the GestureRecognizers.
         self.setupCoachingOverlay()
         
         /// Create the Topology Notification Observer
@@ -173,18 +186,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         
         /// Create the CoulombMenu Dismissal Observer
         self.setupObserverMenuDismissal()
-        
-        /// First tap gesture recognizer, will be deleted after first point of charge is added
-        self.setupTapGestureRecognizer()
-        
-        /// Long Press Recognizer to enable parameters interaction with Point Charge (min press 1 sec)
-        self.setupLongPressRecognizer()
-        
-        /// Set up the Buttons Stack View in right hand side
-        self.configureStackView()
-        
-        /// Set up  the Top Message Panel
-        self.configureMessagePanel()
         
 //        /// Set up the Top Guide Text (helper text to place the topology)
 //        self.configureGuideTextView()
@@ -242,6 +243,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         longPressedEntity = Entity()
         trackedEntity = Entity()
         
+        self.arView.gestureRecognizers?.first(where: {$0.name == "First Point Recognizer"})?.isEnabled = true
+        self.arView.gestureRecognizers?.first(where: {$0.name == "Long Press Recognizer"})?.isEnabled = false
+
         self.setupARView()
         
         self.status?.scheduleMessage("FIND A SURFACE TO PLACE A TOPOLOGY", inSeconds: 7.5, messageType: .planeEstimation)

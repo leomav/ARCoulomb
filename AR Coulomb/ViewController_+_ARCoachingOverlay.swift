@@ -14,12 +14,12 @@ extension ViewController: ARCoachingOverlayViewDelegate {
         
         /// - Tag: HideUI
         func coachingOverlayViewWillActivate(_ coachingOverlayView: ARCoachingOverlayView) {
-            self.guideText.isHidden = true
         }
         
         /// - Tag: PresentUI
         func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
-            self.guideText.isHidden = false
+            /// Enable the Tap Recognizer to place the Topology after finding a surface
+            self.arView.gestureRecognizers?.first(where: {$0.name == "First Point Recognizer"})?.isEnabled = true
             
             /// Helping Message in MessagePanel when surface is detected
             self.status?.cancelScheduledMessage(for: .planeEstimation)
