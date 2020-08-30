@@ -47,12 +47,12 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     @IBOutlet var arView: ARView!
     
-    let stackView: UIStackView = {
-        let stack = UIStackView()
-        stack.translatesAutoresizingMaskIntoConstraints = false
+    let shutterView: UIView = {
+        let view = UIView()
         
+        view.translatesAutoresizingMaskIntoConstraints = false
         
-        return stack
+        return view
     }()
     
     let messagePanel: UIView = {
@@ -83,6 +83,64 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         self.restartExperience()
     }
     
+    let stackView: UIStackView = {
+        let stack = UIStackView()
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        return stack
+    }()
+    
+    let cancelCaptureButton: UIButton = {
+        let btn = UIButton()
+        
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        
+        return btn
+    }()
+    
+    @objc
+    func goBack(sender: UIButton){
+        // - TODO:
+    }
+    
+    let captureButton: UIButton = {
+        let btn = UIButton()
+        
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        
+        return btn
+    }()
+    
+    @objc
+    func captureSnapshot(sender: UIButton) {
+        
+        self.shutterView.alpha = 1
+        self.shutterView.isHidden = false
+        UIView.animate(withDuration: 1.0, animations: {
+            self.shutterView.alpha = 0
+        }) { (finished) in
+            self.shutterView.isHidden = true
+            
+            //            let rect = CGRect(x: 0, y: 0, width: self.cameraView.bounds.width, height: self.cameraView.bounds.height - 30)
+            let screenshot = self.arView.snapshot()
+            UIImageWriteToSavedPhotosAlbum(screenshot, nil, nil, nil)
+        }
+    }
+    
+    let saveButton: UIButton = {
+        let btn = UIButton()
+        
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        
+        return btn
+    }()
+    
+    @objc
+    func openCaptureMenu(sender: UIButton) {
+        // - TODO:
+    }
+    
     let newTopoButton: UIButton = {
         let btn = UIButton()
         
@@ -97,7 +155,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         self.hideAndDisableButtons()
         
         self.status?.cancelScheduledMessage(for: .contentPlacement)
-
+        
         /// Open the bottom Coulomb Topology menu to choose topology
         performSegue(withIdentifier: "toTopoMenuSegue", sender: nil)
     }
@@ -118,15 +176,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         self.topology?.addPointChargeWithRandomPosition()
     }
     
-    /// Helper guidance Text on top of the view
-    let guideText: UILabel = {
-        let view = UILabel()
-        
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        return view
-    }()
-    
     // MARK: - UI Elements
     
     let coachingOverlay = ARCoachingOverlayView()
@@ -134,10 +183,8 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     /// Marks if the AR experience is available for restart.
     var isRestartAvailable = true
     
-//    /// The view controller that displays the status and "restart experience" UI.
-//    lazy var statusViewController: StatusVC = {
-//        return children.lazy.compactMap({ $0 as? StatusVC }).first!
-//    }()
+    /// Menu Dictionary for Main or Capture Buttons Menu in StackView
+    var menuDict:[String:[UIButton]]?
     
     var status: Status?
     
@@ -153,10 +200,16 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         /// Intialize status
         self.status = Status(for: self)
         
+        /// Initialize dicitionary
+        self.menuDict = [
+            "main": [self.addButton, self.newTopoButton],
+            "capture": [self.captureButton, self.cancelCaptureButton]
+        ]
+        
         // Hook up status view controller callback(s).
-//        self.statusViewController.restartExperienceHandler = { [unowned self] in
-////            self.restartExperience()
-//        }
+        //        self.statusViewController.restartExperienceHandler = { [unowned self] in
+        ////            self.restartExperience()
+        //        }
         
         self.status!.restartExperienceHandler = { [self] in
             self.restartExperience()
@@ -187,8 +240,8 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         /// Create the CoulombMenu Dismissal Observer
         self.setupObserverMenuDismissal()
         
-//        /// Set up the Top Guide Text (helper text to place the topology)
-//        self.configureGuideTextView()
+        //        /// Set up the Top Guide Text (helper text to place the topology)
+        //        self.configureGuideTextView()
     }
     
     // MARK: - Private Setup startup Functions
@@ -222,13 +275,13 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         //        guard isRestartAvailable, !virtualObjectLoader.isLoading else { return }
         guard isRestartAvailable else { return }
         isRestartAvailable = false
-
+        
         status!.cancelAllScheduledMessages()
-
+        
         topology?.clearTopology()
-
+        
         resetTracking()
-
+        
         // Disable restart for a while in order to give the session time to restart.
         DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
             self.isRestartAvailable = true
@@ -245,7 +298,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         
         self.arView.gestureRecognizers?.first(where: {$0.name == "First Point Recognizer"})?.isEnabled = true
         self.arView.gestureRecognizers?.first(where: {$0.name == "Long Press Recognizer"})?.isEnabled = false
-
+        
         self.setupARView()
         
         self.status?.scheduleMessage("FIND A SURFACE TO PLACE A TOPOLOGY", inSeconds: 7.5, messageType: .planeEstimation)
