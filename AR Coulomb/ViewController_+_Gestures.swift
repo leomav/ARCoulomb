@@ -55,7 +55,7 @@ extension ViewController {
                 self.topology?.showForcesFor(for: selectedPointChargeObj)
 
                 /// Disable and hide the StackView Buttons (add new pointCharge, add new topo)
-                self.hideAndDisableButtons()
+                self.toggleStackView(hide: true, animated: false)
                 
                 self.status?.cancelScheduledMessage(for: .contentPlacement)
 

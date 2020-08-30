@@ -20,7 +20,7 @@ struct Alert {
             vc.topology?.removePointCharge()
             
             /// Enable the Stack View Buttons (add pointChaege, add topo)
-            vc.showAndEnableButtons()
+            vc.toggleStackView(hide: false, animated: false)
             
             /// If the Limit Number is reached, disable the Add Button
             /// Probably impossible since one was just deleted, but whatever, SAFETY FIRST

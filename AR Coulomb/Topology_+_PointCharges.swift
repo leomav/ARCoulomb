@@ -33,8 +33,8 @@ extension Topology {
         /// Enable Arrows for SingleForces and NetForce of the selectedPointChargeObj (the recently added)
         self.showForcesFor(for: selectedPointChargeObj)
         
-        /// Disable and hide the StackView Buttons (add new pointCharge, add new topo)
-        self.viewController.hideAndDisableButtons()
+        /// Disable and hide the StackView Buttons 
+        self.viewController.toggleStackView(hide: true, animated: false)
         
         /// Perform seague to CoulombMenu ViewController
         self.viewController.performSegue(withIdentifier: "toCoulombMenuSegue", sender: nil)

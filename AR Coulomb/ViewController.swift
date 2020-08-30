@@ -76,6 +76,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         
         btn.translatesAutoresizingMaskIntoConstraints = false
         
+        btn.addTarget(self, action: #selector(restartExperience(sender:)), for: .touchUpInside)
+
+        
         return btn
     }()
     @objc
@@ -96,12 +99,16 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         
         btn.translatesAutoresizingMaskIntoConstraints = false
         
+        btn.addTarget(self, action: #selector(goBack(sender:)), for: .touchUpInside)
+
+        
         return btn
     }()
     
     @objc
     func goBack(sender: UIButton){
         // - TODO:
+        self.transitionStackViewMenu(to: "main")
     }
     
     let captureButton: UIButton = {
@@ -109,11 +116,17 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         
         btn.translatesAutoresizingMaskIntoConstraints = false
         
+        btn.addTarget(self, action: #selector(captureSnapshot(sender:)), for: .touchUpInside)
+
+        
         return btn
     }()
     
     @objc
     func captureSnapshot(sender: UIButton) {
+        
+        /// Hide all subviews (buttons, labels)
+//        self.toggleAllSubviews(of: self.arView, hide: true)
         
         self.shutterView.alpha = 1
         self.shutterView.isHidden = false
@@ -133,12 +146,14 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         
         btn.translatesAutoresizingMaskIntoConstraints = false
         
+        btn.addTarget(self, action: #selector(openCaptureMenu(sender:)), for: .touchUpInside)
+
         return btn
     }()
     
     @objc
     func openCaptureMenu(sender: UIButton) {
-        // - TODO:
+        self.transitionStackViewMenu(to: "camera")
     }
     
     let newTopoButton: UIButton = {
@@ -146,13 +161,15 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         
         btn.translatesAutoresizingMaskIntoConstraints = false
         
+        btn.addTarget(self, action: #selector(performTopoMenuSeague(sender:)), for: .touchUpInside)
+        
         return btn
     }()
     
     @objc
     func performTopoMenuSeague(sender: UIButton) {
         /// Disable and hide the StackView Buttons (add new pointCharge, add new topo)
-        self.hideAndDisableButtons()
+        self.toggleStackView(hide: true, animated: false)
         
         self.status?.cancelScheduledMessage(for: .contentPlacement)
         
@@ -164,6 +181,8 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         let btn = UIButton()
         
         btn.translatesAutoresizingMaskIntoConstraints = false
+        
+        btn.addTarget(self, action: #selector(performAddition(sender:)), for: .touchUpInside)
         
         return btn
     }()
@@ -200,20 +219,15 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         /// Intialize status
         self.status = Status(for: self)
         
-        /// Initialize dicitionary
-        self.menuDict = [
-            "main": [self.addButton, self.newTopoButton],
-            "capture": [self.captureButton, self.cancelCaptureButton]
-        ]
-        
-        // Hook up status view controller callback(s).
-        //        self.statusViewController.restartExperienceHandler = { [unowned self] in
-        ////            self.restartExperience()
-        //        }
-        
         self.status!.restartExperienceHandler = { [self] in
             self.restartExperience()
         }
+        
+        /// Initialize dicitionary
+        self.menuDict = [
+            "main": [self.saveButton, self.newTopoButton, self.addButton],
+            "camera": [self.captureButton, self.cancelCaptureButton]
+        ]
         
         /// Set up ARView
         self.setupARView()
@@ -229,6 +243,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         
         /// Set up the Buttons Stack View in right hand side
         self.configureStackView()
+        
+        /// Set up the Shutter View (Used for Visual Effect when screenshot happens)
+        self.configureShutterView()
         
         /// Set up coaching overlay.
         /// Careful to set it up after setting up the GestureRecognizers.

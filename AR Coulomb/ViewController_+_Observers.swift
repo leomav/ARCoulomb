@@ -23,7 +23,7 @@ extension ViewController {
     @objc
     func recoverAddButton(notification: Notification) {
         /// Enable the StackView Buttons (add new pointCharge, add new topo)
-        self.showAndEnableButtons()
+        self.toggleStackView(hide: false, animated: false)
         
         /// If the Limit Number is reached, disable the Add Button
         if self.topology?.pointCharges.count == 6 {
@@ -55,7 +55,7 @@ extension ViewController {
             }
             
             /// Enable the StackView Buttons (add new pointCharge, add new topo)
-            self.showAndEnableButtons()
+            self.toggleStackView(hide: false, animated: false)
             
             /// If the Limit Number is reached, disable the Add Button
             if self.topology?.pointCharges.count == 6 {

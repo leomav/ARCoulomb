@@ -11,6 +11,16 @@ import UIKit
 
 extension ViewController {
     
+    //    enum MenuType {
+    //        case main = "main"
+    //        case camera = "camera"
+    //
+    //        static var all = [MenuType] {
+    //            .main,
+    //            .camera
+    //        }
+    //    }
+    
     // MARK: - Configurations
     
     func configureMessagePanel() {
@@ -59,12 +69,27 @@ extension ViewController {
         let padding: CGFloat = 8.0
         self.restartExperienceButton.contentEdgeInsets = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
         
-        self.restartExperienceButton.addTarget(self, action: #selector(restartExperience(sender:)), for: .touchUpInside)
+        //        self.restartExperienceButton.addTarget(self, action: #selector(restartExperience(sender:)), for: .touchUpInside)
         
         self.restartExperienceButton.tintColor = UIColor.white
         
         self.restartExperienceButton.centerYAnchor.constraint(equalTo: self.messagePanel.centerYAnchor).isActive = true
         self.restartExperienceButton.trailingAnchor.constraint(equalTo: self.messagePanel.trailingAnchor, constant: -15).isActive = true
+    }
+    
+    func configureShutterView() {
+        self.arView.addSubview(shutterView)
+        
+        /// At first, shutter view is total trasparent ...
+        self.shutterView.backgroundColor = UIColor(white: 1, alpha: 0)
+        
+        self.shutterView.leadingAnchor.constraint(equalTo: self.arView.leadingAnchor).isActive = true
+        self.shutterView.topAnchor.constraint(equalTo: self.arView.topAnchor).isActive = true
+        self.shutterView.trailingAnchor.constraint(equalTo: self.arView.leadingAnchor).isActive = true
+        self.shutterView.bottomAnchor.constraint(equalTo: self.arView.bottomAnchor).isActive = true
+        
+        /// ... and also Hidden
+        self.shutterView.isHidden = true
     }
     
     func configureStackView() {
@@ -79,130 +104,46 @@ extension ViewController {
         self.stackView.bottomAnchor.constraint(equalTo: self.arView.bottomAnchor, constant: -30).isActive = true
         self.stackView.trailingAnchor.constraint(equalTo: self.arView.trailingAnchor, constant: -15).isActive = true
         
-        /// Set up the ADD Button (adds pointcharge to scene)
-        self.configureAddButton(height: 50)
+        /// Configure the StackView Menu Buttons
+        self.configureButton(btn: self.saveButton, imageName: "square.and.arrow.down", height: 50)
+        self.configureButton(btn: self.newTopoButton, imageName: "rectangle.stack.badge.plus", height: 50)
+        self.configureButton(btn: self.addButton, imageName: "plus", height: 50)
+        self.configureButton(btn: self.captureButton, imageName: "camera.viewfinder", height: 50)
+        self.configureButton(btn: self.cancelCaptureButton, imageName: "arrow.turn.up.left", height: 50)
         
-        /// Set up the New Topo Button (opens the topology bottom menu)
-        self.configureNewTopoButton(height: 50)
-        
+        /// At first, stackView contains the Main Menu Buttons
+        self.stackView.addArrangedSubview(saveButton)
         self.stackView.addArrangedSubview(newTopoButton)
         self.stackView.addArrangedSubview(addButton)
         
         /// At first, it's hidden and disabled until a topology is placed
-        self.hideAndDisableButtons()
+        self.toggleStackView(hide: true, animated: false)
     }
     
-    func configureAddButton(height: Float) {
-        
+    func configureButton(btn: UIButton, imageName: String, height: Float){
         let config = UIImage.SymbolConfiguration(pointSize: 30, weight: .light, scale: .large)
         
-        let image = UIImage(systemName: "plus", withConfiguration: config)
+        let image = UIImage(systemName: imageName, withConfiguration: config)
         
-        self.addButton.setImage(image, for: .normal)
-        
-        let padding: CGFloat = 8.0
-        self.addButton.contentEdgeInsets = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
-        
-        self.addButton.addTarget(self, action: #selector(performAddition(sender:)), for: .touchUpInside)
-        
-        self.addButton.layer.cornerRadius = 10
-        //        self.addButton.imageView?.clipsToBounds = true
-        
-        self.addButton.tintColor = UIColor.white
-        self.addButton.backgroundColor = UIColor(white: 0, alpha: 0.7)
-        
-        self.addButton.heightAnchor.constraint(equalToConstant: CGFloat(height)).isActive = true
-    }
-    
-    func configureNewTopoButton(height: Float) {
-        let config = UIImage.SymbolConfiguration(pointSize: 30, weight: .light, scale: .large)
-        
-        let image = UIImage(systemName: "rectangle.stack.badge.plus", withConfiguration: config)
-        
-        self.newTopoButton.setImage(image, for: .normal)
+        btn.setImage(image, for: .normal)
         
         let padding: CGFloat = 8.0
-        self.newTopoButton.contentEdgeInsets = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
+        btn.contentEdgeInsets = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
         
-        self.newTopoButton.addTarget(self, action: #selector(performTopoMenuSeague(sender:)), for: .touchUpInside)
+        //        self.addButton.addTarget(self, action: #selector(performAddition(sender:)), for: .touchUpInside)
         
-        self.newTopoButton.layer.cornerRadius = 10
+        btn.layer.cornerRadius = 10
         //        self.addButton.imageView?.clipsToBounds = true
+        btn.tintColor = UIColor.white
+        btn.backgroundColor = UIColor(white: 0, alpha: 0.7)
+        btn.isHidden = true
         
-        self.newTopoButton.tintColor = UIColor.white
-        self.newTopoButton.backgroundColor = UIColor(white: 0, alpha: 0.7)
-        
-        self.newTopoButton.heightAnchor.constraint(equalToConstant: CGFloat(height)).isActive = true
-    }
-    
-    func configureSaveButton(height: Float) {
-        let config = UIImage.SymbolConfiguration(pointSize: 30, weight: .light, scale: .large)
-        
-        let image = UIImage(systemName: "square.and.arrow.down", withConfiguration: config)
-        
-        self.newTopoButton.setImage(image, for: .normal)
-        
-        let padding: CGFloat = 8.0
-        self.newTopoButton.contentEdgeInsets = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
-        
-        self.newTopoButton.addTarget(self, action: #selector(performTopoMenuSeague(sender:)), for: .touchUpInside)
-        
-        self.newTopoButton.layer.cornerRadius = 10
-        //        self.addButton.imageView?.clipsToBounds = true
-        
-        self.newTopoButton.tintColor = UIColor.white
-        self.newTopoButton.backgroundColor = UIColor(white: 0, alpha: 0.7)
-        
-        self.newTopoButton.heightAnchor.constraint(equalToConstant: CGFloat(height)).isActive = true
-    }
-    
-    func configureCaptureButton(height: Float) {
-        let config = UIImage.SymbolConfiguration(pointSize: 30, weight: .light, scale: .large)
-        
-        //        let image = UIImageView(image: UIImage(systemName: "plus", withConfiguration: config))
-        let image = UIImage(systemName: "camera.viewfinder", withConfiguration: config)
-        
-        self.captureButton.setImage(image, for: .normal)
-        
-        let padding: CGFloat = 8.0
-        self.captureButton.contentEdgeInsets = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
-        
-        self.captureButton.addTarget(self, action: #selector(captureSnapshot(sender:)), for: .touchUpInside)
-        
-        self.captureButton.layer.cornerRadius = 10
-        //        self.addButton.imageView?.clipsToBounds = true
-        
-        self.captureButton.tintColor = UIColor.white
-        self.captureButton.backgroundColor = UIColor(white: 0, alpha: 0.7)
-        
-        self.captureButton.heightAnchor.constraint(equalToConstant: CGFloat(height)).isActive = true
-    }
-    
-    func configureCancelCaptureButton(height: Float) {
-        let config = UIImage.SymbolConfiguration(pointSize: 30, weight: .light, scale: .large)
-        
-        //        let image = UIImageView(image: UIImage(systemName: "plus", withConfiguration: config))
-        let image = UIImage(systemName: "arrow.turn.up.left", withConfiguration: config)
-        
-        self.cancelCaptureButton.setImage(image, for: .normal)
-        
-        let padding: CGFloat = 8.0
-        self.cancelCaptureButton.contentEdgeInsets = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
-        
-        self.cancelCaptureButton.addTarget(self, action: #selector(goBack(sender:)), for: .touchUpInside)
-        
-        self.cancelCaptureButton.layer.cornerRadius = 10
-        //        self.addButton.imageView?.clipsToBounds = true
-        
-        self.cancelCaptureButton.tintColor = UIColor.white
-        self.cancelCaptureButton.backgroundColor = UIColor(white: 0, alpha: 0.7)
-        
-        self.cancelCaptureButton.heightAnchor.constraint(equalToConstant: CGFloat(height)).isActive = true
+        btn.heightAnchor.constraint(equalToConstant: CGFloat(height)).isActive = true
     }
     
     // MARK: - StackView Existance
     
-    func toggleStackViewMenu(hide: Bool, animated: Bool = true) {
+    func toggleStackView(hide: Bool, animated: Bool = true) {
         
         /// animated will be false when we want to hide the stackView
         if !animated {
@@ -215,41 +156,46 @@ extension ViewController {
         }
         
         UIView.animate(withDuration: 0.2, delay: 0, options: [.beginFromCurrentState], animations: {
-            self.stackView.spacing = 0
+            self.stackView.spacing = hide ? 0 : 20
             self.stackView.arrangedSubviews.forEach{ btn in
                 btn.isHidden = hide
             }
+            self.stackView.isHidden = hide
         }, completion: nil)
     }
     
-    func showStackViewMenu(for menu: String) {
+    func transitionStackViewMenu(to menu: String) {
         
-        /// Animate hiding the menu
-        self.toggleStackViewMenu(hide: true)
-        
-        /// Remove previous Menu Buttons
-        self.stackView.arrangedSubviews.forEach{ btn in
-            self.stackView.removeArrangedSubview(btn)
-        }
-        /// Add the new ones
-        self.menuDict?[menu]?.forEach{ btn in
-            self.stackView.addArrangedSubview(btn)
-        }
-        
-        /// Animate showing the menu
-        self.toggleStackViewMenu(hide: false)
-        
+        UIView.animate(withDuration: 0.2, delay: 0, options: [.beginFromCurrentState], animations: {
+            self.stackView.spacing = 0
+            self.stackView.arrangedSubviews.forEach{ btn in
+                btn.isHidden = true
+            }
+        }, completion: {(finished) in
+            
+            /// Replace the current menu's buttons with the next menu's
+            self.stackView.arrangedSubviews.forEach{ btn in
+                self.stackView.removeArrangedSubview(btn)
+            }
+            self.menuDict?[menu]?.forEach{ btn in
+                self.stackView.addArrangedSubview(btn)
+            }
+            
+            /// Present them
+            UIView.animate(withDuration: 0.2, delay: 0, options: [.beginFromCurrentState], animations: {
+                self.stackView.spacing = 20
+                self.stackView.arrangedSubviews.forEach{ btn in
+                    btn.isHidden = false
+                }
+            }, completion: nil)
+        })
     }
     
-    func showAndEnableButtons() {
-        self.addButton.isEnabled = true
-        self.newTopoButton.isEnabled = true
-        self.stackView.isHidden = false
+    // MARK: - SubViews existance
+    func toggleAllSubviews(of view: UIView, hide: Bool) {
+        view.subviews.forEach { sub in
+            sub.isHidden = hide
+        }
     }
     
-    func hideAndDisableButtons() {
-        self.addButton.isEnabled = false
-        self.newTopoButton.isEnabled = false
-        self.stackView.isHidden = true
-    }
 }
