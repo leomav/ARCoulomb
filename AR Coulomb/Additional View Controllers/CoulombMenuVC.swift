@@ -93,12 +93,6 @@ class CoulombMenuVC: UIViewController {
         self.configureTrashButton()
     }
     
-    // MARK: - After Dismiss Method
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        
-    }
-    
     // MARK: - ViewsSetup Functions
     
     func configureTabView() {

@@ -34,6 +34,9 @@ let coulombTextMaterial: SimpleMaterial = {
     return mat
 }()
 
+/// Captured Image for saving
+var capturedImage: UIImage = UIImage()
+
 let ZOOM_IN_5_4: Float = 1.25
 let ZOOM_OUT_4_5: Float = 0.8
 
@@ -77,7 +80,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         btn.translatesAutoresizingMaskIntoConstraints = false
         
         btn.addTarget(self, action: #selector(restartExperience(sender:)), for: .touchUpInside)
-
+        
         
         return btn
     }()
@@ -100,7 +103,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         btn.translatesAutoresizingMaskIntoConstraints = false
         
         btn.addTarget(self, action: #selector(goBack(sender:)), for: .touchUpInside)
-
+        
         
         return btn
     }()
@@ -117,7 +120,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         btn.translatesAutoresizingMaskIntoConstraints = false
         
         btn.addTarget(self, action: #selector(captureSnapshot(sender:)), for: .touchUpInside)
-
+        
         
         return btn
     }()
@@ -126,7 +129,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     func captureSnapshot(sender: UIButton) {
         
         /// Hide all subviews (buttons, labels)
-//        self.toggleAllSubviews(of: self.arView, hide: true)
+        //        self.toggleAllSubviews(of: self.arView, hide: true)
         
         self.shutterView.alpha = 1
         self.shutterView.isHidden = false
@@ -137,7 +140,10 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
             
             //            let rect = CGRect(x: 0, y: 0, width: self.cameraView.bounds.width, height: self.cameraView.bounds.height - 30)
             let screenshot = self.arView.snapshot()
-            UIImageWriteToSavedPhotosAlbum(screenshot, nil, nil, nil)
+            
+            // performSeague to CapturedImageViewController
+            self.performSegueToCapturedImageVC(image: screenshot)
+            //            UIImageWriteToSavedPhotosAlbum(screenshot, nil, nil, nil)
         }
     }
     
@@ -147,7 +153,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         btn.translatesAutoresizingMaskIntoConstraints = false
         
         btn.addTarget(self, action: #selector(openCaptureMenu(sender:)), for: .touchUpInside)
-
+        
         return btn
     }()
     
@@ -161,20 +167,14 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         
         btn.translatesAutoresizingMaskIntoConstraints = false
         
-        btn.addTarget(self, action: #selector(performTopoMenuSeague(sender:)), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(confirmSeagueToTopoMenu(sender:)), for: .touchUpInside)
         
         return btn
     }()
     
     @objc
-    func performTopoMenuSeague(sender: UIButton) {
-        /// Disable and hide the StackView Buttons (add new pointCharge, add new topo)
-        self.toggleStackView(hide: true, animated: false)
-        
-        self.status?.cancelScheduledMessage(for: .contentPlacement)
-        
-        /// Open the bottom Coulomb Topology menu to choose topology
-        performSegue(withIdentifier: "toTopoMenuSegue", sender: nil)
+    func confirmSeagueToTopoMenu(sender: UIButton) {
+        Alert.showSeagueToTopoMenuConfirmation(on: self)
     }
     
     let addButton: UIButton = {
@@ -284,6 +284,30 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         longPressRecognizer.minimumPressDuration = 1
         self.arView.addGestureRecognizer(longPressRecognizer)
         longPressRecognizer.isEnabled =  false
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toCapturedImageVCSegue" {
+            if let capturedImageVC = segue.destination as? CapturedImageVC{
+                capturedImageVC.image = capturedImage
+            }
+        }
+    }
+    
+    // MARK: - Perform Seague
+    
+    func performSegueToTopoMenu() {
+        /// Disable and hide the StackView Buttons (add new pointCharge, add new topo)
+        self.toggleStackView(hide: true, animated: false)
+        
+        self.status?.cancelScheduledMessage(for: .contentPlacement)
+        
+        /// Open the bottom Coulomb Topology menu to choose topology
+        performSegue(withIdentifier: "toTopoMenuSegue", sender: nil)
+    }
+    
+    func performSegueToCapturedImageVC(image: UIImage) {
+        performSegue(withIdentifier: "toCapturedImageVCSegue", sender: image)
     }
     
     // MARK: - Restart Experience

@@ -10,6 +10,21 @@ import UIKit
 
 struct Alert {
     
+    private static func showTripleConfirmationAlert(on vc: ViewController, title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title:"Cancel", style: .cancel, handler: { (UIAlertAction) in
+            // DO NOTHING
+        }))
+        alert.addAction(UIAlertAction(title: "Not Save", style: .destructive, handler: { (UIAlertAction) in
+            // New Topology
+            vc.performSegueToTopoMenu()
+        }))
+        alert.addAction(UIAlertAction(title: "Save", style: .default, handler: { action in
+            vc.transitionStackViewMenu(to: "camera")
+        }))
+        vc.present(alert, animated: true, completion: nil)
+    }
+    
     private static func showConfirmationAlert(on vc: ViewController, title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: { (UIAlertAction) in
@@ -45,6 +60,10 @@ struct Alert {
     
     static func showPointChargesLimitReached(on vc: ViewController) {
         showBasicAlert(on: vc, title: "Limit reached", message: "The maximum number (6) of point of Charges has been reached.")
+    }
+    
+    static func showSeagueToTopoMenuConfirmation(on vc: ViewController) {
+        showTripleConfirmationAlert(on: vc, title: "Unsaved Topology", message: "Do you want to save the current topology?")
     }
     
     

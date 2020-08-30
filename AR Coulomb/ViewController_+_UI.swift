@@ -48,9 +48,6 @@ extension ViewController {
         self.messageLabel.backgroundColor = UIColor(white: 1, alpha: 1)
         self.messageLabel.layer.cornerRadius = 10
         
-        //        self.messageLabel.textAlignment = .center
-        //        self.messageLabel.numberOfLines = 0
-        
         self.messageLabel.centerYAnchor.constraint(equalTo: self.messagePanel.centerYAnchor).isActive = true
         self.messageLabel.leadingAnchor.constraint(equalTo: self.messagePanel.leadingAnchor, constant: 30).isActive = true
         
@@ -147,7 +144,7 @@ extension ViewController {
         
         /// animated will be false when we want to hide the stackView
         if !animated {
-            self.stackView.subviews.forEach{ btn in
+            self.stackView.arrangedSubviews.forEach{ btn in
                 btn.isHidden = hide
             }
             self.stackView.isHidden = hide
@@ -198,4 +195,22 @@ extension ViewController {
         }
     }
     
+}
+
+
+extension UIView {
+
+    /// Create image snapshot of view.
+    ///
+    /// - Parameters:
+    ///   - rect: The coordinates (in the view's own coordinate space) to be captured. If omitted, the entire `bounds` will be captured.
+    ///   - afterScreenUpdates: A Boolean value that indicates whether the snapshot should be rendered after recent changes have been incorporated. Specify the value false if you want to render a snapshot in the view hierarchy’s current state, which might not include recent changes. Defaults to `true`.
+    ///
+    /// - Returns: The `UIImage` snapshot.
+
+    func snapshot(of rect: CGRect? = nil, afterScreenUpdates: Bool = true) -> UIImage {
+        return UIGraphicsImageRenderer(bounds: rect ?? bounds).image { _ in
+            drawHierarchy(in: bounds, afterScreenUpdates: afterScreenUpdates)
+        }
+    }
 }
