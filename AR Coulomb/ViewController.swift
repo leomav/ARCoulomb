@@ -140,10 +140,10 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
             
             //            let rect = CGRect(x: 0, y: 0, width: self.cameraView.bounds.width, height: self.cameraView.bounds.height - 30)
             let screenshot = self.arView.snapshot()
+            capturedImage = screenshot
             
             // performSeague to CapturedImageViewController
             self.performSegueToCapturedImageVC(image: screenshot)
-            //            UIImageWriteToSavedPhotosAlbum(screenshot, nil, nil, nil)
         }
     }
     
@@ -285,6 +285,8 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         self.arView.addGestureRecognizer(longPressRecognizer)
         longPressRecognizer.isEnabled =  false
     }
+    
+    // MARK: - Prepare Segue
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toCapturedImageVCSegue" {

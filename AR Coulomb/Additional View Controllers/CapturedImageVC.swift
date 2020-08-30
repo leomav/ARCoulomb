@@ -12,6 +12,14 @@ class CapturedImageVC: UIViewController {
     
     @IBOutlet var capturedImageView: UIView!
     
+    let imageView: UIImageView = {
+        let imageView = UIImageView()
+        
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return imageView
+    }()
+    
     let stackView: UIStackView = {
         let stack = UIStackView()
         
@@ -47,7 +55,26 @@ class CapturedImageVC: UIViewController {
     
     @objc
     func saveTopology(sender: UIButton) {
-        UIImageWriteToSavedPhotosAlbum(image!, nil, nil, nil)
+        UIImageWriteToSavedPhotosAlbum(image!, self, #selector(imageFeedback(_:didFinishSavingWithError:contextInfo:)), nil)
+    }
+    
+    @objc
+    func imageFeedback(_ image: UIImage, didFinishSavingWithError error: NSError?, contextInfo: UnsafeRawPointer) {
+        if let error = error {
+            // we got back an error!
+            let ac = UIAlertController(title: "Save error", message: error.localizedDescription, preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default, handler: { (UIAlertAction) in
+                self.dismiss(animated: true, completion: nil)
+            }))
+            present(ac, animated: true)
+        } else {
+            let ac = UIAlertController(title: "Saved!", message: "Your altered image has been saved to your photos.", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default, handler: { (UIAlertAction) in
+                self.dismiss(animated: true, completion: nil)
+            }))
+            present(ac, animated: true)
+        }
+        
     }
     
     // MARK: - UI Elements
@@ -57,23 +84,40 @@ class CapturedImageVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     
-        self.capturedImageView.addSubview(self.stackView)
+        self.configureImageView()
         
         self.configureStackView()
+        
+        /// Set background the captured image
+//        self.capturedImageView.backgroundColor = UIColor(patternImage: image!)
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         
-        /// Set background the captured image
-        self.capturedImageView.backgroundColor = UIColor(patternImage: image!)
+        
+    }
+    
+    func configureImageView() {
+        self.capturedImageView.addSubview(self.imageView)
+        
+        self.imageView.image = self.image
+        
+        self.imageView.leadingAnchor.constraint(equalTo: self.capturedImageView.leadingAnchor).isActive = true
+        self.imageView.topAnchor.constraint(equalTo: self.capturedImageView.topAnchor).isActive = true
+        self.imageView.trailingAnchor.constraint(equalTo: self.capturedImageView.trailingAnchor).isActive = true
+        self.imageView.bottomAnchor.constraint(equalTo: self.capturedImageView.bottomAnchor).isActive = true
     }
     
     func configureStackView() {
-        
+        self.capturedImageView.addSubview(self.stackView)
+
         self.stackView.axis = .horizontal
         
+        self.stackView.distribution = .fillEqually
+        
         self.stackView.leadingAnchor.constraint(equalTo: self.capturedImageView.leadingAnchor).isActive = true
-        self.stackView.topAnchor.constraint(equalTo: self.capturedImageView.topAnchor, constant: -150).isActive = true
+        self.stackView.topAnchor.constraint(equalTo: self.capturedImageView.bottomAnchor, constant: -150).isActive = true
         self.stackView.trailingAnchor.constraint(equalTo: self.capturedImageView.trailingAnchor).isActive = true
         self.stackView.bottomAnchor.constraint(equalTo: self.capturedImageView.bottomAnchor, constant: -50).isActive = true
         
@@ -92,7 +136,8 @@ class CapturedImageVC: UIViewController {
         btn.contentHorizontalAlignment = .center
         btn.tintColor = UIColor.white
         btn.backgroundColor = UIColor(white: 0, alpha: 0.7)
-        btn.isHidden = true
+        btn.isHidden = false
+        btn.isEnabled = true
         
 //        btn.widthAnchor.constraint(equalToConstant: CGFloat(150)).isActive = true
     }
