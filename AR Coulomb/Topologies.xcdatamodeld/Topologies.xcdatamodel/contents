@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17192" systemVersion="19H15" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="TopologyModel" representedClassName="TopologyModel" syncable="YES" codeGenerationType="class">
+    <entity name="PointChargeModel" representedClassName="PointChargeModel" syncable="YES">
+        <attribute name="multiplier" optional="YES" attributeType="Float" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="pointChargeID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="value" optional="YES" attributeType="Float" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="pointCharge_to_Topology" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TopologyModel" inverseName="topology_to_pointCharges" inverseEntity="TopologyModel"/>
+    </entity>
+    <entity name="TopologyModel" representedClassName="TopologyModel" syncable="YES">
         <attribute name="descr" optional="YES" attributeType="String"/>
         <attribute name="image" optional="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
-        <attribute name="positions" optional="YES"/>
+        <attribute name="positions" optional="YES" attributeType="Transformable"/>
         <attribute name="topoID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <relationship name="topology_to_pointCharges" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PointChargeModel" inverseName="pointCharge_to_Topology" inverseEntity="PointChargeModel"/>
     </entity>
     <elements>
-        <element name="TopologyModel" positionX="-63" positionY="-18" width="128" height="118"/>
+        <element name="TopologyModel" positionX="-63" positionY="-18" width="128" height="133"/>
+        <element name="PointChargeModel" positionX="-54" positionY="27" width="128" height="103"/>
     </elements>
 </model>

@@ -11,6 +11,10 @@
 		9F1FAA2124F1D95600BF6137 /* ViewController_+_ARCoachingOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1FAA2024F1D95600BF6137 /* ViewController_+_ARCoachingOverlay.swift */; };
 		9F2350F82571601C00E739CB /* Topologies.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9F2350F62571601C00E739CB /* Topologies.xcdatamodeld */; };
 		9F2350FC2571741300E739CB /* PersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2350FB2571741300E739CB /* PersistenceService.swift */; };
+		9F23510425718C4D00E739CB /* PointChargeModel+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F23510025718C4D00E739CB /* PointChargeModel+CoreDataClass.swift */; };
+		9F23510525718C4D00E739CB /* PointChargeModel+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F23510125718C4D00E739CB /* PointChargeModel+CoreDataProperties.swift */; };
+		9F23510625718C4D00E739CB /* TopologyModel+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F23510225718C4D00E739CB /* TopologyModel+CoreDataClass.swift */; };
+		9F23510725718C4D00E739CB /* TopologyModel+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F23510325718C4D00E739CB /* TopologyModel+CoreDataProperties.swift */; };
 		9F2FC67424F4006800D0BA7D /* Topology.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2FC67324F4006800D0BA7D /* Topology.swift */; };
 		9F368B25249A582000C6E07A /* PointCharge.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 9F368B24249A582000C6E07A /* PointCharge.rcproject */; };
 		9F37040924FAA82900960422 /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F37040824FAA82900960422 /* Status.swift */; };
@@ -42,6 +46,10 @@
 		9F1FAA2024F1D95600BF6137 /* ViewController_+_ARCoachingOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController_+_ARCoachingOverlay.swift"; sourceTree = "<group>"; };
 		9F2350F72571601C00E739CB /* Topologies.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Topologies.xcdatamodel; sourceTree = "<group>"; };
 		9F2350FB2571741300E739CB /* PersistenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceService.swift; sourceTree = "<group>"; };
+		9F23510025718C4D00E739CB /* PointChargeModel+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PointChargeModel+CoreDataClass.swift"; sourceTree = "<group>"; };
+		9F23510125718C4D00E739CB /* PointChargeModel+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PointChargeModel+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		9F23510225718C4D00E739CB /* TopologyModel+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TopologyModel+CoreDataClass.swift"; sourceTree = "<group>"; };
+		9F23510325718C4D00E739CB /* TopologyModel+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TopologyModel+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		9F2FC67324F4006800D0BA7D /* Topology.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Topology.swift; sourceTree = "<group>"; };
 		9F368B24249A582000C6E07A /* PointCharge.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = PointCharge.rcproject; sourceTree = "<group>"; };
 		9F37040824FAA82900960422 /* Status.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Status.swift; sourceTree = "<group>"; };
@@ -102,6 +110,17 @@
 			path = "Physics Topology";
 			sourceTree = "<group>";
 		};
+		9F23510925718C5700E739CB /* NS Managed Objects */ = {
+			isa = PBXGroup;
+			children = (
+				9F23510025718C4D00E739CB /* PointChargeModel+CoreDataClass.swift */,
+				9F23510125718C4D00E739CB /* PointChargeModel+CoreDataProperties.swift */,
+				9F23510225718C4D00E739CB /* TopologyModel+CoreDataClass.swift */,
+				9F23510325718C4D00E739CB /* TopologyModel+CoreDataProperties.swift */,
+			);
+			path = "NS Managed Objects";
+			sourceTree = "<group>";
+		};
 		9F37040424FA864700960422 /* Additional View Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -133,6 +152,7 @@
 			children = (
 				9FD94473249A258400C0E646 /* AppDelegate.swift */,
 				9F2350FB2571741300E739CB /* PersistenceService.swift */,
+				9F23510925718C5700E739CB /* NS Managed Objects */,
 				9FD94475249A258400C0E646 /* ViewController.swift */,
 				9F17B77624F91E3500A98253 /* ViewController_+_UI.swift */,
 				9FFD6FCB24ABFE2400D8DE89 /* ViewController_+_Gestures.swift */,
@@ -230,12 +250,15 @@
 			files = (
 				9F2350FC2571741300E739CB /* PersistenceService.swift in Sources */,
 				9FD94476249A258400C0E646 /* ViewController.swift in Sources */,
+				9F23510625718C4D00E739CB /* TopologyModel+CoreDataClass.swift in Sources */,
 				9F17B77724F91E3500A98253 /* ViewController_+_UI.swift in Sources */,
 				9FF77FD724A7993C003477C2 /* BottomTopoMenuVC.swift in Sources */,
 				9FD94474249A258400C0E646 /* AppDelegate.swift in Sources */,
 				9F1FAA2124F1D95600BF6137 /* ViewController_+_ARCoachingOverlay.swift in Sources */,
 				9F3E8B7324F79FBB0018D250 /* ViewController_+_Observers.swift in Sources */,
 				9F68AAD724F6FF95004F1A3C /* Alert.swift in Sources */,
+				9F23510525718C4D00E739CB /* PointChargeModel+CoreDataProperties.swift in Sources */,
+				9F23510725718C4D00E739CB /* TopologyModel+CoreDataProperties.swift in Sources */,
 				9FFD6FCE24ABFFB800D8DE89 /* ViewController_+_ObjectPlacement.swift in Sources */,
 				9FFD6FCA24ABAE1500D8DE89 /* PointChargeClass.swift in Sources */,
 				9FACABBF24C24D2A0024962B /* Force.swift in Sources */,
@@ -248,6 +271,7 @@
 				9FF77FD924A7E3EA003477C2 /* CoulombMenuVC.swift in Sources */,
 				9F474FA824C37B3E004E1B54 /* Topology_+_Forces.swift in Sources */,
 				9F37040924FAA82900960422 /* Status.swift in Sources */,
+				9F23510425718C4D00E739CB /* PointChargeModel+CoreDataClass.swift in Sources */,
 				9FF77FDB24AA8470003477C2 /* SingleForce.swift in Sources */,
 				9FFD6FC824ABA5BF00D8DE89 /* ArrowHead.rcproject in Sources */,
 				9FFD6FCC24ABFE2400D8DE89 /* ViewController_+_Gestures.swift in Sources */,
