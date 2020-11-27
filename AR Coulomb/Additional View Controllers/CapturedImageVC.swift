@@ -58,6 +58,7 @@ class CapturedImageVC: UIViewController {
         UIImageWriteToSavedPhotosAlbum(image!, self, #selector(imageFeedback(_:didFinishSavingWithError:contextInfo:)), nil)
     }
     
+    /// Selector method used for completion after image save operation happens.
     @objc
     func imageFeedback(_ image: UIImage, didFinishSavingWithError error: NSError?, contextInfo: UnsafeRawPointer) {
         if let error = error {
@@ -87,9 +88,6 @@ class CapturedImageVC: UIViewController {
         self.configureImageView()
         
         self.configureStackView()
-        
-        /// Set background the captured image
-//        self.capturedImageView.backgroundColor = UIColor(patternImage: image!)
         
     }
     
@@ -139,7 +137,6 @@ class CapturedImageVC: UIViewController {
         btn.isHidden = false
         btn.isEnabled = true
         
-//        btn.widthAnchor.constraint(equalToConstant: CGFloat(150)).isActive = true
     }
     
 }

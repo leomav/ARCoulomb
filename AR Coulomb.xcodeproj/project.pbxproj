@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		9F17B77724F91E3500A98253 /* ViewController_+_UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F17B77624F91E3500A98253 /* ViewController_+_UI.swift */; };
 		9F1FAA2124F1D95600BF6137 /* ViewController_+_ARCoachingOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1FAA2024F1D95600BF6137 /* ViewController_+_ARCoachingOverlay.swift */; };
+		9F2350F82571601C00E739CB /* Topologies.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9F2350F62571601C00E739CB /* Topologies.xcdatamodeld */; };
+		9F2350FC2571741300E739CB /* PersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2350FB2571741300E739CB /* PersistenceService.swift */; };
 		9F2FC67424F4006800D0BA7D /* Topology.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2FC67324F4006800D0BA7D /* Topology.swift */; };
 		9F368B25249A582000C6E07A /* PointCharge.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 9F368B24249A582000C6E07A /* PointCharge.rcproject */; };
 		9F37040924FAA82900960422 /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F37040824FAA82900960422 /* Status.swift */; };
@@ -38,6 +40,8 @@
 /* Begin PBXFileReference section */
 		9F17B77624F91E3500A98253 /* ViewController_+_UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController_+_UI.swift"; sourceTree = "<group>"; };
 		9F1FAA2024F1D95600BF6137 /* ViewController_+_ARCoachingOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController_+_ARCoachingOverlay.swift"; sourceTree = "<group>"; };
+		9F2350F72571601C00E739CB /* Topologies.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Topologies.xcdatamodel; sourceTree = "<group>"; };
+		9F2350FB2571741300E739CB /* PersistenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceService.swift; sourceTree = "<group>"; };
 		9F2FC67324F4006800D0BA7D /* Topology.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Topology.swift; sourceTree = "<group>"; };
 		9F368B24249A582000C6E07A /* PointCharge.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = PointCharge.rcproject; sourceTree = "<group>"; };
 		9F37040824FAA82900960422 /* Status.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Status.swift; sourceTree = "<group>"; };
@@ -77,6 +81,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9F2350F525715EB800E739CB /* Physics Objects */ = {
+			isa = PBXGroup;
+			children = (
+				9FF77FDA24AA8470003477C2 /* SingleForce.swift */,
+				9FFD6FC924ABAE1500D8DE89 /* PointChargeClass.swift */,
+				9F6D256424BDFCCE00F25D06 /* NetForce.swift */,
+				9FACABBE24C24D2A0024962B /* Force.swift */,
+			);
+			path = "Physics Objects";
+			sourceTree = "<group>";
+		};
+		9F2350FA2571608100E739CB /* Physics Topology */ = {
+			isa = PBXGroup;
+			children = (
+				9F2FC67324F4006800D0BA7D /* Topology.swift */,
+				9F474FA724C37B3E004E1B54 /* Topology_+_Forces.swift */,
+				9F3E8B7424F7AD980018D250 /* Topology_+_PointCharges.swift */,
+			);
+			path = "Physics Topology";
+			sourceTree = "<group>";
+		};
 		9F37040424FA864700960422 /* Additional View Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -107,6 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				9FD94473249A258400C0E646 /* AppDelegate.swift */,
+				9F2350FB2571741300E739CB /* PersistenceService.swift */,
 				9FD94475249A258400C0E646 /* ViewController.swift */,
 				9F17B77624F91E3500A98253 /* ViewController_+_UI.swift */,
 				9FFD6FCB24ABFE2400D8DE89 /* ViewController_+_Gestures.swift */,
@@ -115,22 +141,18 @@
 				9F1FAA2024F1D95600BF6137 /* ViewController_+_ARCoachingOverlay.swift */,
 				9F37040424FA864700960422 /* Additional View Controllers */,
 				9F37040824FAA82900960422 /* Status.swift */,
-				9F2FC67324F4006800D0BA7D /* Topology.swift */,
-				9F474FA724C37B3E004E1B54 /* Topology_+_Forces.swift */,
-				9F3E8B7424F7AD980018D250 /* Topology_+_PointCharges.swift */,
+				9F8E5A4824BB390900C69C27 /* DefaultPositions.swift */,
+				9F68AAD624F6FF95004F1A3C /* Alert.swift */,
+				9F2350FA2571608100E739CB /* Physics Topology */,
+				9F2350F525715EB800E739CB /* Physics Objects */,
 				9FD94479249A258400C0E646 /* Main.storyboard */,
 				9FD9447C249A258600C0E646 /* Assets.xcassets */,
 				9FD9447E249A258600C0E646 /* LaunchScreen.storyboard */,
-				9FD94481249A258600C0E646 /* Info.plist */,
 				9FD94477249A258400C0E646 /* Experience.rcproject */,
 				9F368B24249A582000C6E07A /* PointCharge.rcproject */,
 				9FFD6FC724ABA5BF00D8DE89 /* ArrowHead.rcproject */,
-				9FF77FDA24AA8470003477C2 /* SingleForce.swift */,
-				9FFD6FC924ABAE1500D8DE89 /* PointChargeClass.swift */,
-				9F6D256424BDFCCE00F25D06 /* NetForce.swift */,
-				9F8E5A4824BB390900C69C27 /* DefaultPositions.swift */,
-				9FACABBE24C24D2A0024962B /* Force.swift */,
-				9F68AAD624F6FF95004F1A3C /* Alert.swift */,
+				9FD94481249A258600C0E646 /* Info.plist */,
+				9F2350F62571601C00E739CB /* Topologies.xcdatamodeld */,
 			);
 			path = "AR Coulomb";
 			sourceTree = "<group>";
@@ -206,6 +228,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9F2350FC2571741300E739CB /* PersistenceService.swift in Sources */,
 				9FD94476249A258400C0E646 /* ViewController.swift in Sources */,
 				9F17B77724F91E3500A98253 /* ViewController_+_UI.swift in Sources */,
 				9FF77FD724A7993C003477C2 /* BottomTopoMenuVC.swift in Sources */,
@@ -218,6 +241,7 @@
 				9FACABBF24C24D2A0024962B /* Force.swift in Sources */,
 				9F3E8B7524F7AD980018D250 /* Topology_+_PointCharges.swift in Sources */,
 				9F44FE2024FBEE210056F7D0 /* CapturedImageVC.swift in Sources */,
+				9F2350F82571601C00E739CB /* Topologies.xcdatamodeld in Sources */,
 				9F2FC67424F4006800D0BA7D /* Topology.swift in Sources */,
 				9FD94478249A258400C0E646 /* Experience.rcproject in Sources */,
 				9F8E5A4924BB390900C69C27 /* DefaultPositions.swift in Sources */,
@@ -428,6 +452,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		9F2350F62571601C00E739CB /* Topologies.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				9F2350F72571601C00E739CB /* Topologies.xcdatamodel */,
+			);
+			currentVersion = 9F2350F72571601C00E739CB /* Topologies.xcdatamodel */;
+			path = Topologies.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 9FD94468249A258400C0E646 /* Project object */;
 }
