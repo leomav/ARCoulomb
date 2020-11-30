@@ -137,15 +137,26 @@ extension ViewController {
             let confirmAction = UIAlertAction(title: "OK", style: .default) { (_) in
                 let name = alertController.textFields?[0].text
                 let description = alertController.textFields?[1].text
-                // Do something with them.
+                
+                
                 // Save the topology
                 let topology = TopologyModel(context: PersistenceService.context)
                 topology.name = name
                 topology.descr = description
-                topology.image = capturedImage as NSObject
+                topology.image = capturedImage 
                 PersistenceService.saveContext()
                 
-                
+                // Save pointCharges info
+                self.topology?.pointCharges.forEach{ pointChargeObj in
+                    let pointCharge = PointChargeModel(context: PersistenceService.context)
+                    pointCharge.posX = pointChargeObj.getPositionX()
+                    pointCharge.posY = pointChargeObj.getPositionY()
+                    pointCharge.posZ = pointChargeObj.getPositionZ()
+                    pointCharge.multiplier = pointChargeObj.multiplier
+                    pointCharge.value = pointChargeObj.value
+                    pointCharge.topology = topology
+                    PersistenceService.saveContext()
+                }
             }
             
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }

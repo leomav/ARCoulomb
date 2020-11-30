@@ -27,6 +27,9 @@ var selectedPointChargeObj: PointChargeClass = PointChargeClass(onEntity: Entity
 var longPressedEntity: Entity = Entity()
 var trackedEntity: Entity = Entity()
 
+/// Saved topologies
+var savedTopologies: [TopologyModel] = []
+
 /// Coulomb Text Material
 let coulombTextMaterial: SimpleMaterial = {
     var mat = SimpleMaterial()
@@ -273,9 +276,10 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         let fetchRequest: NSFetchRequest<TopologyModel> = TopologyModel.fetchRequest()
         
         do {
-            let info = try PersistenceService.context.fetch(fetchRequest)
-            print(info)
-        } catch {}
+            savedTopologies = try PersistenceService.context.fetch(fetchRequest)
+        } catch {
+            print("No saved topologies!")
+        }
     }
     
     

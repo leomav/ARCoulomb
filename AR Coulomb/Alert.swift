@@ -52,6 +52,7 @@ struct Alert {
             // DO NOTHING
         }))
         vc.present(alert, animated: true, completion: nil)
+        
     }
     
     static func showDeletionConfirmation(on vc: ViewController) {
