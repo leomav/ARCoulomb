@@ -55,15 +55,54 @@ class CapturedImageVC: UIViewController {
     
     @objc
     func saveTopology(sender: UIButton) {
-        UIImageWriteToSavedPhotosAlbum(image!, self, #selector(imageFeedback(_:didFinishSavingWithError:contextInfo:)), nil)
+        /// Save topo to Core Data
+        //if let imageData = image!.pngData() {
+        //    DataBaseHelper.shareInstance.saveTopologyToCoreData(topoDescription: "Some Description", imageData: imageData, topoName: "Some Name", completion: topoSavedFeedback)
+        //}
+        
+        /// Handle
+        self.dismiss(animated: true, completion: {
+            /// Notify the observer (view controller) and pass the image binary data
+            let notifName = Notification.Name(rawValue: photoTakenNotificationKey)
+            let valueDict: [String: Data] = ["imageData": self.image!.pngData()!]
+            NotificationCenter.default.post(name: notifName, object: nil, userInfo: valueDict)
+        })
+        
+        /// Handle
+        // topoSavedFeedback(valid: true, message: "")
+        
+        /// Save image to specific album
+        //CustomPhotoAlbum.sharedInstance.saveImage(image: image!)
+        /// Save image to photo album
+        //UIImageWriteToSavedPhotosAlbum(image!, self, #selector(imageFeedback(_:didFinishSavingWithError:contextInfo:)), nil)
     }
     
+    // !!! NOT USED with core data -> replaced with a simple dismiss
+    /// Completion method for after trying to save topology
+    func topoSavedFeedback(valid: Bool, message: String)  {
+        if valid == true {
+            let ac = UIAlertController(title: "Saved!", message: "Your altered image has been saved to your photos.", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default, handler: { (UIAlertAction) in
+                self.dismiss(animated: true, completion: nil)
+            }))
+            present(ac, animated: true)
+        } else {
+            // we got back an error!
+            let ac = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default, handler: { (UIAlertAction) in
+                self.dismiss(animated: true, completion: nil)
+            }))
+            present(ac, animated: true)
+        }
+    }
+    
+    // !!! NOT USED with core data -> replaced with topoSavedFeedback
     /// Selector method used for completion after image save operation happens.
     @objc
     func imageFeedback(_ image: UIImage, didFinishSavingWithError error: NSError?, contextInfo: UnsafeRawPointer) {
         if let error = error {
             // we got back an error!
-            let ac = UIAlertController(title: "Save error", message: error.localizedDescription, preferredStyle: .alert)
+            let ac = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "OK", style: .default, handler: { (UIAlertAction) in
                 self.dismiss(animated: true, completion: nil)
             }))

@@ -9,6 +9,7 @@
 import UIKit
 import RealityKit
 import ARKit
+import CoreData
 
 // MARK: - Global Properties
 
@@ -16,6 +17,7 @@ let cbNotificationKey = "com.leomav.coulombValueChange"
 let topoNotificationKey = "com.leomav.topologyChange"
 let removalNotificationKey = "com.leomav.coulombRemoval"
 let dismissalNotificationKey = "com.leomav.coulombMenuDismissal"
+let photoTakenNotificationKey  = "com.leomav.topoCapturedImageDismissal"
 
 ///// Add object Interaction and Gestures
 //var virtualObjectInteraction: VirtualObjectInteraction?
@@ -138,7 +140,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         }) { (finished) in
             self.shutterView.isHidden = true
             
-            //            let rect = CGRect(x: 0, y: 0, width: self.cameraView.bounds.width, height: self.cameraView.bounds.height - 30)
+            //   let rect = CGRect(x: 0, y: 0, width: self.cameraView.bounds.width, height: self.cameraView.bounds.height - 30)
             let screenshot = self.arView.snapshot()
             capturedImage = screenshot
             
@@ -257,12 +259,28 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         /// Create the CoulombMenu Dismissal Observer
         self.setupObserverMenuDismissal()
         
+        /// Create the CapturedImage Dismissal Observer
+        self.createCapturedImageObserver()
+        
         //        /// Set up the Top Guide Text (helper text to place the topology)
         //        self.configureGuideTextView()
     }
     
-    // MARK: - Private Setup startup Functions
     
+    
+    // Fetch Topology data when view is Loaded
+    override func viewDidLoad() {
+        let fetchRequest: NSFetchRequest<TopologyModel> = TopologyModel.fetchRequest()
+        
+        do {
+            let info = try PersistenceService.context.fetch(fetchRequest)
+            print(info)
+        } catch {}
+    }
+    
+    
+    
+    // MARK: - Private Setup startup Functions
     private func setupARView() {
         self.arView.automaticallyConfigureSession = false
         let config = ARWorldTrackingConfiguration()
@@ -291,6 +309,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toCapturedImageVCSegue" {
             if let capturedImageVC = segue.destination as? CapturedImageVC{
+                /// Set the image in CapturedImage ViewController
                 capturedImageVC.image = capturedImage
             }
         }

@@ -107,4 +107,54 @@ extension ViewController {
         }
     }
     
+    
+    // (5)
+    // MARK: - Topology Captured Image View was dismissed
+    
+    func createCapturedImageObserver() {
+        let notifName = Notification.Name(rawValue: photoTakenNotificationKey)
+        NotificationCenter.default.addObserver(self, selector: #selector(saveTopologyToCoreData(notification:)), name: notifName, object: nil)
+
+    }
+    
+    @objc
+    func saveTopologyToCoreData(notification: Notification)  {
+        print("Observer awaken")
+        if let capturedImage = (notification.userInfo?["imageData"] as? Data) {
+            print("Observer awaken VALID")
+            
+            // TODO:  Open dialog to enter new topology's name and description
+            let alertController = UIAlertController(title: "Topology Details", message: "Enter a name and a description", preferredStyle: .alert)
+            
+            alertController.addTextField{ (textField) in
+                textField.placeholder = "Name"
+            }
+            
+            alertController.addTextField{ (textField) in
+                textField.placeholder = "Description"
+            }
+            
+            let confirmAction = UIAlertAction(title: "OK", style: .default) { (_) in
+                let name = alertController.textFields?[0].text
+                let description = alertController.textFields?[1].text
+                // Do something with them.
+                // Save the topology
+                let topology = TopologyModel(context: PersistenceService.context)
+                topology.name = name
+                topology.descr = description
+                topology.image = capturedImage as NSObject
+                PersistenceService.saveContext()
+                
+                
+            }
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
+            
+            alertController.addAction(confirmAction)
+            alertController.addAction(cancelAction)
+            
+            self.present(alertController, animated: true, completion: nil)
+        }
+    }
+    
 }
