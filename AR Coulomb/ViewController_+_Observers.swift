@@ -122,9 +122,7 @@ extension ViewController {
     
     @objc
     func saveTopologyToCoreData(notification: Notification)  {
-        print("Observer awaken")
         if let capturedImage = (notification.userInfo?["imageData"] as? Data) {
-            print("Observer awaken VALID")
             
             // TODO:  Open dialog to enter new topology's name and description
             let alertController = UIAlertController(title: "Topology Details", message: "Enter a name and a description", preferredStyle: .alert)

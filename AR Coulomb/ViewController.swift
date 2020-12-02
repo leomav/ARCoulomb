@@ -28,7 +28,7 @@ var longPressedEntity: Entity = Entity()
 var trackedEntity: Entity = Entity()
 
 /// Saved topologies
-var savedTopologies: [TopologyModel] = []
+//var savedTopologies: [TopologyModel] = []
 
 /// Coulomb Text Material
 let coulombTextMaterial: SimpleMaterial = {
@@ -217,6 +217,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     var topology: Topology?
     
     override func viewDidAppear(_ animated: Bool) {
+        
         super.viewDidAppear(animated)
         
         self.arView.session.delegate = self
@@ -267,26 +268,18 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         
         //        /// Set up the Top Guide Text (helper text to place the topology)
         //        self.configureGuideTextView()
+        
     }
     
     
     
     // Fetch Topology data when view is Loaded
     override func viewDidLoad() {
-        let fetchRequest: NSFetchRequest<TopologyModel> = TopologyModel.fetchRequest()
-        
-        do {
-            savedTopologies = try PersistenceService.context.fetch(fetchRequest)
-            if (savedTopologies.count > 0) {
-                print(savedTopologies[0])
-            
-            }
-            
-            
-            
-        } catch {
-            print("No saved topologies!")
-        }
+        /// Load the default + saved Topologies into sharedInstance
+        /// SharedInstance is now ready for use around the app, containing all information
+        /// about topologies in a TopologyModel and PointChargeModel form.
+        /// All the topologies are stored in sharedInstanc.savedTopologies
+        SavedTopologies.sharedInstance.loadTopologies()
     }
     
     

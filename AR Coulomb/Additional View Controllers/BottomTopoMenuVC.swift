@@ -81,6 +81,18 @@ class BottomTopoMenuVC: UIViewController {
             // Add the button to the view
             self.stackView.addArrangedSubview(btn)
         }
+        
+//        for i in  0...SavedTopologies.sharedInstance.getSize() {
+//            let btn = UIButton()
+//            btn.setBackgroundImage(UIImage(data: SavedTopologies.sharedInstance.savedTopologies[i].image!), for: .normal)
+//            btn.addTarget(self, action: #selector(self.buttonAction(sender:)), for: .touchUpInside)
+//            btn.isEnabled = true
+//            btn.tag = i + 1
+//            btn.widthAnchor.constraint(equalToConstant: 120).isActive = true
+//            
+//            // Add the button to the view
+//            self.stackView.addArrangedSubview(btn)
+//        }
     }
     
     @objc

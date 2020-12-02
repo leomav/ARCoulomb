@@ -35,15 +35,18 @@ class SavedTopologies {
     private func createDefaultTopologies() {
         for (indx, topo) in defaultPositions {
             
+            /// Load context
+            let context = PersistenceService.context
+            
             /// new topo model
-            let t = TopologyModel()
+            let t = TopologyModel(context: context)
             t.name = "Default Topology" + String(indx)
             t.descr = "Default Topology" + String(indx)
             t.image = UIImage(named: "kobe")?.pngData()
             
             /// Add pointcharges to topo
             topo.forEach{ pos in
-                let pc = PointChargeModel()
+                let pc = PointChargeModel(context: context)
                 pc.posX = pos.x
                 pc.posY = pos.y
                 pc.posZ = pos.z
@@ -62,8 +65,6 @@ class SavedTopologies {
         
         do {
             savedTopologies += try PersistenceService.context.fetch(fetchRequest)
-            
-            print(savedTopologies)
         } catch {
             print("No saved topologies!")
         }
@@ -76,6 +77,9 @@ class SavedTopologies {
         
         /// Most recent shown first
         savedTopologies.reverse()
+        
+        /// Test
+        print(savedTopologies)
     }
     
     
