@@ -228,7 +228,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
             self.restartExperience()
         }
         
-        /// Initialize dicitionary
+        /// Initialize menu dicitionary
         self.menuDict = [
             "main": [self.saveButton, self.newTopoButton, self.addButton],
             "camera": [self.captureButton, self.cancelCaptureButton]
@@ -277,6 +277,13 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         
         do {
             savedTopologies = try PersistenceService.context.fetch(fetchRequest)
+            if (savedTopologies.count > 0) {
+                print(savedTopologies[0])
+            
+            }
+            
+            
+            
         } catch {
             print("No saved topologies!")
         }

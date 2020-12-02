@@ -51,15 +51,35 @@ class Topology {
     
     // MARK: - Topology functions
     
+    private func extractPositions(from topologyModel: TopologyModel) -> [SIMD3<Float>]{
+        var positions: [SIMD3<Float>] = []
+        
+        topologyModel.pointCharges?.forEach{ p  in
+            let x = (p as AnyObject).posX!
+            let y = (p as AnyObject).posY!
+            let z = (p as AnyObject).posZ!
+            
+            let pos = SIMD3<Float>(x, y, z)
+            
+            positions.append(pos)
+        }
+        
+        return positions
+    }
+    
+//    func placeTopology(topoModel: TopologyModel) {
     func placeTopology(positions: [SIMD3<Float>]) {
         /// Clear the topology, if there was one
         self.clearTopology()
         
         /// Set new selectedPositions
+//        self.selectedPositions = self.extractPositions(from: topoModel)
         self.selectedPositions = positions
         
         /// Create PointCharges in the selected Positions
+//        for pointChargeModel in topoModel.pointCharges {
         for pos in self.selectedPositions {
+//            self.add(pointCharge: pointChargeModel)
             self.addPointCharge(to: pos)
         }
         
@@ -88,8 +108,8 @@ class Topology {
     
     // Show or Hide topology
     func toggleTopology(show: Bool) {
-        self.toggleAllForces(show: false)
-        self.toggleAllForces(show: false)
+        self.toggleAllForces(show: show)
+        self.toggleAllForces(show: show)
     }
     
 }

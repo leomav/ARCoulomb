@@ -14,6 +14,7 @@ extension ViewController: ARCoachingOverlayViewDelegate {
         
         /// - Tag: HideUI
         func coachingOverlayViewWillActivate(_ coachingOverlayView: ARCoachingOverlayView) {
+            print("coaching Overlay View will activate")
         }
         
         /// - Tag: PresentUI
@@ -33,6 +34,7 @@ extension ViewController: ARCoachingOverlayViewDelegate {
 
         /// - Tag: StartOver
         func coachingOverlayViewDidRequestSessionReset(_ coachingOverlayView: ARCoachingOverlayView) {
+            print("coaching Overlay View did REQUEST SESSION RESET")
             //restartExperience()
         }
 

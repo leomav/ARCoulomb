@@ -86,13 +86,20 @@ class BottomTopoMenuVC: UIViewController {
     @objc
     func buttonAction(sender: UIButton!) {
         let btnsend: UIButton = sender
+        
+//        let totalTopologies = SavedTopologies.sharedInstance.getSize()
+//        if btnsend.tag > 0 && btnsend.tag < totalTopologies {
         if btnsend.tag > 0 && btnsend.tag < 7 {
             
             /// Set the new topology (new positions)
             let pos = defaultPositions[btnsend.tag]!
             
+            /// Set the new topology
+//            let newTopo = SavedTopologies.sharedInstance.savedTopologies[btnsend.tag]
+            
             /// Notify for new positions
             let notifName = Notification.Name(rawValue: topoNotificationKey)
+//            let value Dict: [String: TopologyModel] = ["updatedValue": newTopo]
             let valueDict: [String: [SIMD3<Float>]] = ["updatedValue": pos]
             NotificationCenter.default.post(name: notifName, object: nil, userInfo: valueDict)
             

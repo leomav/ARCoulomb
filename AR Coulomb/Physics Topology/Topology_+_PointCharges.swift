@@ -40,6 +40,44 @@ extension Topology {
         self.viewController.performSegue(withIdentifier: "toCoulombMenuSegue", sender: nil)
     }
     
+    // This function is used to add pointCharge, when coreData is used with PointChargeModel as parameter
+    func add(pointCharge p: PointChargeModel) {
+        /// Load the PointChargeEntity by cloning it
+        let point = self.pointChargeEntityTemplate.clone(recursive: true)
+        
+        /// Add it to the AnchorEntity of the Topology
+        self.topoAnchorEntity.addChild(point)
+        
+        /// Create a position based on PointChargeModel coordinates
+        let pos: SIMD3<Float> = SIMD3<Float>(p.posX, p.posY, p.posZ)
+        
+        /// Set its position relative to the Anchor Entity
+        point.setPosition(pos, relativeTo: self.topoAnchorEntity)
+        
+        /// Create new PointChargeClass Object and append it to pointCharges[]
+        let newPointChargeObj = PointChargeClass(onEntity: point, withValue: p.value)
+        self.pointCharges.append(newPointChargeObj)
+        
+        /// Set selectedEntity (longPressedEntity)
+        selectedPointChargeObj = newPointChargeObj
+        longPressedEntity = point
+        
+        /// Create Text Entity for the pointCharge
+        let textEntity = newPointChargeObj.createTextEntity(pointEntity: point)
+        /// Load the mesh and material for the model of the text entity
+        PointChargeClass.loadText(textEntity: textEntity, material: coulombTextMaterial, coulombStringValue: "\(newPointChargeObj.value) Cb")
+        
+        /// Install gestures, careful to set its ".cancelTouchesInView" to false cause it cancels touches gestures  other than
+        /// the installed below (I do that in Topology Placement)
+        point.generateCollisionShapes(recursive: false)
+        self.viewController.arView.installGestures([.translation, .rotation], for: point as! HasCollision)
+        
+        /// Enable the pointCharge LongPress Recognizer
+        /// Careful that the above installedGesutres for translation and rotation disable the rest recognizers
+        /// so for them set ".cancelsTouchesInView" to false, so that LongPress Recognizer is active
+        self.viewController.enableRecognizers(withName: "Long Press Recognizer")
+    }
+    
     func addPointCharge(to pos: SIMD3<Float>) {
         /// Load the PointChargeEntity by cloning it
         let point = self.pointChargeEntityTemplate.clone(recursive: true)

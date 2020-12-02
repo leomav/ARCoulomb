@@ -42,13 +42,16 @@ extension ViewController {
     /// update the selected Positions
     @objc
     func addTopology(notification: Notification) {
+//        if let newValue = (notification.userInfo?["updatedValue"]) as? TopologyModel {
         if let newValue = (notification.userInfo?["updatedValue"]) as? [SIMD3<Float>] {
 
             /// Get the new positions from the Notification
+//            let newTopoModel = newValue
             let newPositions = newValue
             
             /// Place the selected Topology on the AnchorEntity placed in scene
             if topology!.topoAnchor != nil {
+//                topology!.placeTopology(newTopoModel)
                 topology!.placeTopology(positions: newPositions)
             } else {
                 print("Error: No anchor is selected for topology placement!")
