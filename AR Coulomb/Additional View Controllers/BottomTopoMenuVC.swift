@@ -70,49 +70,49 @@ class BottomTopoMenuVC: UIViewController {
         self.stackView.heightAnchor.constraint(equalTo: self.scrollView.heightAnchor).isActive = true
         
         // Create the buttons in the scroll-stack view, one for each topology
-        for i in 0...5 {
-            let btn = UIButton()
-            btn.setBackgroundImage(UIImage(named: "kobe"), for: .normal)
-            btn.addTarget(self, action: #selector(self.buttonAction(sender:)), for: .touchUpInside)
-            btn.isEnabled = true
-            btn.tag = i + 1
-            btn.widthAnchor.constraint(equalToConstant: 120).isActive = true
-            
-            // Add the button to the view
-            self.stackView.addArrangedSubview(btn)
-        }
-        
-//        for i in  0...SavedTopologies.sharedInstance.getSize() {
+//        for i in 0...5 {
 //            let btn = UIButton()
-//            btn.setBackgroundImage(UIImage(data: SavedTopologies.sharedInstance.savedTopologies[i].image!), for: .normal)
+//            btn.setBackgroundImage(UIImage(named: "kobe"), for: .normal)
 //            btn.addTarget(self, action: #selector(self.buttonAction(sender:)), for: .touchUpInside)
 //            btn.isEnabled = true
-//            btn.tag = i + 1
+//            btn.tag = i
 //            btn.widthAnchor.constraint(equalToConstant: 120).isActive = true
-//            
+//
 //            // Add the button to the view
 //            self.stackView.addArrangedSubview(btn)
 //        }
+        
+        for i in  0...TopologyStore.sharedInstance.totalTopologies() - 1 {
+            let btn = UIButton()
+            btn.setBackgroundImage(TopologyStore.sharedInstance.savedTopologies[i].image, for: .normal)
+            btn.addTarget(self, action: #selector(self.buttonAction(sender:)), for: .touchUpInside)
+            btn.isEnabled = true
+            btn.tag = i
+            btn.widthAnchor.constraint(equalToConstant: 120).isActive = true
+
+            // Add the button to the view
+            self.stackView.addArrangedSubview(btn)
+        }
     }
     
     @objc
     func buttonAction(sender: UIButton!) {
         let btnsend: UIButton = sender
         
-//        let totalTopologies = SavedTopologies.sharedInstance.getSize()
-//        if btnsend.tag > 0 && btnsend.tag < totalTopologies {
-        if btnsend.tag > 0 && btnsend.tag < 7 {
+        let totalTopologies = TopologyStore.sharedInstance.totalTopologies()
+        if btnsend.tag > -1 && btnsend.tag < totalTopologies {
+//        if btnsend.tag > -1 && btnsend.tag < 6 {
             
             /// Set the new topology (new positions)
-            let pos = defaultPositions[btnsend.tag]!
+//            let pos = defaultPositions[btnsend.tag]
             
             /// Set the new topology
-//            let newTopo = SavedTopologies.sharedInstance.savedTopologies[btnsend.tag]
+            let newTopo = TopologyStore.sharedInstance.savedTopologies[btnsend.tag]
             
             /// Notify for new positions
             let notifName = Notification.Name(rawValue: topoNotificationKey)
-//            let value Dict: [String: TopologyModel] = ["updatedValue": newTopo]
-            let valueDict: [String: [SIMD3<Float>]] = ["updatedValue": pos]
+            let valueDict: [String: TopologyModel] = ["updatedValue": newTopo]
+//            let valueDict: [String: [SIMD3<Float>]] = ["updatedValue": pos]
             NotificationCenter.default.post(name: notifName, object: nil, userInfo: valueDict)
             
             ///Dismiss the menu view

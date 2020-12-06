@@ -1,5 +1,5 @@
 //
-//  PointChargeModel+CoreDataProperties.swift
+//  NSPointCharge+CoreDataProperties.swift
 //  AR Coulomb
 //
 //  Created by Leonidas Mavrotas on 30/11/20.
@@ -11,10 +11,10 @@ import Foundation
 import CoreData
 
 
-extension PointChargeModel {
+extension NSPointCharge {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<PointChargeModel> {
-        return NSFetchRequest<PointChargeModel>(entityName: "PointChargeModel")
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<NSPointCharge> {
+        return NSFetchRequest<NSPointCharge>(entityName: "NSPointCharge")
     }
 
     @NSManaged public var value: Float
@@ -22,10 +22,10 @@ extension PointChargeModel {
     @NSManaged public var posX: Float
     @NSManaged public var posY: Float
     @NSManaged public var posZ: Float
-    @NSManaged public var topology: TopologyModel?
+    @NSManaged public var topology: NSTopology?
 
 }
 
-extension PointChargeModel : Identifiable {
+extension NSPointCharge : Identifiable {
 
 }

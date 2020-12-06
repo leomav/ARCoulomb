@@ -15,7 +15,7 @@ class DataBaseHelper {
     let context = PersistenceService.context
     
     func saveTopologyToCoreData(topoDescription: String, imageData: Data, topoName: String, completion: ((Bool, String) -> ())){
-        let topologyInstance = TopologyModel(context: context)
+        let topologyInstance = NSTopology(context: context)
         topologyInstance.descr = topoDescription
         topologyInstance.image = imageData
         topologyInstance.name = topoName

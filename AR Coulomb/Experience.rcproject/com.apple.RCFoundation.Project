@@ -131,28 +131,28 @@
                           "headLength",
                           {
                             "typeName" : "Double",
-                            "value" : 0.25
+                            "value" : 0.3174645169322709
                           }
                         ],
                         [
                           "indent",
                           {
                             "typeName" : "Double",
-                            "value" : 0.33822522410358563
+                            "value" : 0.40459256723107567
                           }
                         ],
                         [
                           "length",
                           {
                             "typeName" : "Double",
-                            "value" : 0.75701038710862822
+                            "value" : 0.75
                           }
                         ],
                         [
                           "profile",
                           {
                             "typeName" : "String",
-                            "value" : "circular"
+                            "value" : "rectangular"
                           }
                         ],
                         [
@@ -173,7 +173,7 @@
                           "width",
                           {
                             "typeName" : "Double",
-                            "value" : 0.13591259960159363
+                            "value" : 0.25243245766932282
                           }
                         ]
                       ],

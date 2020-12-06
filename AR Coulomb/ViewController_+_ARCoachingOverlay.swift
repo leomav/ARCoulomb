@@ -26,7 +26,7 @@ extension ViewController: ARCoachingOverlayViewDelegate {
             self.status?.cancelScheduledMessage(for: .planeEstimation)
             self.status?.showMessage("SURFACE DETECTED")
             if self.topology != nil {
-                if self.topology?.pointCharges.count == 0 {
+                if self.topology.pointCharges.count == 0 {
                     self.status?.scheduleMessage("TAP TO PLACE A TOPOLOGY", inSeconds: 7.5, messageType: .contentPlacement)
                 }
             }

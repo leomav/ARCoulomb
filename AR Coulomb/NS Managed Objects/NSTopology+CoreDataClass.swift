@@ -1,5 +1,5 @@
 //
-//  PointChargeModel+CoreDataClass.swift
+//  NSTopology+CoreDataClass.swift
 //  AR Coulomb
 //
 //  Created by Leonidas Mavrotas on 30/11/20.
@@ -10,7 +10,7 @@
 import Foundation
 import CoreData
 
-@objc(PointChargeModel)
-public class PointChargeModel: NSManagedObject {
+@objc(NSTopology)
+public class NSTopology: NSManagedObject {
 
 }

@@ -197,7 +197,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         
         self.status?.cancelScheduledMessage(for: .contentPlacement)
         
-        self.topology?.addPointChargeWithRandomPosition()
+        self.topology.addPointChargeWithRandomPosition()
     }
     
     // MARK: - UI Elements
@@ -214,7 +214,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: - Properties
     
-    var topology: Topology?
+    var topology: Topology = Topology()
     
     override func viewDidAppear(_ animated: Bool) {
         
@@ -279,7 +279,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         /// SharedInstance is now ready for use around the app, containing all information
         /// about topologies in a TopologyModel and PointChargeModel form.
         /// All the topologies are stored in sharedInstanc.savedTopologies
-        SavedTopologies.sharedInstance.loadTopologies()
+        TopologyStore.sharedInstance.loadTopologies()
     }
     
     
@@ -344,7 +344,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         
         status!.cancelAllScheduledMessages()
         
-        topology?.clearTopology()
+        topology.clearTopology()
         
         resetTracking()
         

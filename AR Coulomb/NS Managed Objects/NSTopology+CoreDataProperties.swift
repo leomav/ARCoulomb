@@ -1,5 +1,5 @@
 //
-//  TopologyModel+CoreDataProperties.swift
+//  NSTopology+CoreDataProperties.swift
 //  AR Coulomb
 //
 //  Created by Leonidas Mavrotas on 30/11/20.
@@ -11,10 +11,10 @@ import Foundation
 import CoreData
 
 
-extension TopologyModel {
+extension NSTopology {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<TopologyModel> {
-        return NSFetchRequest<TopologyModel>(entityName: "TopologyModel")
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<NSTopology> {
+        return NSFetchRequest<NSTopology>(entityName: "NSTopology")
     }
 
     @NSManaged public var descr: String?
@@ -25,31 +25,31 @@ extension TopologyModel {
 }
 
 // MARK: Generated accessors for pointCharges
-extension TopologyModel {
+extension NSTopology {
 
     @objc(insertObject:inPointChargesAtIndex:)
-    @NSManaged public func insertIntoPointCharges(_ value: PointChargeModel, at idx: Int)
+    @NSManaged public func insertIntoPointCharges(_ value: NSPointCharge, at idx: Int)
 
     @objc(removeObjectFromPointChargesAtIndex:)
     @NSManaged public func removeFromPointCharges(at idx: Int)
 
     @objc(insertPointCharges:atIndexes:)
-    @NSManaged public func insertIntoPointCharges(_ values: [PointChargeModel], at indexes: NSIndexSet)
+    @NSManaged public func insertIntoPointCharges(_ values: [NSPointCharge], at indexes: NSIndexSet)
 
     @objc(removePointChargesAtIndexes:)
     @NSManaged public func removeFromPointCharges(at indexes: NSIndexSet)
 
     @objc(replaceObjectInPointChargesAtIndex:withObject:)
-    @NSManaged public func replacePointCharges(at idx: Int, with value: PointChargeModel)
+    @NSManaged public func replacePointCharges(at idx: Int, with value: NSPointCharge)
 
     @objc(replacePointChargesAtIndexes:withPointCharges:)
-    @NSManaged public func replacePointCharges(at indexes: NSIndexSet, with values: [PointChargeModel])
+    @NSManaged public func replacePointCharges(at indexes: NSIndexSet, with values: [NSPointCharge])
 
     @objc(addPointChargesObject:)
-    @NSManaged public func addToPointCharges(_ value: PointChargeModel)
+    @NSManaged public func addToPointCharges(_ value: NSPointCharge)
 
     @objc(removePointChargesObject:)
-    @NSManaged public func removeFromPointCharges(_ value: PointChargeModel)
+    @NSManaged public func removeFromPointCharges(_ value: NSPointCharge)
 
     @objc(addPointCharges:)
     @NSManaged public func addToPointCharges(_ values: NSOrderedSet)
@@ -59,6 +59,6 @@ extension TopologyModel {
 
 }
 
-extension TopologyModel : Identifiable {
+extension NSTopology : Identifiable {
 
 }

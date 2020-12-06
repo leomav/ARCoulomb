@@ -26,7 +26,7 @@ extension ViewController {
         self.toggleStackView(hide: false, animated: false)
         
         /// If the Limit Number is reached, disable the Add Button
-        if self.topology?.pointCharges.count == 6 {
+        if self.topology.pointCharges.count == 6 {
             self.addButton.isEnabled = false
         }
     }
@@ -42,17 +42,17 @@ extension ViewController {
     /// update the selected Positions
     @objc
     func addTopology(notification: Notification) {
-//        if let newValue = (notification.userInfo?["updatedValue"]) as? TopologyModel {
-        if let newValue = (notification.userInfo?["updatedValue"]) as? [SIMD3<Float>] {
+        if let newValue = (notification.userInfo?["updatedValue"]) as? TopologyModel {
+//        if let newValue = (notification.userInfo?["updatedValue"]) as? [SIMD3<Float>] {
 
             /// Get the new positions from the Notification
-//            let newTopoModel = newValue
-            let newPositions = newValue
+            let newTopoModel = newValue
+//            let newPositions = newValue
             
             /// Place the selected Topology on the AnchorEntity placed in scene
-            if topology!.topoAnchor != nil {
-//                topology!.placeTopology(newTopoModel)
-                topology!.placeTopology(positions: newPositions)
+            if topology.topoAnchor != nil {
+                topology.placeTopology(topoModel: newTopoModel)
+//                topology.placeTopology(positions: newPositions)
             } else {
                 print("Error: No anchor is selected for topology placement!")
             }
@@ -61,7 +61,7 @@ extension ViewController {
             self.toggleStackView(hide: false, animated: false)
             
             /// If the Limit Number is reached, disable the Add Button
-            if self.topology?.pointCharges.count == 6 {
+            if self.topology.pointCharges.count == 6 {
                 self.addButton.isEnabled = false
             }
 
@@ -103,7 +103,7 @@ extension ViewController {
             
             PointChargeClass.loadText(textEntity: longPressedEntity.children[1], material: coulombTextMaterial, coulombStringValue: "\(newValue) Cb")
             
-            self.topology?.updateForces()
+            self.topology.updateForces()
             
         } else {
             print("Error: Not updated coulomb value!")
@@ -141,15 +141,15 @@ extension ViewController {
                 
                 
                 // Save the topology
-                let topology = TopologyModel(context: PersistenceService.context)
+                let topology = NSTopology(context: PersistenceService.context)
                 topology.name = name
                 topology.descr = description
                 topology.image = capturedImage 
                 PersistenceService.saveContext()
                 
                 // Save pointCharges info
-                self.topology?.pointCharges.forEach{ pointChargeObj in
-                    let pointCharge = PointChargeModel(context: PersistenceService.context)
+                self.topology.pointCharges.forEach{ pointChargeObj in
+                    let pointCharge = NSPointCharge(context: PersistenceService.context)
                     pointCharge.posX = pointChargeObj.getPositionX()
                     pointCharge.posY = pointChargeObj.getPositionY()
                     pointCharge.posZ = pointChargeObj.getPositionZ()
@@ -158,6 +158,9 @@ extension ViewController {
                     pointCharge.topology = topology
                     PersistenceService.saveContext()
                 }
+                
+                // Reload the savedTopologies
+                TopologyStore.sharedInstance.loadTopologies()
             }
             
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }

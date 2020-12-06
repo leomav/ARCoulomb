@@ -13,7 +13,7 @@ extension Topology {
     // ---------------------------------------------------------------------------------
     // -------------------------- Add FORCE (Obj & Entity) -----------------------------
     func addAllForces() {
-        self.viewController.arView.scene.anchors.forEach{ anchor in
+        self.viewController?.arView.scene.anchors.forEach{ anchor in
             if anchor.name == "Point Charge Scene AnchorEntity" {
                 
                 /// Get the ArrowEntity out of the ArrowAnchor
@@ -39,7 +39,7 @@ extension Topology {
         }
     }
     
-    func showForcesFor(for pointChargeObj: PointChargeClass) {
+    func showForces(for pointChargeObj: PointChargeClass) {
         self.netForces.forEach{ netForce in
             /// Disable the NetForce Arrow ...
             netForce.arrowEntity.isEnabled = false
@@ -70,6 +70,7 @@ extension Topology {
     // -------------------------- Update FORCES ----------------------------------------
     func updateForces() {
         self.netForces.forEach{ netForceObj in
+            
             netForceObj.forces.forEach{ forceObj in
                 forceObj.updateForceArrow()
                 forceObj.updateForceAngle()

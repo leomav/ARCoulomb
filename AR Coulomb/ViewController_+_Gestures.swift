@@ -43,8 +43,8 @@ extension ViewController {
                 trackedEntity = Entity()
 
                 /// Find and set the new Selected PointChargeObj
-                selectedPointChargeObj = topology!.pointCharges.first(where: {$0.entity == longPressedEntity})! 
-                    
+                selectedPointChargeObj = topology.pointCharges.first(where: {$0.entity == longPressedEntity})! 
+                
 //                topology!.pointCharges.forEach{ pointChargeObj in
 //                    if pointChargeObj.entity == longPressedEntity {
 //                        selectedPointChargeObj = pointChargeObj
@@ -52,7 +52,7 @@ extension ViewController {
 //                }
                 
                 /// Show forces relative to the selectedPointChargeObj
-                self.topology?.showForcesFor(for: selectedPointChargeObj)
+                self.topology.showForces(for: selectedPointChargeObj)
 
                 /// Disable and hide the StackView Buttons (add new pointCharge, add new topo)
                 self.toggleStackView(hide: true, animated: false)
@@ -85,7 +85,7 @@ extension ViewController {
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         if trackedEntity.name == "pointCharge" {
-            self.topology?.updateForces()
+            self.topology.updateForces()
         }
     }
 
@@ -116,7 +116,7 @@ extension ViewController {
             }
 
             /// Update all forces magnetudes and directions
-            self.topology?.updateForces()
+            self.topology.updateForces()
 
             /// When touches end, no entity is tracked by the gesture
             trackedEntity = Entity()

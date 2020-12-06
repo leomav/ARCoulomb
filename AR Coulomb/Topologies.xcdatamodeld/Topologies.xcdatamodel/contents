@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17192" systemVersion="19H15" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="PointChargeModel" representedClassName="PointChargeModel" syncable="YES">
+    <entity name="NSPointCharge" representedClassName="NSPointCharge" syncable="YES">
         <attribute name="multiplier" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="posX" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="posY" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="posZ" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="value" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <relationship name="topology" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TopologyModel" inverseName="pointCharges" inverseEntity="TopologyModel"/>
+        <relationship name="topology" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="NSTopology" inverseName="pointCharges" inverseEntity="NSTopology"/>
     </entity>
-    <entity name="TopologyModel" representedClassName="TopologyModel" syncable="YES">
+    <entity name="NSTopology" representedClassName="NSTopology" syncable="YES">
         <attribute name="descr" optional="YES" attributeType="String"/>
         <attribute name="image" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
-        <relationship name="pointCharges" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="PointChargeModel" inverseName="topology" inverseEntity="PointChargeModel"/>
+        <relationship name="pointCharges" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="NSPointCharge" inverseName="topology" inverseEntity="NSPointCharge"/>
     </entity>
     <elements>
-        <element name="PointChargeModel" positionX="-63" positionY="9" width="128" height="133"/>
-        <element name="TopologyModel" positionX="-63" positionY="-18" width="128" height="103"/>
+        <element name="NSPointCharge" positionX="-63" positionY="9" width="128" height="133"/>
+        <element name="NSTopology" positionX="-63" positionY="-18" width="128" height="103"/>
     </elements>
 </model>

@@ -23,28 +23,41 @@ class SingleForce {
     var magnetude: Float
     var angle: Float
     var length: Float = 0.05
+    var scale: Float = 0.05
     var arrowEntity: Entity
     var sourcePointCharge: PointChargeClass
     var targetPointCharge: PointChargeClass
     init(magnetude: Float, angle: Float, arrowEntity: Entity, from: PointChargeClass, to: PointChargeClass) {
         SingleForce.volume += 1
+        
         self.forceId = SingleForce.volume
         self.magnetude = magnetude
         self.angle = angle
-        self.arrowEntity = arrowEntity
+        
+        /// SourcePointCharge: the pc the arrow shows to
         self.sourcePointCharge = from
+        /// TargetPointCharge: the pc the arrow is drawn on to
         self.targetPointCharge = to
+        
+        /// Set up the Arrow Entity and its scale (down to 0.05 cause it's too big
+        /// PREVIOUS EDITION: The scale was being setup after the look(at: _) function in updateForceArrow, cause a bug
+        /// was initializing the scale after each time look(at: _) was called.
+        self.arrowEntity = arrowEntity
+        self.arrowEntity.setScale(SIMD3<Float>(self.scale, self.scale, self.scale), relativeTo: self.arrowEntity)
+        
     }
     
     func updateForceArrow() {
+        /// - Tag: The next 2 lines do not apply anymore (look(at: _) initializing scale
         // First set look(at:_) cause it reinitialize the scale. Then set the scale x 0.05 and the position again
         // to the center of the pointCharge.
-        // CAREFUL: The arrow entity points with its tail, so REVERSE the look DIRECTION to get what you want
+        
+        /// - Tag:  CAREFUL: The arrow entity points with its tail, so REVERSE the look DIRECTION to get what you want
         self.arrowEntity.look(at: self.sourcePointCharge.entity.position, from: self.targetPointCharge.entity.position, relativeTo: self.targetPointCharge.entity)
-        self.arrowEntity.setScale(SIMD3<Float>(0.05, 0.05, 0.05), relativeTo: self.arrowEntity)
         self.arrowEntity.setPosition(SIMD3<Float>(0, 0, 0), relativeTo: self.targetPointCharge.entity)
-        // MARK: - ORIENTATION: Look TO or AWAY ?
-        // If you want the arrows to look to the other coulomb insted of looking away
+        
+        /// - Tag:  ORIENTATION: Look TO or AWAY ?
+        // If you want the arrows to look to the other coulomb instead of looking away
         // add the following line so that it reverses its direction
         self.arrowEntity.setOrientation(simd_quatf(angle: 180.degreesToRadians(), axis: SIMD3<Float>(0, 1.0, 0)), relativeTo: self.arrowEntity)
     }

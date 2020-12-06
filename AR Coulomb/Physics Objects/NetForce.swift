@@ -96,9 +96,6 @@ class NetForce {
             //
             
             
-            //if self.forceId == 3 {
-            //    print("components: " + String(fx) + ", " + String(fy))
-            //}
         }
         return (fx, fy)
     }
@@ -106,6 +103,7 @@ class NetForce {
     private func netForceMagnetude(fx: Float, fy: Float) -> Float {
         return sqrt(fx*fx + fy*fy)
     }
+    
     
     private func netForceAngle(fx: Float, fy: Float) -> Float {
         if fx >= 0 && fy >= 0 {
@@ -116,14 +114,6 @@ class NetForce {
             return Float(180.degreesToRadians) + atan(-fx / fy)
         } else if fx <= 0 && fy <= 0 {
             // 3rd quarter
-            //
-            
-            
-            //if self.forceId == 3 {
-            //    print("netFy: " + String(fy) + ", /netFx: " + String(fx))
-            //}
-            
-            
             return Float(270.degreesToRadians) + atan(-fy / -fx)
             
         } else if fx >= 0 && fy <= 0 {

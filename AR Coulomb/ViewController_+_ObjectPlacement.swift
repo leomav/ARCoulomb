@@ -22,7 +22,8 @@ extension ViewController: ARSessionDelegate, ARSCNViewDelegate {
                 self.disableRecognizers(withName: "First Point Recognizer")
 
                 /// Create a Topology Instance with the added anchor as topoAnchor
-                self.topology = Topology(viewController: self, topoAnchor: anchor)
+                self.topology = Topology()
+                self.topology.pinToScene(viewController: self, topoAnchor: anchor)
 
                 /// Open the bottom Coulomb Topology menu to choose topology
                 performSegue(withIdentifier: "toTopoMenuSegue", sender: nil)
@@ -38,7 +39,7 @@ extension ViewController: ARSessionDelegate, ARSCNViewDelegate {
             self.status?.escalateFeedback(for: camera.trackingState, inSeconds: 3.0)
         case .normal:
             self.status?.cancelScheduledMessage(for: .trackingStateEscalation)
-            self.topology?.toggleTopology(show: false)
+            self.topology.toggleTopology(show: false)
         }
     }
 }
