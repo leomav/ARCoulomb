@@ -8,6 +8,7 @@
 
 import Foundation
 import RealityKit
+import UIKit
 
 /// forceId:    Id of the netforce entity
 /// magnetude:  Force Magnetude (Newtons)
@@ -48,13 +49,17 @@ class SingleForce {
     }
     
     func updateForceArrow() {
-        /// - Tag: The next 2 lines do not apply anymore (look(at: _) initializing scale
+        /// - Tag: The next 2 comment lines do not apply anymore (look(at: _) initializing scale
         // First set look(at:_) cause it reinitialize the scale. Then set the scale x 0.05 and the position again
         // to the center of the pointCharge.
         
         /// - Tag:  CAREFUL: The arrow entity points with its tail, so REVERSE the look DIRECTION to get what you want
         self.arrowEntity.look(at: self.sourcePointCharge.entity.position, from: self.targetPointCharge.entity.position, relativeTo: self.targetPointCharge.entity)
         self.arrowEntity.setPosition(SIMD3<Float>(0, 0, 0), relativeTo: self.targetPointCharge.entity)
+        
+        // DELETE, TESTING
+        self.arrowEntity.setPosition(SIMD3<Float>(0.05, 0, 0), relativeTo: self.targetPointCharge.entity)
+
         
         /// - Tag:  ORIENTATION: Look TO or AWAY ?
         // If you want the arrows to look to the other coulomb instead of looking away
@@ -103,5 +108,41 @@ class SingleForce {
         let distance: Float
         distance = sqrt(pow(x2-x1, 2) + pow(y2-y1, 2))
         return distance
+    }
+    
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    static func loadArrowBody(pointEntity: Entity) ->  Entity {
+        
+        let material: SimpleMaterial = {
+            var mat = SimpleMaterial()
+            mat.metallic = MaterialScalarParameter(floatLiteral: 0.2)
+            mat.roughness = MaterialScalarParameter(floatLiteral: 0.1)
+            mat.tintColor = UIColor.white
+            return mat
+        }()
+        
+        let bodyEntity = SingleForce.createBodyArrowEntity(pointEntity: pointEntity)
+        
+        let model: ModelComponent = ModelComponent(mesh: .generateBox(width: 0.1, height: 0.002, depth: 0.002), materials: [material] )
+        
+        bodyEntity.components.set(model)
+        
+        
+        
+        return bodyEntity
+    }
+    
+    
+    
+    static func createBodyArrowEntity(pointEntity: Entity) -> Entity {
+        let bodyEntity: Entity = Entity()
+        bodyEntity.name = "bodyArrow"
+        bodyEntity.setParent(pointEntity)
+        bodyEntity.setPosition(SIMD3<Float>(0, 0, 0), relativeTo: pointEntity)
+        bodyEntity.setOrientation(simd_quatf(angle: Int(90).degreesToRadians(), axis: SIMD3<Float>(1, 0, 0)), relativeTo: pointEntity)
+        
+        return bodyEntity
     }
 }

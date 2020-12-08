@@ -20,6 +20,9 @@ extension Topology {
                 let arrowAnchor = try! Experience.loadBox()
                 let arrowEntity = arrowAnchor.arrow!
                 
+                // TESTING TESTING TESTING TESTING TESTING
+                /// Comment out the above two lines of code
+                
                 // Add a Force Object and Entity for every pointCharge<->pointCharge combo
                 self.pointCharges.forEach{ pointChargeObj in
                     
@@ -115,10 +118,21 @@ extension Topology {
     
     // MARK: - Private functions
     
-    private func createArrowEntity(for pointChargeObj: PointChargeClass, arrowEntity: Entity, name: String) -> Entity {
+//    private func createArrowEntity(for pointChargeObj: PointChargeClass, arrowEntity: Entity, name: String) -> Entity {
+    private func createArrowEntity(for pointChargeObj: PointChargeClass, name: String) -> Entity {
+        // TESTING below lines
+        let arrowEntity = SingleForce.loadArrowBody(pointEntity: pointChargeObj.entity)
+        let arrowHeadAnchor = try! ArrowHead.load_ArrowHead()
+        let arrowHeadEntity = arrowHeadAnchor.arrowHead
+        arrowHeadEntity?.setParent(arrowEntity)
+        arrowHeadEntity?.setScale(SIMD3<Float>(0.1,0.1,0.1), relativeTo: arrowHeadEntity)
+        arrowHeadEntity?.setPosition(SIMD3<Float>(0.04,0,0), relativeTo: arrowEntity)
+        arrowHeadEntity?.setOrientation(simd_quatf(angle: 90.degreesToRadians(), axis: SIMD3<Float>(0, 1.0, 0)), relativeTo: arrowEntity)
+//        arrowHeadEntity?.setOrientation(simd_quatf(angle: 90.degreesToRadians(), axis: SIMD3<Float>(0, 0, 0)), relativeTo: arrowEntity)
+
         /// Initialize and add NetForce Arrow Entity to the pointChargeObj
         let arrow = arrowEntity.clone(recursive: true)
-        arrow.name = name
+//        arrow.name = name
         pointChargeObj.entity.addChild(arrow)
         
         /// Disable the arrow Entity.
@@ -130,8 +144,9 @@ extension Topology {
     
     private func createNetForce(for pointChargeObj: PointChargeClass, arrowEntity: Entity) -> NetForce {
         /// Create Arrow Entity and add it to the pointChargeObj
-        let arrow = createArrowEntity(for: pointChargeObj, arrowEntity: arrowEntity, name: "NetForce Arrow")
-        
+//        let arrow = createArrowEntity(for: pointChargeObj, arrowEntity: arrowEntity, name: "NetForce Arrow")
+        let arrow = createArrowEntity(for: pointChargeObj, name: "NetForce Arrow")
+
         /// Initialize NetForce Object with Arrow Entity
         let netForce = NetForce(magnetude: 0, angle: 0, arrowEntity: arrow ,point: pointChargeObj, forces: [])
         self.netForces.append(netForce)
@@ -141,8 +156,9 @@ extension Topology {
     
     private func createSingleForce(from otherPointChargeObj: PointChargeClass, to pointChargeObj: PointChargeClass, netForce: NetForce, arrowEntity: Entity){
         /// Create Arrow Entity and add it to the pointChargeObj
-        let arrow = createArrowEntity(for: pointChargeObj, arrowEntity: arrowEntity, name: "SingleForce Arrow")
-        
+//        let arrow = createArrowEntity(for: pointChargeObj, arrowEntity: arrowEntity, name: "SingleForce Arrow")
+        let arrow = createArrowEntity(for: pointChargeObj, name: "SingleForce Arrow")
+
         /// Create instance of Force Object with arrow entity
         let force = SingleForce(magnetude: 5, angle:0, arrowEntity: arrow, from: otherPointChargeObj, to: pointChargeObj)
         
