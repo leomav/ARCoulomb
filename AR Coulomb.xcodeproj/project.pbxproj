@@ -28,6 +28,7 @@
 		9FAB03CE2573F45C00555B1E /* CustomPhotoAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FAB03CD2573F45C00555B1E /* CustomPhotoAlbum.swift */; };
 		9FAB03D12573F9FD00555B1E /* DatabaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FAB03D02573F9FD00555B1E /* DatabaseHelper.swift */; };
 		9FACABBF24C24D2A0024962B /* Force.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FACABBE24C24D2A0024962B /* Force.swift */; };
+		9FD23275258282440027D349 /* EntitiyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD23274258282440027D349 /* EntitiyStore.swift */; };
 		9FD94474249A258400C0E646 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD94473249A258400C0E646 /* AppDelegate.swift */; };
 		9FD94476249A258400C0E646 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD94475249A258400C0E646 /* ViewController.swift */; };
 		9FD94478249A258400C0E646 /* Experience.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 9FD94477249A258400C0E646 /* Experience.rcproject */; };
@@ -68,6 +69,7 @@
 		9FAB03CD2573F45C00555B1E /* CustomPhotoAlbum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPhotoAlbum.swift; sourceTree = "<group>"; };
 		9FAB03D02573F9FD00555B1E /* DatabaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseHelper.swift; sourceTree = "<group>"; };
 		9FACABBE24C24D2A0024962B /* Force.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Force.swift; sourceTree = "<group>"; };
+		9FD23274258282440027D349 /* EntitiyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntitiyStore.swift; sourceTree = "<group>"; };
 		9FD94470249A258400C0E646 /* AR Coulomb.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AR Coulomb.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FD94473249A258400C0E646 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9FD94475249A258400C0E646 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -187,6 +189,7 @@
 				9FFD6FC724ABA5BF00D8DE89 /* ArrowHead.rcproject */,
 				9FD94481249A258600C0E646 /* Info.plist */,
 				9F2350F62571601C00E739CB /* Topologies.xcdatamodeld */,
+				9FD23274258282440027D349 /* EntitiyStore.swift */,
 			);
 			path = "AR Coulomb";
 			sourceTree = "<group>";
@@ -296,6 +299,7 @@
 				9F8E5A4924BB390900C69C27 /* TopologyStore.swift in Sources */,
 				9FF77FD924A7E3EA003477C2 /* CoulombMenuVC.swift in Sources */,
 				9F5E39F725752BDE00E66279 /* NSPointCharge+CoreDataClass.swift in Sources */,
+				9FD23275258282440027D349 /* EntitiyStore.swift in Sources */,
 				9F474FA824C37B3E004E1B54 /* Topology_+_Forces.swift in Sources */,
 				9F37040924FAA82900960422 /* Status.swift in Sources */,
 				9FF77FDB24AA8470003477C2 /* SingleForce.swift in Sources */,

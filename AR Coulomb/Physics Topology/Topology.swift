@@ -36,17 +36,7 @@ class Topology {
         
         /// Import the Point Charge Model, clone the entity as many times as needed
         let pointChargeAnchor = try! PointCharge.load_PointCharge()
-        self.pointChargeEntityTemplate = pointChargeAnchor.pointCharge!
-//
-//        /// Add the Anchor Entity to the scene (where the user tapped)
-//        self.topoAnchorEntity = AnchorEntity(anchor: topoAnchor)
-//        self.topoAnchorEntity.name = "Point Charge Scene AnchorEntity"
-//        self.viewController.arView.scene.addAnchor(self.topoAnchorEntity)
-//
-//        /// Create the Coulomb's Observers (value change or deletion)
-//        self.viewController.createCbObserver()
-//        self.viewController.setupObserverPointChargeDeletion()
-        
+        self.pointChargeEntityTemplate = pointChargeAnchor.pointCharge!        
     }
     
     // MARK: - Topology functions

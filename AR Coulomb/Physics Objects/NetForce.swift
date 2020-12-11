@@ -26,6 +26,7 @@ class NetForce {
     var angle: Float
     var length: Float = 0.05
     var arrowEntity: Entity
+    var pivotEntity: Entity
     let pointChargeObj: PointChargeClass
     var forces: [SingleForce]
     init(magnetude: Float, angle: Float, arrowEntity: Entity, point: PointChargeClass, forces: [SingleForce]) {
@@ -35,6 +36,7 @@ class NetForce {
         self.angle = angle
         self.pointChargeObj = point
         self.arrowEntity = arrowEntity
+        self.pivotEntity = arrowEntity.parent!
         self.forces = forces
         
         self.initializeArrowEntity()
@@ -42,13 +44,13 @@ class NetForce {
     
     // Gets called at the init() phase, sets the scale and position of the arrowEntity
     private func initializeArrowEntity() {
-        self.arrowEntity.setScale(SIMD3<Float>(0.1, 0.1, 0.1), relativeTo: self.arrowEntity)
-        self.arrowEntity.setPosition(SIMD3<Float>(0, 0, 0), relativeTo: self.pointChargeObj.entity)
+//        self.arrowEntity.setPosition(SIMD3<Float>(0, 0, 0), relativeTo: self.pointChargeObj.entity)
     }
     
     // Update the ORIENTATION of the arrowEntity
     func updateNetForceArrow() {
-        self.arrowEntity.setOrientation(simd_quatf(angle: self.angle, axis: SIMD3<Float>(0, 1.0, 0)), relativeTo: self.pointChargeObj.entity)
+        self.pivotEntity.setOrientation(simd_quatf(angle: self.angle, axis: SIMD3<Float>(0, 1.0, 0)), relativeTo: self.pointChargeObj.entity)
+//        self.arrowEntity.setOrientation(simd_quatf(angle: self.angle, axis: SIMD3<Float>(0, 1.0, 0)), relativeTo: self.pointChargeObj.entity)
     }
     
     // CALCULATE the net force

@@ -60,10 +60,23 @@ extension Topology {
         
         /// Enable the Arrows for the SingleForces and the NetForce of the selectedPointChargeObj
         /// EXCEPT IF there are no other pointCharges, then there is no need for Arrows
+        
+        // TESTING
+//        if self.pointCharges.count > 1 {
+//            pointChargeObj.entity.children.forEach{ child in
+//                if child.name == "NetForce Arrow" || child.name == "SingleForce Arrow" {
+//                    child.isEnabled = true
+//                }
+//            }
+//        }
         if self.pointCharges.count > 1 {
             pointChargeObj.entity.children.forEach{ child in
-                if child.name == "NetForce Arrow" || child.name == "SingleForce Arrow" {
-                    child.isEnabled = true
+                if child.name == "Pivot Arrow" {
+                    child.children.forEach{ child in
+                        if child.name == "NetForce Arrow" || child.name == "SingleForce Arrow" {
+                            child.isEnabled = true
+                        }
+                    }
                 }
             }
         }
@@ -120,20 +133,29 @@ extension Topology {
     
 //    private func createArrowEntity(for pointChargeObj: PointChargeClass, arrowEntity: Entity, name: String) -> Entity {
     private func createArrowEntity(for pointChargeObj: PointChargeClass, name: String) -> Entity {
-        // TESTING below lines
-        let arrowEntity = SingleForce.loadArrowBody(pointEntity: pointChargeObj.entity)
-        let arrowHeadAnchor = try! ArrowHead.load_ArrowHead()
-        let arrowHeadEntity = arrowHeadAnchor.arrowHead
-        arrowHeadEntity?.setParent(arrowEntity)
-        arrowHeadEntity?.setScale(SIMD3<Float>(0.1,0.1,0.1), relativeTo: arrowHeadEntity)
-        arrowHeadEntity?.setPosition(SIMD3<Float>(0.04,0,0), relativeTo: arrowEntity)
-        arrowHeadEntity?.setOrientation(simd_quatf(angle: 90.degreesToRadians(), axis: SIMD3<Float>(0, 1.0, 0)), relativeTo: arrowEntity)
-//        arrowHeadEntity?.setOrientation(simd_quatf(angle: 90.degreesToRadians(), axis: SIMD3<Float>(0, 0, 0)), relativeTo: arrowEntity)
+        // TESTING 2
+        let arrowEntity = EntityStore.shared.load_ArrowBodyEntity(pointEntity: pointChargeObj.entity)
+        EntityStore.shared.load_ArrowHead(arrowEntity: arrowEntity)
 
         /// Initialize and add NetForce Arrow Entity to the pointChargeObj
-        let arrow = arrowEntity.clone(recursive: true)
-//        arrow.name = name
-        pointChargeObj.entity.addChild(arrow)
+//        let arrow = arrowEntity.clone(recursive: true)
+        let arrow = arrowEntity
+        arrow.name = name
+        
+        /// Create an empty pivot entity
+        let pivotEntity: Entity = Entity()
+        pivotEntity.name = "Pivot Arrow"
+        
+        /// Add the pivot entity as a direct PointCharge Entity child
+        pointChargeObj.entity.addChild(pivotEntity)
+        pivotEntity.setPosition(SIMD3<Float>(0,0,0), relativeTo: pointChargeObj.entity)
+        
+        /// Make the pivot entity parent of the arrow
+        pivotEntity.addChild(arrow)
+        arrow.setPosition(SIMD3<Float>(0,0,0.05), relativeTo: pivotEntity)
+        
+        /// Now, each time we want to rotate the arrow, we just have to rotate
+        /// its parent pivot point entity, EASIER
         
         /// Disable the arrow Entity.
         /// Later, the arrows relative to the selectedPointChargeObj will be enabled

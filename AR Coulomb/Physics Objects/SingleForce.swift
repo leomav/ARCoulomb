@@ -25,6 +25,8 @@ class SingleForce {
     var angle: Float
     var length: Float = 0.05
     var scale: Float = 0.05
+    
+    var pivotEntity: Entity
     var arrowEntity: Entity
     var sourcePointCharge: PointChargeClass
     var targetPointCharge: PointChargeClass
@@ -40,11 +42,10 @@ class SingleForce {
         /// TargetPointCharge: the pc the arrow is drawn on to
         self.targetPointCharge = to
         
-        /// Set up the Arrow Entity and its scale (down to 0.05 cause it's too big
-        /// PREVIOUS EDITION: The scale was being setup after the look(at: _) function in updateForceArrow, cause a bug
-        /// was initializing the scale after each time look(at: _) was called.
+        /// Set the arrowEntity and its parent the pivotEntity
+        /// Pivot entity is used to rotate the arrowEntity
         self.arrowEntity = arrowEntity
-        self.arrowEntity.setScale(SIMD3<Float>(self.scale, self.scale, self.scale), relativeTo: self.arrowEntity)
+        self.pivotEntity = arrowEntity.parent!
         
     }
     
@@ -54,17 +55,14 @@ class SingleForce {
         // to the center of the pointCharge.
         
         /// - Tag:  CAREFUL: The arrow entity points with its tail, so REVERSE the look DIRECTION to get what you want
-        self.arrowEntity.look(at: self.sourcePointCharge.entity.position, from: self.targetPointCharge.entity.position, relativeTo: self.targetPointCharge.entity)
-        self.arrowEntity.setPosition(SIMD3<Float>(0, 0, 0), relativeTo: self.targetPointCharge.entity)
-        
-        // DELETE, TESTING
-        self.arrowEntity.setPosition(SIMD3<Float>(0.05, 0, 0), relativeTo: self.targetPointCharge.entity)
+        // TESTING
+        /// Tested that the following parameters was the only way to work :(.
+        self.pivotEntity.look(at: self.sourcePointCharge.entity.position, from: self.targetPointCharge.entity.position, relativeTo: self.targetPointCharge.entity.parent)
 
-        
         /// - Tag:  ORIENTATION: Look TO or AWAY ?
         // If you want the arrows to look to the other coulomb instead of looking away
         // add the following line so that it reverses its direction
-        self.arrowEntity.setOrientation(simd_quatf(angle: 180.degreesToRadians(), axis: SIMD3<Float>(0, 1.0, 0)), relativeTo: self.arrowEntity)
+//        self.arrowEntity.setOrientation(simd_quatf(angle: 180.degreesToRadians(), axis: SIMD3<Float>(0, 1.0, 0)), relativeTo: self.arrowEntity)
     }
     
     func updateForceAngle() {
@@ -75,8 +73,21 @@ class SingleForce {
         // If the angle is <90 or >270 the angle returns the same (<90 form). For example
         // if the angle is 300, 60 will be returned. So there is no way
         // to know which case is true. Except from one, if we take also the imag.y part of
-        // the simd_quatf. Then if y is > 0 --> <90 is true, else if y <0 --> >270 is true.
-        let orientation = self.arrowEntity.orientation(relativeTo: self.arrowEntity.parent)
+        // the simd_quatf. Then if y is > 0 --> <90 is true, else if y < 0 --> >270 is true.
+        
+        // TESTING
+//        let orientation = self.arrowEntity.orientation(relativeTo: self.arrowEntity.parent)
+//        if orientation.imag.y >= 0 {
+//            self.angle = orientation.angle
+//        } else {
+//            self.angle = Float(360).degreesToRadians - orientation.angle
+//            // *** FIXED BUG: angle was too close to 0 that the above made rounded up to 360
+//            // So if angle is set to 360, reset it to 0.
+//            if self.angle.radiansToDegrees == 360 {
+//                self.angle = 0
+//            }
+//        }
+        let orientation = self.pivotEntity.orientation(relativeTo: self.pivotEntity.parent)
         if orientation.imag.y >= 0 {
             self.angle = orientation.angle
         } else {
@@ -110,39 +121,4 @@ class SingleForce {
         return distance
     }
     
-    
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    static func loadArrowBody(pointEntity: Entity) ->  Entity {
-        
-        let material: SimpleMaterial = {
-            var mat = SimpleMaterial()
-            mat.metallic = MaterialScalarParameter(floatLiteral: 0.2)
-            mat.roughness = MaterialScalarParameter(floatLiteral: 0.1)
-            mat.tintColor = UIColor.white
-            return mat
-        }()
-        
-        let bodyEntity = SingleForce.createBodyArrowEntity(pointEntity: pointEntity)
-        
-        let model: ModelComponent = ModelComponent(mesh: .generateBox(width: 0.1, height: 0.002, depth: 0.002), materials: [material] )
-        
-        bodyEntity.components.set(model)
-        
-        
-        
-        return bodyEntity
-    }
-    
-    
-    
-    static func createBodyArrowEntity(pointEntity: Entity) -> Entity {
-        let bodyEntity: Entity = Entity()
-        bodyEntity.name = "bodyArrow"
-        bodyEntity.setParent(pointEntity)
-        bodyEntity.setPosition(SIMD3<Float>(0, 0, 0), relativeTo: pointEntity)
-        bodyEntity.setOrientation(simd_quatf(angle: Int(90).degreesToRadians(), axis: SIMD3<Float>(1, 0, 0)), relativeTo: pointEntity)
-        
-        return bodyEntity
-    }
 }
