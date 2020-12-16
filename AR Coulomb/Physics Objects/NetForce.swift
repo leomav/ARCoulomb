@@ -75,29 +75,33 @@ class NetForce {
     private func calculateForceComponents(f: Float, f_angle: Float) -> (Float, Float){
         let quarter = f_angle.radiansToDegrees / 90
         let f_angleMod = (f_angle.radiansToDegrees.truncatingRemainder(dividingBy: 90)).degreesToRadians
-
+        
         let fx: Float
         let fy: Float
         
+        /// Absolute Value of f
+        let f_abs = abs(f)
+        
+        /// To calculate correctly the Fx, Fy components, the Force Magnetude
+        /// has to have its ABSOLUTE VALUE
+        
         if quarter < 1 {
             // 4th quarter
-            fx = f * sin(f_angleMod)
-            fy = -f * cos(f_angleMod)
+            fx = f_abs * sin(f_angleMod)
+            fy = -f_abs * cos(f_angleMod)
         } else if quarter < 2 {
             // 1st quarter
-            fx = f * cos(f_angleMod)
-            fy = f * sin(f_angleMod)
+            fx = f_abs * cos(f_angleMod)
+            fy = f_abs * sin(f_angleMod)
         } else if quarter < 3 {
             // 2nd quarter
-            fx = -f * sin(f_angleMod)
-            fy = f * cos(f_angleMod)
+            fx = -f_abs * sin(f_angleMod)
+            fy = f_abs * cos(f_angleMod)
         } else {
             // 3rd quarter
-            fx = -f * cos(f_angleMod)
-            fy = -f * sin(f_angleMod)
+            fx = -f_abs * cos(f_angleMod)
+            fy = -f_abs * sin(f_angleMod)
             //
-            
-            
         }
         return (fx, fy)
     }

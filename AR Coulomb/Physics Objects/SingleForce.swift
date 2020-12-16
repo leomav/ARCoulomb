@@ -81,6 +81,8 @@ class SingleForce {
         if self.attraction {
             self.pivotEntity.setOrientation(simd_quatf(angle: 180.degreesToRadians(), axis: SIMD3<Float>(0, 1.0, 0)), relativeTo: self.pivotEntity)
         }
+        
+        
     }
     
     func updateForceAngle() {
@@ -106,6 +108,7 @@ class SingleForce {
 //            }
 //        }
         let orientation = self.pivotEntity.orientation(relativeTo: self.pivotEntity.parent)
+        
         if orientation.imag.y >= 0 {
             self.angle = orientation.angle
         } else {
