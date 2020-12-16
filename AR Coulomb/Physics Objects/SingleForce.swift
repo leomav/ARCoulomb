@@ -24,7 +24,23 @@ class SingleForce {
     var magnetude: Float
     var angle: Float
     var length: Float = 0.05
-    var scale: Float = 0.05
+    let metersPerNewton: Float = 0.01
+    
+    /// Attraction computed property
+    var attraction: Bool {
+        let attraction: Bool
+        
+        /// Set the attraction:
+        /// true: heteronyms -> lure eachother
+        /// false: homonyms
+        if self.sourcePointCharge.value * self.targetPointCharge.value < 0 {
+            attraction = true
+        } else {
+            attraction = false
+        }
+        
+        return attraction
+    }
     
     var pivotEntity: Entity
     var arrowEntity: Entity
@@ -62,7 +78,9 @@ class SingleForce {
         /// - Tag:  ORIENTATION: Look TO or AWAY ?
         // If you want the arrows to look to the other coulomb instead of looking away
         // add the following line so that it reverses its direction
-//        self.arrowEntity.setOrientation(simd_quatf(angle: 180.degreesToRadians(), axis: SIMD3<Float>(0, 1.0, 0)), relativeTo: self.arrowEntity)
+        if self.attraction {
+            self.pivotEntity.setOrientation(simd_quatf(angle: 180.degreesToRadians(), axis: SIMD3<Float>(0, 1.0, 0)), relativeTo: self.pivotEntity)
+        }
     }
     
     func updateForceAngle() {
