@@ -19,91 +19,91 @@ import RealityKit
 
 
 
-class NetForce {
-    static var volume: Int = 0
-    let forceId: Int
-    var magnetude: Float
-    var angle: Float
-    var length: Float = 0.05
-    var arrowEntity: Entity
-    var pivotEntity: Entity
+class NetForce: Force {
+    static var netForcesTotal: Int = 0
+    let netForceId: Int
     let pointChargeObj: PointChargeClass
     var forces: [SingleForce]
-    init(magnetude: Float, angle: Float, arrowEntity: Entity, point: PointChargeClass, forces: [SingleForce]) {
-        NetForce.volume += 1
-        self.forceId = NetForce.volume
-        self.magnetude = magnetude
-        self.angle = angle
+    
+//    init(magnetude: Float, angle: Float, arrowEntity: Entity, point: PointChargeClass, forces: [SingleForce]) {
+    init(magnetude: Float, angle: Float, point: PointChargeClass, forces: [SingleForce]) {
+        NetForce.netForcesTotal += 1
+        self.netForceId = NetForce.netForcesTotal
+        
         self.pointChargeObj = point
-        self.arrowEntity = arrowEntity
-        self.pivotEntity = arrowEntity.parent!
+        
         self.forces = forces
         
-        self.initializeArrowEntity()
+        let arrowEntity = Force.createArrowEntity(on: self.pointChargeObj, magnetude: magnetude, name: "NetForce Arrow")
+
+        super.init(magnetude: magnetude, angle: angle, arrowEntity: arrowEntity)
+    }
+    
+    static func createForce(for pointChargeObj: PointChargeClass) -> NetForce {
+
+        /// Initialize NetForce Object with Arrow Entity
+        let netForce = NetForce(magnetude: 0, angle: 0, point: pointChargeObj, forces: [])
+        
+        /// Append it to netForces of topology. CAN BE DONE AFTER RETURN THOUGH.
+//        self.netForces.append(netForce)
+        
+        return netForce
     }
     
     // Gets called at the init() phase, sets the scale and position of the arrowEntity
-    private func initializeArrowEntity() {
-//        self.arrowEntity.setPosition(SIMD3<Float>(0, 0, 0), relativeTo: self.pointChargeObj.entity)
-    }
+//    private func initializeArrowEntity() {
+////        self.arrowEntity.setPosition(SIMD3<Float>(0, 0, 0), relativeTo: self.pointChargeObj.entity)
+//    }
     
     // Update the ORIENTATION of the arrowEntity
-    func updateNetForceArrow() {
+    override func updateForceArrowOrientation() {
         self.pivotEntity.setOrientation(simd_quatf(angle: self.angle, axis: SIMD3<Float>(0, 1.0, 0)), relativeTo: self.pointChargeObj.entity)
 //        self.arrowEntity.setOrientation(simd_quatf(angle: self.angle, axis: SIMD3<Float>(0, 1.0, 0)), relativeTo: self.pointChargeObj.entity)
     }
     
-    // CALCULATE the net force
+    override func updateForceAngle() {
+        //
+        let fx = X_Force_Component; let fy = Y_Force_Component
+        
+        self.angle = self.netForceAngle(fx: fx, fy: fy)
+    }
+    
+    override func updateForceMagnetude() {
+        //
+//        let fx = X_Force_Component; let fy  = Y_Force_Component
+//
+//        self.magnetude = self.netForceMagnetude(fx: fx, fy: fy)
+    }
+    
+    // CALCULATE the Net Force
     // Analyze every force of the pointChargeObj to Fx, Fy components
     // Add all the Fx components, then all the Fy components
     // Finally, calculate the netforce between the sumFx, sumFy
     func calculateNetForce() {
         var netFx: Float = 0
         var netFy: Float = 0
+        
         self.forces.forEach{ force in
-            let fx: Float; let fy: Float
-            (fx, fy) = self.calculateForceComponents(f: force.magnetude, f_angle: force.angle)
-            netFx += fx
-            netFy += fy
+//            let fx: Float; let fy: Float
+//            (fx, fy) = self.calculateForceComponents(f: force.magnetude, f_angle: force.angle)
+//            netFx += fx
+//            netFy += fy
+            
+            netFx += force.X_Force_Component
+            netFy += force.Y_Force_Component
+            
         }
         
+        /// Instead of that, use the following netForceMagnetude function.
+//        self.updateForceMagnetude()
+        
+        /// When magnetude gets updated, the Fx, Fy components will be updated also...
         self.magnetude = self.netForceMagnetude(fx: netFx, fy: netFy)
-        self.angle = self.netForceAngle(fx: netFx, fy: netFy)
-    }
-    
-    // CALCULATE the Fx, Fy components of Force f with angle f_angle
-    private func calculateForceComponents(f: Float, f_angle: Float) -> (Float, Float){
-        let quarter = f_angle.radiansToDegrees / 90
-        let f_angleMod = (f_angle.radiansToDegrees.truncatingRemainder(dividingBy: 90)).degreesToRadians
+        /// ... and will be ready for use in updateForceAngle()
+        self.updateForceAngle()
         
-        let fx: Float
-        let fy: Float
-        
-        /// Absolute Value of f
-        let f_abs = abs(f)
-        
-        /// To calculate correctly the Fx, Fy components, the Force Magnetude
-        /// has to have its ABSOLUTE VALUE
-        
-        if quarter < 1 {
-            // 4th quarter
-            fx = f_abs * sin(f_angleMod)
-            fy = -f_abs * cos(f_angleMod)
-        } else if quarter < 2 {
-            // 1st quarter
-            fx = f_abs * cos(f_angleMod)
-            fy = f_abs * sin(f_angleMod)
-        } else if quarter < 3 {
-            // 2nd quarter
-            fx = -f_abs * sin(f_angleMod)
-            fy = f_abs * cos(f_angleMod)
-        } else {
-            // 3rd quarter
-            fx = -f_abs * cos(f_angleMod)
-            fy = -f_abs * sin(f_angleMod)
-            //
-        }
-        return (fx, fy)
+//        self.magnetude = self.netForceMagnetude(fx: netFx, fy: netFy)
+//        self.angle = self.netForceAngle(fx: netFx, fy: netFy)
     }
     
     private func netForceMagnetude(fx: Float, fy: Float) -> Float {
@@ -129,5 +129,40 @@ class NetForce {
             return 0
         }
     }
+    
+    // CALCULATE the Fx, Fy components of Force f with angle f_angle
+//    private func calculateForceComponents(f: Float, f_angle: Float) -> (Float, Float){
+//        let quarter = f_angle.radiansToDegrees / 90
+//        let f_angleMod = (f_angle.radiansToDegrees.truncatingRemainder(dividingBy: 90)).degreesToRadians
+//
+//        let fx: Float
+//        let fy: Float
+//
+//        /// To calculate correctly the Fx, Fy components, the Force Magnetude
+//        /// has to have its ABSOLUTE VALUE
+//        /// Thankfully, it is saved that way in the SingleForce Object
+//
+//        if quarter < 1 {
+//            // 4th quarter
+//            fx = f * sin(f_angleMod)
+//            fy = -f * cos(f_angleMod)
+//        } else if quarter < 2 {
+//            // 1st quarter
+//            fx = f * cos(f_angleMod)
+//            fy = f * sin(f_angleMod)
+//        } else if quarter < 3 {
+//            // 2nd quarter
+//            fx = -f * sin(f_angleMod)
+//            fy = f * cos(f_angleMod)
+//        } else {
+//            // 3rd quarter
+//            fx = -f * cos(f_angleMod)
+//            fy = -f * sin(f_angleMod)
+//            //
+//        }
+//        return (fx, fy)
+//    }
+    
+   
     
 }

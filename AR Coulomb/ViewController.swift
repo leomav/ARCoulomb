@@ -394,6 +394,7 @@ extension FloatingPoint {
     var radiansToDegrees: Self { self * 180 / .pi }
 }
 
+// MARK: - UI LABEL
 @IBDesignable class UIPaddingLabel: UILabel {
     @IBInspectable var topInset: CGFloat = 8.0
     @IBInspectable var bottomInset: CGFloat = 8.0
@@ -411,3 +412,22 @@ extension FloatingPoint {
                       height: size.height + topInset + bottomInset)
     }
 }
+
+
+// MARK: - FLOAT DECIMAL PRECISION
+//extension FloatingPoint {
+//
+//    func prcs(dec: Int) {
+//        
+//        /// Multiply with 10 power <#decimalpoints>
+//        let one = self * Float(truncating: pow(10, dec) as NSNumber)
+//        
+//        /// Round it
+//        let two = one.round()
+//        
+//        /// Divide by 10 power <#decimalpoints>
+//        let three = two / pow(10, dec)
+//        
+//        self = three
+//    }
+//}

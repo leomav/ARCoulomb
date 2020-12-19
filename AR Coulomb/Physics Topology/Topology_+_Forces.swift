@@ -17,8 +17,8 @@ extension Topology {
             if anchor.name == "Point Charge Scene AnchorEntity" {
                 
                 /// Get the ArrowEntity out of the ArrowAnchor
-                let arrowAnchor = try! Experience.loadBox()
-                let arrowEntity = arrowAnchor.arrow!
+//                let arrowAnchor = try! Experience.loadBox()
+//                let arrowEntity = arrowAnchor.arrow!
                 
                 // TESTING TESTING TESTING TESTING TESTING
                 /// Comment out the above two lines of code
@@ -27,16 +27,21 @@ extension Topology {
                 self.pointCharges.forEach{ pointChargeObj in
                     
                     /// Create NetForce Object
-                    let netForce = self.createNetForce(for: pointChargeObj, arrowEntity: arrowEntity)
-                    
+//                    let netForce = self.createNetForce(for: pointChargeObj, arrowEntity: arrowEntity)
+                    let netForce = Force.createNetForce(for: pointChargeObj)
+                    self.netForces.append(netForce)
+
                     /// Initialize and add a force to the pointChargeObj for every neighbor
                     self.pointCharges.forEach{ otherPointChargeObj in
                         if pointChargeObj.id != otherPointChargeObj.id {
                             
-                            self.createSingleForce(from: otherPointChargeObj, to: pointChargeObj, netForce: netForce, arrowEntity: arrowEntity)
+//                            self.createSingleForce(from: otherPointChargeObj, to: pointChargeObj, netForce: netForce, arrowEntity: arrowEntity)
+                            let singleForce = Force.createSingleForce(from: otherPointChargeObj, to: pointChargeObj)
+                            netForce.forces.append(singleForce)
                         }
                     }
                 }
+                
                 self.updateForces()
             }
         }
@@ -82,20 +87,22 @@ extension Topology {
         }
     }
         
-    // ---------------------------------------------------------------------------------
-    // -------------------------- Update FORCES ----------------------------------------
+    // MARK:- UPDATE FORCES
+    
     func updateForces() {
+        
         self.netForces.forEach{ netForceObj in
             
             netForceObj.forces.forEach{ forceObj in
-                forceObj.updateForceArrow()
-                forceObj.updateForceAngle()
-                forceObj.updateForceMagnetude()
+                forceObj.updateForce()
             }
+            
             netForceObj.calculateNetForce()
             
+            print(netForceObj.magnetude)
+            
             // Update Net Force Arrow orientation
-            netForceObj.updateNetForceArrow()
+            netForceObj.updateForceArrowOrientation()
         }
     }
     
@@ -132,59 +139,61 @@ extension Topology {
     // MARK: - Private functions
     
 //    private func createArrowEntity(for pointChargeObj: PointChargeClass, arrowEntity: Entity, name: String) -> Entity {
-    private func createArrowEntity(for pointChargeObj: PointChargeClass, name: String) -> Entity {
-        // TESTING 2
-        let arrowEntity = EntityStore.shared.load_ArrowBodyEntity(pointEntity: pointChargeObj.entity)
-        EntityStore.shared.load_ArrowHead(arrowEntity: arrowEntity)
-
-        /// Initialize and add NetForce Arrow Entity to the pointChargeObj
-//        let arrow = arrowEntity.clone(recursive: true)
-        let arrow = arrowEntity
-        arrow.name = name
-        
-        /// Create an empty pivot entity
-        let pivotEntity: Entity = Entity()
-        pivotEntity.name = "Pivot Arrow"
-        
-        /// Add the pivot entity as a direct PointCharge Entity child
-        pointChargeObj.entity.addChild(pivotEntity)
-        pivotEntity.setPosition(SIMD3<Float>(0,0,0), relativeTo: pointChargeObj.entity)
-        
-        /// Make the pivot entity parent of the arrow
-        pivotEntity.addChild(arrow)
-        arrow.setPosition(SIMD3<Float>(0,0,0.05), relativeTo: pivotEntity)
-        
-        /// Now, each time we want to rotate the arrow, we just have to rotate
-        /// its parent pivot point entity, EASIER
-        
-        /// Disable the arrow Entity.
-        /// Later, the arrows relative to the selectedPointChargeObj will be enabled
-        arrow.isEnabled = false
-        
-        return arrow
-    }
+//    private func createArrowEntity(for pointChargeObj: PointChargeClass, name: String) -> Entity {
+//        // TESTING 2
+//        let arrowEntity = EntityStore.shared.load_ArrowBodyEntity(pointEntity: pointChargeObj.entity)
+//        EntityStore.shared.load_ArrowHead(on: arrowEntity)
+//
+//        /// Initialize and add NetForce Arrow Entity to the pointChargeObj
+////        let arrow = arrowEntity.clone(recursive: true)
+//        let arrow = arrowEntity
+//        arrow.name = name
+//
+//        /// Create an empty pivot entity
+//        let pivotEntity: Entity = Entity()
+//        pivotEntity.name = "Pivot Arrow"
+//
+//        /// Add the pivot entity as a direct PointCharge Entity child
+//        pointChargeObj.entity.addChild(pivotEntity)
+//        pivotEntity.setPosition(SIMD3<Float>(0,0,0), relativeTo: pointChargeObj.entity)
+//
+//        /// Make the pivot entity parent of the arrow
+//        pivotEntity.addChild(arrow)
+//        arrow.setPosition(SIMD3<Float>(0,0,0.05), relativeTo: pivotEntity)
+//
+//        /// Now, each time we want to rotate the arrow, we just have to rotate
+//        /// its parent pivot point entity, EASIER
+//
+//        /// Disable the arrow Entity.
+//        /// Later, the arrows relative to the selectedPointChargeObj will be enabled
+//        arrow.isEnabled = false
+//
+//        return arrow
+//    }
     
-    private func createNetForce(for pointChargeObj: PointChargeClass, arrowEntity: Entity) -> NetForce {
-        /// Create Arrow Entity and add it to the pointChargeObj
-//        let arrow = createArrowEntity(for: pointChargeObj, arrowEntity: arrowEntity, name: "NetForce Arrow")
-        let arrow = createArrowEntity(for: pointChargeObj, name: "NetForce Arrow")
-
-        /// Initialize NetForce Object with Arrow Entity
-        let netForce = NetForce(magnetude: 0, angle: 0, arrowEntity: arrow ,point: pointChargeObj, forces: [])
-        self.netForces.append(netForce)
-        
-        return netForce
-    }
-    
-    private func createSingleForce(from otherPointChargeObj: PointChargeClass, to pointChargeObj: PointChargeClass, netForce: NetForce, arrowEntity: Entity){
-        /// Create Arrow Entity and add it to the pointChargeObj
-//        let arrow = createArrowEntity(for: pointChargeObj, arrowEntity: arrowEntity, name: "SingleForce Arrow")
-        let arrow = createArrowEntity(for: pointChargeObj, name: "SingleForce Arrow")
-
-        /// Create instance of Force Object with arrow entity
-        let force = SingleForce(magnetude: 5, angle:0, arrowEntity: arrow, from: otherPointChargeObj, to: pointChargeObj)
-        
-        /// Integrate Force Obj to the Net Force Obj of the PointChargeObj
-        netForce.forces.append(force)
-    }
+//    private func createNetForce(for pointChargeObj: PointChargeClass, arrowEntity: Entity) -> NetForce {
+//        /// Create Arrow Entity and add it to the pointChargeObj
+////        let arrow = createArrowEntity(for: pointChargeObj, arrowEntity: arrowEntity, name: "NetForce Arrow")
+//        let arrow = createArrowEntity(for: pointChargeObj, name: "NetForce Arrow")
+//
+//        /// Initialize NetForce Object with Arrow Entity
+//        let netForce = NetForce(magnetude: 0, angle: 0, arrowEntity: arrow ,point: pointChargeObj, forces: [])
+//
+//        /// Append it to netForces of topology. CAN BE DONE AFTER RETURN THOUGH.
+//        self.netForces.append(netForce)
+//
+//        return netForce
+//    }
+//
+//    private func createSingleForce(from otherPointChargeObj: PointChargeClass, to pointChargeObj: PointChargeClass, netForce: NetForce, arrowEntity: Entity){
+//        /// Create Arrow Entity and add it to the pointChargeObj
+////        let arrow = createArrowEntity(for: pointChargeObj, arrowEntity: arrowEntity, name: "SingleForce Arrow")
+//        let arrow = createArrowEntity(for: pointChargeObj, name: "SingleForce Arrow")
+//
+//        /// Create instance of Force Object with arrow entity
+//        let force = SingleForce(magnetude: 5, angle:0, arrowEntity: arrow, from: otherPointChargeObj, to: pointChargeObj)
+//
+//        /// Integrate Force Obj to the Net Force Obj of the PointChargeObj. CAN BE DONE AFTER RETURN THOUGH.
+//        netForce.forces.append(force)
+//    }
 }

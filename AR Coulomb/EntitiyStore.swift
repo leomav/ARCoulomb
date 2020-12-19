@@ -47,9 +47,9 @@ class EntityStore {
         textEntity.components.set(model)
     }
     
+    // MARK: - Arrow Body Material
     
-    // MARK: - Arrow Body
-    func load_ArrowBodyEntity(pointEntity: Entity) -> Entity {
+    func load_ArrowBodyMaterial(magnetude: Float) -> ModelComponent{
         let material: SimpleMaterial = {
             var mat = SimpleMaterial()
             mat.metallic = MaterialScalarParameter(floatLiteral: 0.2)
@@ -58,8 +58,27 @@ class EntityStore {
             return mat
         }()
         
-//        let model: ModelComponent = ModelComponent(mesh: .generateBox(width: 0.1, height: 0.002, depth: 0.002), materials: [material] )
-        let model: ModelComponent = ModelComponent(mesh: .generateBox(width: 0.002, height: 0.002, depth: 0.1), materials: [material] )
+        let length: Float = magnetude * Force.metersPerNewton
+        
+        print("Length \(length) = magnetude \(magnetude) * metersPerNewton \(Force.metersPerNewton)")
+        let model: ModelComponent = ModelComponent(mesh: .generateBox(width: 0.002, height: 0.002, depth: length), materials: [material] )
+        
+        return model
+    }
+    
+    // MARK: - Arrow Body
+    
+    func load_ArrowBodyEntity(pointEntity: Entity, magnetude: Float) -> Entity {
+//        let material: SimpleMaterial = {
+//            var mat = SimpleMaterial()
+//            mat.metallic = MaterialScalarParameter(floatLiteral: 0.2)
+//            mat.roughness = MaterialScalarParameter(floatLiteral: 0.1)
+//            mat.tintColor = UIColor.white
+//            return mat
+//        }()
+//
+//        let model: ModelComponent = ModelComponent(mesh: .generateBox(width: 0.002, height: 0.002, depth: 0.1), materials: [material] )
+        
         
         let bodyEntity: Entity = Entity()
         pointEntity.addChild(bodyEntity)
@@ -67,25 +86,36 @@ class EntityStore {
 //        bodyEntity.setPosition(SIMD3<Float>(0, 0, 0), relativeTo: pointEntity)
 //        bodyEntity.setOrientation(simd_quatf(angle: 90.degreesToRadians(), axis: SIMD3<Float>(1, 0, 0)), relativeTo: pointEntity)
         
-        bodyEntity.components.set(model)
+        print(magnetude)
+        
+        self.update_ArrowBodyEntityLength(arrowBodyEntity: bodyEntity, magnetude: magnetude)
 
         return bodyEntity
     }
     
     // MARK: - Arrow Head
-    func load_ArrowHead(arrowEntity: Entity) {
+    func load_ArrowHead(on arrowEntity: Entity, magnetude: Float) {
         let arrowHeadAnchor = try! ArrowHead.load_ArrowHead()
         let arrowHeadEntity = arrowHeadAnchor.arrowHead! as Entity
         
         /// Positioning
         arrowEntity.addChild(arrowHeadEntity)
         arrowHeadEntity.setScale(SIMD3<Float>(0.1,0.1,0.1), relativeTo: arrowHeadEntity)
-//        arrowHeadEntity.setPosition(SIMD3<Float>(0.04,0,0), relativeTo: arrowEntity)
-        arrowHeadEntity.setPosition(SIMD3<Float>(0,0,0.04), relativeTo: arrowEntity)
-//        arrowHeadEntity.setOrientation(simd_quatf(angle: 90.degreesToRadians(), axis: SIMD3<Float>(0, 1.0, 0)), relativeTo: arrowEntity)
-        arrowHeadEntity.setOrientation(simd_quatf(angle: 90.degreesToRadians(), axis: SIMD3<Float>(0, 0, 1.0)), relativeTo: arrowEntity)
-
         
+        /// Get actual length in meters
+        let length = magnetude * Force.metersPerNewton
+        /// Set Position relatively to arrow entity (distance = half its length)
+        /// CAREFUL: TO BE EXACT FOR THIS ARROW HEAD MODEL, REMOVE <----0.005m---->
+        arrowHeadEntity.setPosition(SIMD3<Float>(0, 0, length/2 - 0.005), relativeTo: arrowEntity)
+        
+        /// Set orientation
+        arrowHeadEntity.setOrientation(simd_quatf(angle: 90.degreesToRadians(), axis: SIMD3<Float>(0, 0, 1.0)), relativeTo: arrowEntity)
+    }
+    
+    // MARK: - Update Arrow Entity Length when Force Magnetude changes
+    func update_ArrowBodyEntityLength(arrowBodyEntity: Entity, magnetude: Float) {
+        let model = load_ArrowBodyMaterial(magnetude: magnetude)
+        arrowBodyEntity.components.set(model)
     }
     
 }

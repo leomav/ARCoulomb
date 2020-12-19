@@ -18,14 +18,9 @@ import UIKit
 /// sourcePointCharge:      The source PointChargeClass object  which the force is coming from
 /// targetPointCharge:     This PointChargeClass host object
 
-class SingleForce {
-    static var volume: Int = 0
-    let forceId: Int
-    var magnetude: Float
-    var angle: Float
-    var length: Float = 0.05
-    let metersPerNewton: Float = 0.01
-    
+class SingleForce: Force {
+    static var singleForcesTotal: Int = 0
+    let singleForceId: Int
     /// Attraction computed property
     var attraction: Bool {
         let attraction: Bool
@@ -41,31 +36,57 @@ class SingleForce {
         
         return attraction
     }
-    
-    var pivotEntity: Entity
-    var arrowEntity: Entity
+
     var sourcePointCharge: PointChargeClass
     var targetPointCharge: PointChargeClass
-    init(magnetude: Float, angle: Float, arrowEntity: Entity, from: PointChargeClass, to: PointChargeClass) {
-        SingleForce.volume += 1
+    
+    // TEST
+//    init(magnetude: Float, angle: Float, arrowEntity: Entity, from: PointChargeClass, to: PointChargeClass) {
+    init(magnetude: Float, angle: Float, from: PointChargeClass, to: PointChargeClass) {
+        SingleForce.singleForcesTotal += 1
         
-        self.forceId = SingleForce.volume
-        self.magnetude = magnetude
-        self.angle = angle
+        self.singleForceId = SingleForce.singleForcesTotal
         
         /// SourcePointCharge: the pc the arrow shows to
         self.sourcePointCharge = from
         /// TargetPointCharge: the pc the arrow is drawn on to
         self.targetPointCharge = to
         
+        // TEST
+//        self.arrowEntity = Force.createArrowEntity(on: self.targetPointCharge, magnetude: magnetude, name: "SingleForce Arrow")
+//        self.pivotEntity = self.arrowEntity.parent!
+        
+        let arrowEntity = Force.createArrowEntity(on: self.targetPointCharge, magnetude: magnetude, name: "SingleForce Arrow")
+        
+        // Call the super init of Force Class
+        super.init(magnetude: magnetude, angle: angle, arrowEntity: arrowEntity)
+
+        
         /// Set the arrowEntity and its parent the pivotEntity
         /// Pivot entity is used to rotate the arrowEntity
-        self.arrowEntity = arrowEntity
-        self.pivotEntity = arrowEntity.parent!
+//        self.arrowEntity = arrowEntity
+//        self.pivotEntity = arrowEntity.parent!
         
     }
     
-    func updateForceArrow() {
+    static func createForce(from otherPointChargeObj: PointChargeClass, to pointChargeObj: PointChargeClass) -> SingleForce{
+        
+        /// Create instance of Force Object with arrow entity
+        let force = SingleForce(magnetude: 5, angle:0, from: otherPointChargeObj, to: pointChargeObj)
+        
+        /// Integrate Force Obj to the Net Force Obj of the PointChargeObj. CAN BE DONE AFTER RETURN THOUGH.
+//        netForce.forces.append(force)
+        
+        return force
+    }
+    
+    func updateForce() {
+        self.updateForceArrowOrientation()
+        self.updateForceAngle()
+        self.updateForceMagnetude()
+    }
+    
+    override func updateForceArrowOrientation() {
         /// - Tag: The next 2 comment lines do not apply anymore (look(at: _) initializing scale
         // First set look(at:_) cause it reinitialize the scale. Then set the scale x 0.05 and the position again
         // to the center of the pointCharge.
@@ -78,6 +99,9 @@ class SingleForce {
         /// - Tag:  ORIENTATION: Look TO or AWAY ?
         // If you want the arrows to look to the other coulomb instead of looking away
         // add the following line so that it reverses its direction
+        //
+        // If the particles are attracted, reverse it 180 degrees so that they look
+        // to eachother.
         if self.attraction {
             self.pivotEntity.setOrientation(simd_quatf(angle: 180.degreesToRadians(), axis: SIMD3<Float>(0, 1.0, 0)), relativeTo: self.pivotEntity)
         }
@@ -85,7 +109,7 @@ class SingleForce {
         
     }
     
-    func updateForceAngle() {
+    override func updateForceAngle() {
         // Update forces' angles
         // MARK: - EXPLANATION
         // The orientation(relativeTo: ) function returns the simd_quatf. We take the
@@ -121,10 +145,12 @@ class SingleForce {
         }
     }
     
-    func updateForceMagnetude(){
-        self.magnetude = self.coulombsLaw()
+    override func updateForceMagnetude(){
+        /// Make sure to get the absolute Value of coulomb's Law
+        self.magnetude = abs(self.coulombsLaw())
     }
     
+    // Returns the value of Coulombs Law. NOT ABSOLUTE VALUE
     private func coulombsLaw() -> Float{
         let coulombsProduct = self.sourcePointCharge.value * self.sourcePointCharge.multiplier * self.targetPointCharge.value * self.targetPointCharge.multiplier
         let distance = twoPointsDistance(x1: sourcePointCharge.entity.position.x,
@@ -133,6 +159,7 @@ class SingleForce {
                                          y2: targetPointCharge.entity.position.z)
         let distance_pow = distance * distance
         let constant = Ke / distance_pow
+        
         return constant * coulombsProduct
     }
     
