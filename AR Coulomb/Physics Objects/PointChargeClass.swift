@@ -42,6 +42,17 @@ class PointChargeClass {
         return textEntity
     }
     
+    static func loadText(textEntity: Entity, material: SimpleMaterial, coulombStringValue: String) {
+        let model: ModelComponent = ModelComponent(mesh: .generateText(coulombStringValue,
+                                                                       extrusionDepth: 0.003,
+                                                                       font: .systemFont(ofSize: 0.02),
+                                                                       containerFrame: CGRect.zero,
+                                                                       alignment: .left,
+                                                                       lineBreakMode: .byCharWrapping),
+                                                   materials: [material])
+        textEntity.components.set(model)
+    }
+    
     func getPositionX() -> Float {
         return self.entity.position.x
     }
@@ -54,15 +65,6 @@ class PointChargeClass {
         return self.entity.position.z
     }
     
-    static func loadText(textEntity: Entity, material: SimpleMaterial, coulombStringValue: String) {
-        let model: ModelComponent = ModelComponent(mesh: .generateText(coulombStringValue,
-                                                                       extrusionDepth: 0.003,
-                                                                       font: .systemFont(ofSize: 0.02),
-                                                                       containerFrame: CGRect.zero,
-                                                                       alignment: .left,
-                                                                       lineBreakMode: .byCharWrapping),
-                                                   materials: [material])
-        textEntity.components.set(model)
-    }
+    
     
 }

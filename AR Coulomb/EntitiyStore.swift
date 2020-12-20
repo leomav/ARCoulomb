@@ -15,28 +15,40 @@ class EntityStore {
     init() {}
     
     // MARK: - PointCharge
+    
+//    func load_PointChargeEntity() -> Entity {
+//        let pointChargeEntity: Entity
+//
+//        /// Import the Point Charge Model, clone the entity as many times as needed
+//        let pointChargeAnchor = try! PointCharge.load_PointCharge()
+//        pointChargeEntity = pointChargeAnchor.pointCharge!
+//
+//        return pointChargeEntity
+//    }
+    
     func load_PointChargeEntity() -> Entity {
-        let pointChargeEntity: Entity
+        let pointChargeEntity: Entity = Entity()
+        pointChargeEntity.name = "pointCharge"
         
-        /// Import the Point Charge Model, clone the entity as many times as needed
-        let pointChargeAnchor = try! PointCharge.load_PointCharge()
-        pointChargeEntity = pointChargeAnchor.pointCharge!
+        self.update_PointChargeModel(on: pointChargeEntity)
         
         return pointChargeEntity
     }
     
-//    func load_PointChargeEntity() -> Entity {
-//        let pointChargeEntity: Entity = Entity()
-//        pointChargeEntity.name = "PointCharge Entity"
-//        
-//        return pointChargeEntity
-//    }
-    
-    func update_PointChargeEntity(pointChargeObj: Entity) {
-        
+    func update_PointChargeEntity(pointChargeEntity: Entity, radius: Float, color: UIColor) {
+        self.update_PointChargeModel(on: pointChargeEntity, radius: radius, color: color)
     }
     
-    private func load_PointChargeModel(radius: Float, color: UIColor = UIColor.red) -> ModelComponent {
+    func update_PointChargeModel(on pointChargeEntity: Entity, radius: Float = 0.02, color: UIColor = UIColor.red) {
+        // Add ModelComponent
+        let model = load_PointChargeModel(radius: radius, color: color)
+        pointChargeEntity.components.set(model)
+    
+        // Add CollisionComponent
+        pointChargeEntity.components.set(CollisionComponent(shapes: [.generateSphere(radius: radius)]))
+    }
+    
+    private func load_PointChargeModel(radius: Float, color: UIColor) -> ModelComponent {
         let material: SimpleMaterial = {
             var mat = SimpleMaterial()
             mat.metallic = MaterialScalarParameter(floatLiteral: 0.2)
