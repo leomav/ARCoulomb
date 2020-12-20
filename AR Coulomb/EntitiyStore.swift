@@ -27,11 +27,11 @@ class EntityStore {
 //    }
     
     func load_PointChargeEntity() -> Entity {
-        let pointChargeEntity: Entity = Entity()
+        let pointChargeEntity: PointChargeEntity = PointChargeEntity()
         pointChargeEntity.name = "pointCharge"
-        
+
         self.update_PointChargeModel(on: pointChargeEntity)
-        
+
         return pointChargeEntity
     }
     
@@ -43,9 +43,10 @@ class EntityStore {
         // Add ModelComponent
         let model = load_PointChargeModel(radius: radius, color: color)
         pointChargeEntity.components.set(model)
-    
+        
         // Add CollisionComponent
-        pointChargeEntity.components.set(CollisionComponent(shapes: [.generateSphere(radius: radius)]))
+        /// Make its collision sphere object radius little bigger than the model itself
+        pointChargeEntity.components.set(CollisionComponent(shapes: [.generateSphere(radius: radius * 1.2)]))
     }
     
     private func load_PointChargeModel(radius: Float, color: UIColor) -> ModelComponent {

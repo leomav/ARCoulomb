@@ -69,7 +69,7 @@ extension Topology {
         
         /// Install gestures, careful to set its ".cancelTouchesInView" to false cause it cancels touches gestures  other than
         /// the installed below (I do that in Topology Placement)
-//        self.viewController?.arView.installGestures([.translation, .rotation], for: point as! HasCollision)
+        self.viewController?.arView.installGestures([.translation, .rotation], for: point as! HasCollision)
         
         /// Enable the pointCharge LongPress Recognizer
         /// Careful that the above installedGesutres for translation and rotation disable the rest recognizers
@@ -102,7 +102,7 @@ extension Topology {
         
         /// Install gestures, careful to set its ".cancelTouchesInView" to false cause it cancels touches gestures  other than
         /// the installed below (I do that in Topology Placement)
-//        self.viewController?.arView.installGestures([.translation, .rotation], for: point as! HasCollision)
+        self.viewController?.arView.installGestures([.translation, .rotation], for: point as! HasCollision)
         
         /// Enable the pointCharge LongPress Recognizer
         /// Careful that the above installedGesutres for translation and rotation disable the rest recognizers
