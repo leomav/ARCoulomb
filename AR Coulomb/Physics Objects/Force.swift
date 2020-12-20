@@ -62,15 +62,7 @@ class Force {
     
     // MARK: - STATIC FUNCTIONS
     
-    static func createArrowEntity(on pointChargeObj: PointChargeClass, magnetude: Float, name: String) -> Entity {
-        
-        // Load Arrow Body Entity
-        let arrow = EntityStore.shared.load_ArrowBodyEntity(pointEntity: pointChargeObj.entity, magnetude: magnetude)
-        arrow.name = name
-        
-        // Add an Arrow Head on Arrow Body Entity
-        EntityStore.shared.load_ArrowHead(on: arrow, magnetude: magnetude)
-        
+    static func createArrowModel(on pointChargeObj: PointChargeClass, magnetude: Float, name: String) -> Entity {
         // Create an EMPTY Pivot Entity
         let pivotEntity: Entity = Entity()
         pivotEntity.name = "Pivot Arrow"
@@ -79,17 +71,22 @@ class Force {
         pointChargeObj.entity.addChild(pivotEntity)
         pivotEntity.setPosition(SIMD3<Float>(0, 0, 0), relativeTo: pointChargeObj.entity)
         
-        // Pivot Entity is the parent of Arrow Entity
+        // Load Arrow Body Entity
+        let arrow = EntityStore.shared.load_ArrowBodyEntity(pointEntity: pointChargeObj.entity, magnetude: magnetude)
+        arrow.name = name
+        
+        // Add it as a Pivot Child
         pivotEntity.addChild(arrow)
         
-        // Get the actual length in meters
-        let length = magnetude * Force.metersPerNewton
-        
-        // Arrow Body center needs to be <magnetude>/2 meters away from Pivot Entity
-        arrow.setPosition(SIMD3<Float>(0, 0, length/2), relativeTo: pivotEntity)
-        
+        /// - Tag: Pivot is crucial (Why?)
         /// Now, each time we want to rotate the arrow, we just have to rotate
         /// its parent pivot point entity, EASIER
+        
+        // Update Arrow Body's Length and Position
+        EntityStore.shared.update_ArrowBodyEntity(arrowBodyEntity: arrow, magnetude: magnetude)
+
+        // Add an Arrow Head on Arrow Body Entity
+        EntityStore.shared.load_ArrowHead(on: arrow, magnetude: magnetude)
         
         /// Disable the arrow Entity.
         /// Later, the arrows relative to the selectedPointChargeObj will be enabled
@@ -116,7 +113,7 @@ class Force {
     
     // MARK: - Methods that need to be overriden in child classes
     
-    func calculateForceComponent(x_component_flag: Bool) -> Float {
+    private func calculateForceComponent(x_component_flag: Bool) -> Float {
         let quarter = self.angle.radiansToDegrees / 90
         let f_angleMod = (self.angle.radiansToDegrees.truncatingRemainder(dividingBy: 90)).degreesToRadians
         
@@ -159,6 +156,14 @@ class Force {
         }
         
         return f_component
+    }
+    
+    func updateArrowModel() {
+        /// Update Body Model Length
+        EntityStore.shared.update_ArrowBodyEntity(arrowBodyEntity: self.arrowEntity, magnetude: self.magnetude)
+        
+        /// Update Head Model
+        EntityStore.shared.update_ArrowHead(on: self.arrowEntity, magnetude: self.magnetude)
     }
     
     func updateForceMagnetude() {

@@ -34,7 +34,7 @@ class NetForce: Force {
         
         self.forces = forces
         
-        let arrowEntity = Force.createArrowEntity(on: self.pointChargeObj, magnetude: magnetude, name: "NetForce Arrow")
+        let arrowEntity = Force.createArrowModel(on: self.pointChargeObj, magnetude: magnetude, name: "NetForce Arrow")
 
         super.init(magnetude: magnetude, angle: angle, arrowEntity: arrowEntity)
     }
@@ -44,16 +44,16 @@ class NetForce: Force {
         /// Initialize NetForce Object with Arrow Entity
         let netForce = NetForce(magnetude: 0, angle: 0, point: pointChargeObj, forces: [])
         
-        /// Append it to netForces of topology. CAN BE DONE AFTER RETURN THOUGH.
-//        self.netForces.append(netForce)
-        
         return netForce
     }
     
-    // Gets called at the init() phase, sets the scale and position of the arrowEntity
-//    private func initializeArrowEntity() {
-////        self.arrowEntity.setPosition(SIMD3<Float>(0, 0, 0), relativeTo: self.pointChargeObj.entity)
-//    }
+    
+    // Update Net Force
+    func updateForce() {
+        self.calculateNetForce()
+        
+//        self.updateArrowModel()
+    }
     
     // Update the ORIENTATION of the arrowEntity
     override func updateForceArrowOrientation() {
@@ -70,9 +70,6 @@ class NetForce: Force {
     
     override func updateForceMagnetude() {
         //
-//        let fx = X_Force_Component; let fy  = Y_Force_Component
-//
-//        self.magnetude = self.netForceMagnetude(fx: fx, fy: fy)
     }
     
     // CALCULATE the Net Force
@@ -94,16 +91,14 @@ class NetForce: Force {
             
         }
         
-        /// Instead of that, use the following netForceMagnetude function.
-//        self.updateForceMagnetude()
-        
-        /// When magnetude gets updated, the Fx, Fy components will be updated also...
+        /// - Tag: CAREFUL
+        /// DON'T USE:  <updateForceMagnetude()> and <updateForceAngle()>
+        /// They use X_Force_Component, Y_Force_Component which are not correctly
+        /// evaluated until the magnetude and angle are calculated.
+        ///
+        /// Use  the following instead, which take as args the netFx, netFy calculated above.
         self.magnetude = self.netForceMagnetude(fx: netFx, fy: netFy)
-        /// ... and will be ready for use in updateForceAngle()
-        self.updateForceAngle()
-        
-//        self.magnetude = self.netForceMagnetude(fx: netFx, fy: netFy)
-//        self.angle = self.netForceAngle(fx: netFx, fy: netFy)
+        self.angle = self.netForceAngle(fx: netFx, fy: netFy)
     }
     
     private func netForceMagnetude(fx: Float, fy: Float) -> Float {
@@ -129,40 +124,4 @@ class NetForce: Force {
             return 0
         }
     }
-    
-    // CALCULATE the Fx, Fy components of Force f with angle f_angle
-//    private func calculateForceComponents(f: Float, f_angle: Float) -> (Float, Float){
-//        let quarter = f_angle.radiansToDegrees / 90
-//        let f_angleMod = (f_angle.radiansToDegrees.truncatingRemainder(dividingBy: 90)).degreesToRadians
-//
-//        let fx: Float
-//        let fy: Float
-//
-//        /// To calculate correctly the Fx, Fy components, the Force Magnetude
-//        /// has to have its ABSOLUTE VALUE
-//        /// Thankfully, it is saved that way in the SingleForce Object
-//
-//        if quarter < 1 {
-//            // 4th quarter
-//            fx = f * sin(f_angleMod)
-//            fy = -f * cos(f_angleMod)
-//        } else if quarter < 2 {
-//            // 1st quarter
-//            fx = f * cos(f_angleMod)
-//            fy = f * sin(f_angleMod)
-//        } else if quarter < 3 {
-//            // 2nd quarter
-//            fx = -f * sin(f_angleMod)
-//            fy = f * cos(f_angleMod)
-//        } else {
-//            // 3rd quarter
-//            fx = -f * cos(f_angleMod)
-//            fy = -f * sin(f_angleMod)
-//            //
-//        }
-//        return (fx, fy)
-//    }
-    
-   
-    
 }

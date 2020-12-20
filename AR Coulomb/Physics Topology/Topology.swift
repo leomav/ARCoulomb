@@ -24,7 +24,7 @@ class Topology {
     var pointCharges: [PointChargeClass]
     /// All the netForces
     var netForces: [NetForce]
-    /// A pointChargeEntity Template that gets used for cloning
+    /// A pointChargeEntity Template used for cloning
     var pointChargeEntityTemplate: Entity?
     
     init() {
@@ -36,7 +36,8 @@ class Topology {
         
         /// Import the Point Charge Model, clone the entity as many times as needed
         let pointChargeAnchor = try! PointCharge.load_PointCharge()
-        self.pointChargeEntityTemplate = pointChargeAnchor.pointCharge!        
+        self.pointChargeEntityTemplate = pointChargeAnchor.pointCharge!
+        
     }
     
     // MARK: - Topology functions

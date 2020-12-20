@@ -97,12 +97,14 @@ extension Topology {
                 forceObj.updateForce()
             }
             
-            netForceObj.calculateNetForce()
-            
-            print(netForceObj.magnetude)
+            // Calculate Force Magnetude, Angle
+            netForceObj.updateForce()
             
             // Update Net Force Arrow orientation
             netForceObj.updateForceArrowOrientation()
+            
+            // Update Net Force Arrow
+            netForceObj.updateArrowModel()
         }
     }
     

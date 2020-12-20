@@ -56,7 +56,7 @@ class SingleForce: Force {
 //        self.arrowEntity = Force.createArrowEntity(on: self.targetPointCharge, magnetude: magnetude, name: "SingleForce Arrow")
 //        self.pivotEntity = self.arrowEntity.parent!
         
-        let arrowEntity = Force.createArrowEntity(on: self.targetPointCharge, magnetude: magnetude, name: "SingleForce Arrow")
+        let arrowEntity = Force.createArrowModel(on: self.targetPointCharge, magnetude: magnetude, name: "SingleForce Arrow")
         
         // Call the super init of Force Class
         super.init(magnetude: magnetude, angle: angle, arrowEntity: arrowEntity)
@@ -84,6 +84,9 @@ class SingleForce: Force {
         self.updateForceArrowOrientation()
         self.updateForceAngle()
         self.updateForceMagnetude()
+        
+        /// Update the Force Arrow
+        self.updateArrowModel()
     }
     
     override func updateForceArrowOrientation() {
