@@ -28,20 +28,12 @@ class Topology {
     var pointChargeEntityTemplate: Entity?
     
     init() {
-//        self.viewController = viewController
-//        self.topoAnchor = topoAnchor
         self.selectedPositions = []
         self.pointCharges = []
         self.netForces = []
         
         /// Import the Point Charge Model, clone the entity as many times as needed
-//        let pointChargeAnchor = try! PointCharge.load_PointCharge()
-//        self.pointChargeEntityTemplate = pointChargeAnchor.pointCharge!
-        
-        //  TEST: New way to load pointCharge
         self.pointChargeEntityTemplate = EntityStore.shared.load_PointChargeEntity()
-        
-        print(self.pointChargeEntityTemplate?.components)
     }
     
     // MARK: - Topology functions

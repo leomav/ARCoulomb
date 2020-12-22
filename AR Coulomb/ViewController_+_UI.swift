@@ -140,7 +140,7 @@ extension ViewController {
     
     // MARK: - StackView Existance
     
-    func toggleStackView(hide: Bool, animated: Bool = true) {
+    func toggleStackView(hide: Bool, animated: Bool = true, animationDuration: Float = 0.2) {
         
         /// animated will be false when we want to hide the stackView
         if !animated {
@@ -152,7 +152,7 @@ extension ViewController {
             return
         }
         
-        UIView.animate(withDuration: 0.2, delay: 0, options: [.beginFromCurrentState], animations: {
+        UIView.animate(withDuration: TimeInterval(animationDuration), delay: 0, options: [.beginFromCurrentState], animations: {
             self.stackView.spacing = hide ? 0 : 20
             self.stackView.arrangedSubviews.forEach{ btn in
                 btn.isHidden = hide
@@ -188,10 +188,21 @@ extension ViewController {
         })
     }
     
+    // MARK: - Toggle views on snapshot
+    
+    func toggleViewsOnSnapshot(hide: Bool) {
+        self.messagePanel.isHidden = hide
+        self.stackView.isHidden = hide
+    }
+    
     // MARK: - SubViews existance
     func toggleAllSubviews(of view: UIView, hide: Bool) {
         view.subviews.forEach { sub in
-            sub.isHidden = hide
+//            sub.isHidden = hide
+            print(sub)
+            print(":")
+            print(sub.subviews)
+            print()
         }
     }
     

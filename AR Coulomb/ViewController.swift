@@ -59,6 +59,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         let view = UIView()
         
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.accessibilityIdentifier = "Shutter View"
         
         return view
     }()
@@ -67,6 +68,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         let panel = UIView()
         
         panel.translatesAutoresizingMaskIntoConstraints = false
+        panel.accessibilityIdentifier = "Message Panel"
         
         return panel
     }()
@@ -75,6 +77,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         let label = UIPaddingLabel()
         
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.accessibilityIdentifier = "Message Label"
         
         return label
     }()
@@ -83,9 +86,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         let btn = UIButton()
         
         btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.accessibilityIdentifier = "Restart Button"
         
         btn.addTarget(self, action: #selector(restartExperience(sender:)), for: .touchUpInside)
-        
         
         return btn
     }()
@@ -96,8 +99,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     let stackView: UIStackView = {
         let stack = UIStackView()
-        stack.translatesAutoresizingMaskIntoConstraints = false
         
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.accessibilityIdentifier = "Menu Stack View"
         
         return stack
     }()
@@ -106,6 +110,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         let btn = UIButton()
         
         btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.accessibilityIdentifier = "Cancel Capture Button"
         
         btn.addTarget(self, action: #selector(goBack(sender:)), for: .touchUpInside)
         
@@ -123,6 +128,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         let btn = UIButton()
         
         btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.accessibilityIdentifier = "Capture Button"
         
         btn.addTarget(self, action: #selector(captureSnapshot(sender:)), for: .touchUpInside)
         
@@ -136,16 +142,26 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         /// Hide all subviews (buttons, labels)
         //        self.toggleAllSubviews(of: self.arView, hide: true)
         
+        // SHUTTER VIEW IS FOR FLASH EFFECT (not working)
         self.shutterView.alpha = 1
         self.shutterView.isHidden = false
-        UIView.animate(withDuration: 1.0, animations: {
+        
+        UIView.animate(withDuration: 0.2, animations: {
             self.shutterView.alpha = 0
         }) { (finished) in
             self.shutterView.isHidden = true
             
             //   let rect = CGRect(x: 0, y: 0, width: self.cameraView.bounds.width, height: self.cameraView.bounds.height - 30)
+            
+            // Hide other elements on screen
+            self.toggleViewsOnSnapshot(hide: true)
+            
+            // Snapshot
             let screenshot = self.arView.snapshot()
             capturedImage = screenshot
+            
+            // Show the elements again
+            self.toggleViewsOnSnapshot(hide: false)
             
             // performSeague to CapturedImageViewController
             self.performSegueToCapturedImageVC(image: screenshot)
@@ -156,6 +172,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         let btn = UIButton()
         
         btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.accessibilityIdentifier = "Save Button"
         
         btn.addTarget(self, action: #selector(openCaptureMenu(sender:)), for: .touchUpInside)
         
@@ -171,6 +188,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         let btn = UIButton()
         
         btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.accessibilityIdentifier = "New Topo Button"
         
         btn.addTarget(self, action: #selector(confirmSeagueToTopoMenu(sender:)), for: .touchUpInside)
         
@@ -186,6 +204,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         let btn = UIButton()
         
         btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.accessibilityIdentifier = "Add Button"
         
         btn.addTarget(self, action: #selector(performAddition(sender:)), for: .touchUpInside)
         

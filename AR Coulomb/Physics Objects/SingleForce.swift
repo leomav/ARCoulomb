@@ -155,7 +155,7 @@ class SingleForce: Force {
     
     // Returns the value of Coulombs Law. NOT ABSOLUTE VALUE
     private func coulombsLaw() -> Float{
-        let coulombsProduct = self.sourcePointCharge.value * self.sourcePointCharge.multiplier * self.targetPointCharge.value * self.targetPointCharge.multiplier
+        let coulombsProduct = self.sourcePointCharge.value * PointChargeClass.multiplier * self.targetPointCharge.value * PointChargeClass.multiplier
         let distance = twoPointsDistance(x1: sourcePointCharge.entity.position.x,
                                          x2: targetPointCharge.entity.position.x,
                                          y1: sourcePointCharge.entity.position.z,

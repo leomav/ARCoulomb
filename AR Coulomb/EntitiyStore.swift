@@ -39,7 +39,7 @@ class EntityStore {
         self.update_PointChargeModel(on: pointChargeEntity, radius: radius, color: color)
     }
     
-    func update_PointChargeModel(on pointChargeEntity: Entity, radius: Float = 0.02, color: UIColor = UIColor.red) {
+    func update_PointChargeModel(on pointChargeEntity: Entity, radius: Float = PointChargeClass.pointChargeRadius, color: UIColor = UIColor.red) {
         // Add ModelComponent
         let model = load_PointChargeModel(radius: radius, color: color)
         pointChargeEntity.components.set(model)
@@ -88,7 +88,7 @@ class EntityStore {
     
     // MARK: - Arrow Body Material
     
-    private func load_ArrowBodyModel(length: Float) -> ModelComponent{
+    private func load_ArrowBodyModelComponent(length: Float) -> ModelComponent{
         let material: SimpleMaterial = {
             var mat = SimpleMaterial()
             mat.metallic = MaterialScalarParameter(floatLiteral: 0.2)
@@ -105,7 +105,7 @@ class EntityStore {
     // MARK: - Update Arrow Entity Length when Force Magnetude changes
     
     private func update_ArrowBodyEntityLength(arrowBodyEntity: Entity, length: Float) {
-        let model = load_ArrowBodyModel(length: length)
+        let model = load_ArrowBodyModelComponent(length: length)
         arrowBodyEntity.components.set(model)
     }
     
@@ -124,8 +124,9 @@ class EntityStore {
         /// Get the actual length in meters
         let length = magnetude * Force.metersPerNewton
         
-        /// Arrow Body center needs to be <arrow-length>/2 meters away from Pivot Entity (Arrow's Parent)
-        arrowBodyEntity.setPosition(SIMD3<Float>(0, 0, length/2), relativeTo: arrowBodyEntity.parent)
+        /// Arrow Body center needs to be <arrow-length>/2 + <pointCharge-Radius> meters away from Pivot Entity (Arrow's Parent)
+        let pos = length/2 + 0.02
+        arrowBodyEntity.setPosition(SIMD3<Float>(0, 0, pos), relativeTo: arrowBodyEntity.parent)
         
         /// Update Arrow Body Length
         self.update_ArrowBodyEntityLength(arrowBodyEntity: arrowBodyEntity, length: length)

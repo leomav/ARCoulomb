@@ -153,7 +153,7 @@ extension ViewController {
                     pointCharge.posX = pointChargeObj.getPositionX()
                     pointCharge.posY = pointChargeObj.getPositionY()
                     pointCharge.posZ = pointChargeObj.getPositionZ()
-                    pointCharge.multiplier = pointChargeObj.multiplier
+                    pointCharge.multiplier = PointChargeClass.multiplier
                     pointCharge.value = pointChargeObj.value
                     pointCharge.topology = topology
                     PersistenceService.saveContext()

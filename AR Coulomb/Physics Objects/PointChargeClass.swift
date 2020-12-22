@@ -14,7 +14,8 @@ class PointChargeClass {
     let id: Int
     let entity: Entity
     var value: Float
-    var multiplier: Float = 0.000001
+    static var multiplier: Float = 0.000001
+    static var pointChargeRadius: Float = 0.02
     
     init(onEntity entity: Entity, withValue value: Float) {
         PointChargeClass.volume += 1
