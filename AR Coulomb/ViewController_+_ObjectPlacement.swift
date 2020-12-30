@@ -10,9 +10,7 @@ import Foundation
 import ARKit
 import RealityKit
 
-extension ViewController: ARSessionDelegate, ARSCNViewDelegate {
-
-    
+extension ViewController: ARSessionDelegate {
     
     func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
         for anchor in anchors {
@@ -42,4 +40,18 @@ extension ViewController: ARSessionDelegate, ARSCNViewDelegate {
             self.topology.toggleTopology(show: false)
         }
     }
+    
+    // TESTING
+//    func session(_ session: ARSession, didUpdate frame: ARFrame) {
+//        arView.scene.anchors.forEach{ anchor in
+//            anchor.children.forEach{ child in
+//                child.children.forEach{ item in
+//                    if item.name == "text" {
+//                        item.look(at: cameraAnchor.position, from: item.position, relativeTo: item.parent)
+//                    }
+//                }
+//            }
+//        }
+//    }
+    
 }

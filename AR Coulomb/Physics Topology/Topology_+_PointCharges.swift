@@ -64,6 +64,7 @@ extension Topology {
         
         /// Create Text Entity for the pointCharge
         let textEntity = newPointChargeObj.createTextEntity(pointEntity: point!)
+
         /// Load the mesh and material for the model of the text entity
         PointChargeClass.loadText(textEntity: textEntity, material: coulombTextMaterial, coulombStringValue: "\(newPointChargeObj.value) Cb")
         

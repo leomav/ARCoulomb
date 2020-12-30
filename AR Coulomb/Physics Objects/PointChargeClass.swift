@@ -37,8 +37,8 @@ class PointChargeClass {
         textEntity.setParent(pointEntity)
         // textEntity.setPosition(SIMD3<Float>(-0.02, -0.03, 0.03), relativeTo: pointEntity)
         // textEntity.setOrientation(simd_quatf(ix: -0.45, iy: 0, iz: 0, r: 0.9), relativeTo: pointEntity)
-        textEntity.setPosition(SIMD3<Float>(-0.02, -0.03, 0), relativeTo: pointEntity)
-        textEntity.setOrientation(simd_quatf(angle: Int(90).degreesToRadians(), axis: SIMD3<Float>(1, 0, 0)), relativeTo: pointEntity)
+        textEntity.setPosition(SIMD3<Float>(-0.02, -(PointChargeClass.pointChargeRadius + 0.005), PointChargeClass.pointChargeRadius + 0.005), relativeTo: pointEntity)
+//        textEntity.setOrientation(simd_quatf(angle: Int(90).degreesToRadians(), axis: SIMD3<Float>(0, 0, 0)), relativeTo: pointEntity)
 
         return textEntity
     }

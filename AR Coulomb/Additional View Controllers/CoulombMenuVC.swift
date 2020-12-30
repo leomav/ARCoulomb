@@ -141,7 +141,6 @@ class CoulombMenuVC: UIViewController {
     }
     
     func configureSlider(coulombValue: Float) {
-//        self.slider.heightAnchor.constraint(equalToConstant: 20).isActive = true
         self.slider.widthAnchor.constraint(equalToConstant: 200).isActive = true
         self.slider.minimumValue = -100
         self.slider.maximumValue = 100
@@ -219,7 +218,6 @@ class CoulombMenuVC: UIViewController {
     @objc
     func performDeletion(sender: UIButton) {
         dismiss(animated: true) {
-            print("--------- CoulombMenu: Before sending Delete Notification.")
             self.notifyObserver(withKey: removalNotificationKey)
         }
     }
@@ -243,7 +241,7 @@ class CoulombMenuVC: UIViewController {
         }
     }
     
-    // MARK: - Used over code in one function (when slider changes value)
+    // MARK: - Used-over code in one function (when slider changes value)
     
     private func updateSlider(constant: Float) {
         slider.setValue(slider.value + constant, animated: true)

@@ -101,7 +101,16 @@ extension ViewController {
             
             selectedPointChargeObj.value = newValue
             
-            PointChargeClass.loadText(textEntity: longPressedEntity.children[1], material: coulombTextMaterial, coulombStringValue: "\(newValue) Cb")
+            // CHANGE THAT !!!
+            
+            // Find text entity of pointCharge
+            for entity in longPressedEntity.children {
+                if entity.name == "text" {
+                    PointChargeClass.loadText(textEntity: entity, material: coulombTextMaterial, coulombStringValue: "\(newValue) Cb")
+                    break
+                }
+            }
+//            PointChargeClass.loadText(textEntity: longPressedEntity.children[1], material: coulombTextMaterial, coulombStringValue: "\(newValue) Cb")
             
             self.topology.updateForces()
             

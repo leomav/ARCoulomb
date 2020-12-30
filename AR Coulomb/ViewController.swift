@@ -47,6 +47,14 @@ let ZOOM_OUT_4_5: Float = 0.8
 
 let Ke: Float = 9 * pow(10, 9)
 
+
+
+
+//TESTING
+//var cameraAnchor: AnchorEntity = AnchorEntity()
+
+
+
 // MARK: - ViewController (main)
 
 class ViewController: UIViewController, UIGestureRecognizerDelegate {
@@ -288,6 +296,22 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         //        /// Set up the Top Guide Text (helper text to place the topology)
         //        self.configureGuideTextView()
         
+        
+        // TESTING
+//        cameraAnchor = AnchorEntity(.camera)       // ARCamera anchor
+//        self.arView.scene.addAnchor(cameraAnchor)
+//
+//        let box = MeshResource.generateBox(size: 0.25)
+//        let material = SimpleMaterial(color: .systemPink, isMetallic: true)
+//        boxEntity = ModelEntity(mesh: box, materials: [material])
+//
+//        cameraAnchor.addChild(boxEntity)
+//
+////        boxEntity.transform.translation = [0, 0,-1]
+//
+////        arrowHeadEntity.setScale(SIMD3<Float>(0.1,0.1,0.1), relativeTo: arrowHeadEntity)
+//        boxEntity.setPosition(SIMD3<Float>(0, 0, -1), relativeTo: cameraAnchor)
+////        arrowHeadEntity.look(at: cameraAnchor.position, from: arrowHeadEntity.position, relativeTo: arrowHeadEntity.parent)
     }
     
     
