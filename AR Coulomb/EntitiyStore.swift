@@ -69,7 +69,7 @@ class EntityStore {
         let textEntity: Entity = Entity()
         textEntity.name = "text"
         textEntity.setParent(pointCharge.entity)
-        textEntity.setPosition(SIMD3<Float>(-0.02, -0.03, 0), relativeTo: pointCharge.entity)
+        textEntity.setPosition(SIMD3<Float>(-0.02, -(PointChargeClass.pointChargeRadius + 0.005), PointChargeClass.pointChargeRadius + 0.005), relativeTo: pointCharge.entity)
 //        textEntity.setOrientation(simd_quatf(angle: Int(90).degreesToRadians(), axis: SIMD3<Float>(1, 0, 0)), relativeTo: pointCharge.entity)
         
         return textEntity

@@ -106,7 +106,8 @@ extension ViewController {
             // Find text entity of pointCharge
             for entity in longPressedEntity.children {
                 if entity.name == "text" {
-                    PointChargeClass.loadText(textEntity: entity, material: coulombTextMaterial, coulombStringValue: "\(newValue) Cb")
+                    EntityStore.shared.update_TextEntity(textEntity: entity, material: coulombTextMaterial, coulombStringValue: "\(newValue) Cb")
+//                    PointChargeClass.loadText(textEntity: entity, material: coulombTextMaterial, coulombStringValue: "\(newValue) Cb")
                     break
                 }
             }
