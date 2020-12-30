@@ -41,6 +41,20 @@ extension ViewController: ARSessionDelegate {
         }
     }
     
+    func session(_ session: ARSession, didUpdate frame: ARFrame) {
+        
+        // Raycast only if placement Indicator is enabled
+        if (placementIndicator.isEnabled) {
+            guard let query = arView.makeRaycastQuery(from: self.arView.center, allowing: .existingPlaneGeometry, alignment: .any) else { return }
+            guard let raycastResult = arView.session.raycast(query).first else { return }
+
+            // set a transform to an existing entity
+            let transform = Transform(matrix: raycastResult.worldTransform)
+            EntityStore.shared.update_PlacementIndicator_Transform(on: placementIndicator, transform: transform)
+        }
+        
+    }
+    
     // TESTING
 //    func session(_ session: ARSession, didUpdate frame: ARFrame) {
 //        arView.scene.anchors.forEach{ anchor in

@@ -27,8 +27,8 @@ var selectedPointChargeObj: PointChargeClass = PointChargeClass(onEntity: Entity
 var longPressedEntity: Entity = Entity()
 var trackedEntity: Entity = Entity()
 
-/// Saved topologies
-//var savedTopologies: [TopologyModel] = []
+/// Placement Indicator
+var placementIndicator: AnchorEntity = EntityStore.shared.load_PlacementIndicator()
 
 /// Coulomb Text Material
 let coulombTextMaterial: SimpleMaterial = {
@@ -46,8 +46,6 @@ let ZOOM_IN_5_4: Float = 1.25
 let ZOOM_OUT_4_5: Float = 0.8
 
 let Ke: Float = 9 * pow(10, 9)
-
-
 
 
 //TESTING
@@ -265,12 +263,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         /// Set up ARView
         self.setupARView()
         
-        /// First tap gesture recognizer, will be deleted after first point of charge is added
-        self.setupTapGestureRecognizer()
-        
-        /// Long Press Recognizer to enable parameters interaction with Point Charge (min press 1 sec)
-        self.setupLongPressRecognizer()
-        
         /// Set up  the Top Message Panel
         self.configureMessagePanel()
         
@@ -335,6 +327,15 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         config.environmentTexturing = .automatic
         
         self.arView.session.run(config, options: [.resetTracking, .removeExistingAnchors])
+        
+        /// Add Placement Indicator Anchor
+        self.arView.scene.addAnchor(placementIndicator)
+        
+        /// First tap gesture recognizer, will be deleted after Topology is added
+        self.setupTapGestureRecognizer()
+        
+        /// Long Press Recognizer to enable parameters interaction with Point Charge (min press 1 sec)
+        self.setupLongPressRecognizer()
     }
     
     private func setupTapGestureRecognizer() {
@@ -400,7 +401,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: - Reset Tracking
     
-    func resetTracking() {
+    private func resetTracking() {
         selectedPointChargeObj = PointChargeClass(onEntity: Entity(), withValue: 0)
         longPressedEntity = Entity()
         trackedEntity = Entity()

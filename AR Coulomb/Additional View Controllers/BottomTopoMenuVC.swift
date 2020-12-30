@@ -49,7 +49,7 @@ class BottomTopoMenuVC: UIViewController {
         
         // You simply cannot constrain a view to another view if the view isn’t even on the screen yet.
         self.scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        self.scrollView.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -150).isActive = true
+        self.scrollView.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -200).isActive = true
         self.scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
         self.scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20).isActive = true
     }

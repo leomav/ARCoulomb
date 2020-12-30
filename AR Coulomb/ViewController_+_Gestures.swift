@@ -23,8 +23,10 @@ extension ViewController {
             let anchor = ARAnchor(name: "PointCharge", transform: firstResult.worldTransform)
             arView.session.add(anchor: anchor)
             
+            /// Disable the Placement Indicator
+            EntityStore.shared.toggle_PlacementIndicator(anchor: placementIndicator, show: false)
         } else {
-            print("No horizontal surface found.")
+            print("No surface found.")
         }
     }
 

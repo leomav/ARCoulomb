@@ -72,7 +72,7 @@ class Force {
         pivotEntity.setPosition(SIMD3<Float>(0, 0, 0), relativeTo: pointChargeObj.entity)
         
         // Load Arrow Body Entity
-        let arrow = EntityStore.shared.load_ArrowBodyEntity(pointEntity: pointChargeObj.entity, magnetude: magnetude)
+        let arrow = EntityStore.shared.load_ArrowBody_Entity(pointEntity: pointChargeObj.entity, magnetude: magnetude)
         arrow.name = name
         
         // Add it as a Pivot Child
@@ -83,7 +83,7 @@ class Force {
         /// its parent pivot point entity, EASIER
         
         // Update Arrow Body's Length and Position
-        EntityStore.shared.update_ArrowBodyEntity(arrowBodyEntity: arrow, magnetude: magnetude)
+        EntityStore.shared.update_ArrowBody_Entity(arrowBodyEntity: arrow, magnetude: magnetude)
 
         // Add an Arrow Head on Arrow Body Entity
         EntityStore.shared.load_ArrowHead(on: arrow, magnetude: magnetude)
@@ -160,7 +160,7 @@ class Force {
     
     func updateArrowModel() {
         /// Update Body Model Length
-        EntityStore.shared.update_ArrowBodyEntity(arrowBodyEntity: self.arrowEntity, magnetude: self.magnetude)
+        EntityStore.shared.update_ArrowBody_Entity(arrowBodyEntity: self.arrowEntity, magnetude: self.magnetude)
         
         /// Update Head Model
         EntityStore.shared.update_ArrowHead(on: self.arrowEntity, magnetude: self.magnetude)

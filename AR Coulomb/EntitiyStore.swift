@@ -14,17 +14,9 @@ class EntityStore {
     
     init() {}
     
-    // MARK: - PointCharge
     
-//    func load_PointChargeEntity() -> Entity {
-//        let pointChargeEntity: Entity
-//
-//        /// Import the Point Charge Model, clone the entity as many times as needed
-//        let pointChargeAnchor = try! PointCharge.load_PointCharge()
-//        pointChargeEntity = pointChargeAnchor.pointCharge!
-//
-//        return pointChargeEntity
-//    }
+    
+    // MARK: - PointCharge
     
     func load_PointChargeEntity() -> Entity {
         let pointChargeEntity: PointChargeEntity = PointChargeEntity()
@@ -86,9 +78,9 @@ class EntityStore {
         textEntity.components.set(model)
     }
     
-    // MARK: - Arrow Body Material
+    // MARK: - Arrow Body
     
-    private func load_ArrowBodyModelComponent(length: Float) -> ModelComponent{
+    private func load_ArrowBody_ModelComponent(length: Float) -> ModelComponent{
         let material: SimpleMaterial = {
             var mat = SimpleMaterial()
             mat.metallic = MaterialScalarParameter(floatLiteral: 0.2)
@@ -102,16 +94,12 @@ class EntityStore {
         return model
     }
     
-    // MARK: - Update Arrow Entity Length when Force Magnetude changes
-    
-    private func update_ArrowBodyEntityLength(arrowBodyEntity: Entity, length: Float) {
-        let model = load_ArrowBodyModelComponent(length: length)
+    private func update_ArrowBody_Entity_Length(arrowBodyEntity: Entity, length: Float) {
+        let model = load_ArrowBody_ModelComponent(length: length)
         arrowBodyEntity.components.set(model)
     }
     
-    // MARK: - Arrow Body
-    
-    func load_ArrowBodyEntity(pointEntity: Entity, magnetude: Float) -> Entity {
+    func load_ArrowBody_Entity(pointEntity: Entity, magnetude: Float) -> Entity {
         let bodyEntity: Entity = Entity()
         pointEntity.addChild(bodyEntity)
         
@@ -120,7 +108,7 @@ class EntityStore {
         return bodyEntity
     }
     
-    func update_ArrowBodyEntity(arrowBodyEntity: Entity, magnetude: Float) {
+    func update_ArrowBody_Entity(arrowBodyEntity: Entity, magnetude: Float) {
         /// Get the actual length in meters
         let length = magnetude * Force.metersPerNewton
         
@@ -129,10 +117,11 @@ class EntityStore {
         arrowBodyEntity.setPosition(SIMD3<Float>(0, 0, pos), relativeTo: arrowBodyEntity.parent)
         
         /// Update Arrow Body Length
-        self.update_ArrowBodyEntityLength(arrowBodyEntity: arrowBodyEntity, length: length)
+        self.update_ArrowBody_Entity_Length(arrowBodyEntity: arrowBodyEntity, length: length)
     }
     
     // MARK: - Arrow Head
+    
     func load_ArrowHead(on arrowEntity: Entity, magnetude: Float) {
         let arrowHeadAnchor = try! ArrowHead.load_ArrowHead()
         let arrowHeadEntity = arrowHeadAnchor.arrowHead! as Entity
@@ -178,6 +167,55 @@ class EntityStore {
             }
         }
     }
+    
+    
+    // MARK: - Placement Indicator Entity
+    
+    
+    func load_PlacementIndicator(side: Float = 0.1, imageAssetPath: String = "Placement_Indicator_DarkYellow") -> AnchorEntity {
+        let piEntity: AnchorEntity = AnchorEntity()
+        piEntity.name = "PlacementIndicator"
+        piEntity.isEnabled = false
+        
+        let model = load_PlacementIndicator_ModelComponent(side: side, imageAssetPath: imageAssetPath)
+        piEntity.components.set(model)
+        
+        return piEntity
+    }
+    
+    func toggle_PlacementIndicator(anchor: AnchorEntity, show: Bool) {
+        anchor.isEnabled = show
+    }
+    
+    private func load_PlacementIndicator_ModelComponent(side: Float, imageAssetPath: String) -> ModelComponent {
+        var material: UnlitMaterial = UnlitMaterial()
+        material.baseColor = try! MaterialColorParameter.texture(TextureResource.load(named: imageAssetPath))
+        material.tintColor = UIColor.white.withAlphaComponent(0.9)
+        
+//        var material: SimpleMaterial = SimpleMaterial()
+//        material.baseColor = try! MaterialColorParameter.texture(TextureResource.load(named: imageAssetPath))
+//        material.metallic = MaterialScalarParameter(floatLiteral: 0.5)
+//        material.roughness = MaterialScalarParameter(floatLiteral: 0.5)
+//        material.tintColor = UIColor.white
+        
+        /// Plane for placement indicator
+        let mesh: MeshResource = .generatePlane(width: side, depth: side)
+        
+        let model: ModelComponent = .init(mesh: mesh, materials: [material])
+        
+        return model
+    }
+    
+    func update_PlacementIndicator_ModelComponent(on piAnchor: AnchorEntity, side: Float, imageAssetPath: String) {
+        let model = load_PlacementIndicator_ModelComponent(side: side, imageAssetPath: imageAssetPath)
+        piAnchor.components.set(model)
+    }
+    
+    func update_PlacementIndicator_Transform(on piAnchor: AnchorEntity, transform: Transform) {
+        piAnchor.transform = transform
+    }
+    
+    
     
     
     
