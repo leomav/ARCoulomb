@@ -15,8 +15,9 @@ extension ViewController {
     // MARK: - Initial Tap to place Topology Anchor
     @objc
     func handleTap(recognizer: UITapGestureRecognizer) {
+        /// Create new Anchor Entity for Topology
         let anchor = AnchorEntity()
-        anchor.name = "PointCharge"
+        anchor.name = "Topology"
         anchor.transform = placementIndicator.transform
         
         /// Disable the Placement Indicator, which also stops updating pi's transform
@@ -37,7 +38,7 @@ extension ViewController {
 //        let results = arView.raycast(from: location, allowing: .estimatedPlane, alignment: .any)
 //
 //        if let firstResult = results.first {
-//            let anchor = ARAnchor(name: "PointCharge", transform: firstResult.worldTransform)
+//            let anchor = ARAnchor(name: "Topology", transform: firstResult.worldTransform)
 //            arView.session.add(anchor: anchor)
 //            
 //            /// Disable the Placement Indicator

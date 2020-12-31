@@ -12,9 +12,12 @@ import RealityKit
 
 extension ViewController: ARSessionDelegate {
     
-    func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
+    
+    /// - Tag: Updated version uses Anchor Entities instead of ARAnchors
+    /// Topology is instanciated in ViewController_+_Gestures, no need for the delegate
+//    func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
 //        for anchor in anchors {
-//            if let anchorName = anchor.name, anchorName == "PointCharge" {
+//            if let anchorName = anchor.name, anchorName == "Topology" {
 //
 //                /// Remove gesture recognizer needed for the First Tap -> Topology Anchor Placement
 //                self.disableRecognizers(withName: "First Point Recognizer")
@@ -27,7 +30,7 @@ extension ViewController: ARSessionDelegate {
 //                performSegue(withIdentifier: "toTopoMenuSegue", sender: nil)
 //            }
 //        }
-    }
+//    }
     
     
     

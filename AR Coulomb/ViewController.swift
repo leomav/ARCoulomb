@@ -336,6 +336,8 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         
         /// Long Press Recognizer to enable parameters interaction with Point Charge (min press 1 sec)
         self.setupLongPressRecognizer()
+        
+//        self.arView.renderOptions.insert(ARView.RenderOptions.disableGroundingShadows)
     }
     
     private func setupTapGestureRecognizer() {
@@ -391,6 +393,8 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         topology.clearTopology()
         
         resetTracking()
+        
+//        EntityStore.shared.toggle_PlacementIndicator(anchor: placementIndicator, show: true)
         
         // Disable restart for a while in order to give the session time to restart.
         DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {

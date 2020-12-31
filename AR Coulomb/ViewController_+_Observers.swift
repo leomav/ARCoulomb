@@ -47,13 +47,10 @@ extension ViewController {
 
             /// Get the new positions from the Notification
             let newTopoModel = newValue
-//            let newPositions = newValue
             
             /// Place the selected Topology on the AnchorEntity placed in scene
             if topology.topoAnchorEntity != nil {
-//            if topology.topoAnchor != nil {
                 topology.placeTopology(topoModel: newTopoModel)
-//                topology.placeTopology(positions: newPositions)
             } else {
                 print("Error: No anchor is selected for topology placement!")
             }

@@ -37,7 +37,7 @@ class EntityStore {
         pointChargeEntity.components.set(model)
         
         // Add CollisionComponent
-        /// Make its collision sphere object radius little bigger than the model itself
+        /// Make the collision sphere object radius little bigger than the model itself
         pointChargeEntity.components.set(CollisionComponent(shapes: [.generateSphere(radius: radius * 1.2)]))
     }
     
@@ -192,10 +192,12 @@ class EntityStore {
         material.baseColor = try! MaterialColorParameter.texture(TextureResource.load(named: imageAssetPath))
         material.tintColor = UIColor.white.withAlphaComponent(0.9)
         
+        let simpleMaterial: SimpleMaterial = SimpleMaterial()
+        
         /// Plane for placement indicator
         let mesh: MeshResource = .generatePlane(width: side, depth: side)
         
-        let model: ModelComponent = .init(mesh: mesh, materials: [material])
+        let model: ModelComponent = .init(mesh: mesh, materials: [material, simpleMaterial])
         
         return model
     }
@@ -207,6 +209,7 @@ class EntityStore {
     
     func update_PlacementIndicator_Transform(on piAnchor: AnchorEntity, transform: Transform) {
         piAnchor.transform = transform
+        piAnchor.position.y += 0.02
     }
     
     
