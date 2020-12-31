@@ -13,21 +13,23 @@ import RealityKit
 extension ViewController: ARSessionDelegate {
     
     func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
-        for anchor in anchors {
-            if let anchorName = anchor.name, anchorName == "PointCharge" {
-
-                /// Remove gesture recognizer needed for the First Tap -> Topology Anchor Placement
-                self.disableRecognizers(withName: "First Point Recognizer")
-
-                /// Create a Topology Instance with the added anchor as topoAnchor
-                self.topology = Topology()
-                self.topology.pinToScene(viewController: self, topoAnchor: anchor)
-
-                /// Open the bottom Coulomb Topology menu to choose topology
-                performSegue(withIdentifier: "toTopoMenuSegue", sender: nil)
-            }
-        }
+//        for anchor in anchors {
+//            if let anchorName = anchor.name, anchorName == "PointCharge" {
+//
+//                /// Remove gesture recognizer needed for the First Tap -> Topology Anchor Placement
+//                self.disableRecognizers(withName: "First Point Recognizer")
+//
+//                /// Create a Topology Instance with the added anchor as topoAnchor
+//                self.topology = Topology()
+//                self.topology.pinToScene(viewController: self, topoAnchor: anchor)
+//
+//                /// Open the bottom Coulomb Topology menu to choose topology
+//                performSegue(withIdentifier: "toTopoMenuSegue", sender: nil)
+//            }
+//        }
     }
+    
+    
     
     /// Changes to the quality of ARKit's device position tracking
     func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
@@ -42,7 +44,7 @@ extension ViewController: ARSessionDelegate {
     }
     
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
-        
+                
         // Raycast only if placement Indicator is enabled
         if (placementIndicator.isEnabled) {
             guard let query = arView.makeRaycastQuery(from: self.arView.center, allowing: .existingPlaneGeometry, alignment: .any) else { return }

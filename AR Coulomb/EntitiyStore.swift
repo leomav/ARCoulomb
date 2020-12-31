@@ -172,7 +172,7 @@ class EntityStore {
     // MARK: - Placement Indicator Entity
     
     
-    func load_PlacementIndicator(side: Float = 0.1, imageAssetPath: String = "Placement_Indicator_DarkYellow") -> AnchorEntity {
+    func load_PlacementIndicator(side: Float = 0.1, imageAssetPath: String = "Placement_Indicator_LightYellow") -> AnchorEntity {
         let piEntity: AnchorEntity = AnchorEntity()
         piEntity.name = "PlacementIndicator"
         piEntity.isEnabled = false
@@ -191,12 +191,6 @@ class EntityStore {
         var material: UnlitMaterial = UnlitMaterial()
         material.baseColor = try! MaterialColorParameter.texture(TextureResource.load(named: imageAssetPath))
         material.tintColor = UIColor.white.withAlphaComponent(0.9)
-        
-//        var material: SimpleMaterial = SimpleMaterial()
-//        material.baseColor = try! MaterialColorParameter.texture(TextureResource.load(named: imageAssetPath))
-//        material.metallic = MaterialScalarParameter(floatLiteral: 0.5)
-//        material.roughness = MaterialScalarParameter(floatLiteral: 0.5)
-//        material.tintColor = UIColor.white
         
         /// Plane for placement indicator
         let mesh: MeshResource = .generatePlane(width: side, depth: side)

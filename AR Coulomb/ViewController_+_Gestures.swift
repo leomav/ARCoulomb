@@ -15,19 +15,36 @@ extension ViewController {
     // MARK: - Initial Tap to place Topology Anchor
     @objc
     func handleTap(recognizer: UITapGestureRecognizer) {
-        let location = recognizer.location(in: arView)
+        let anchor = AnchorEntity()
+        anchor.name = "PointCharge"
+        anchor.transform = placementIndicator.transform
+        
+        /// Disable the Placement Indicator, which also stops updating pi's transform
+        EntityStore.shared.toggle_PlacementIndicator(anchor: placementIndicator, show: false)
+        
+        /// Remove gesture recognizer needed for the First Tap -> Topology Anchor Placement
+        self.disableRecognizers(withName: "First Point Recognizer")
 
-        let results = arView.raycast(from: location, allowing: .estimatedPlane, alignment: .any)
+        /// Create a Topology Instance with the added anchor as topoAnchor
+        self.topology = Topology()
+        self.topology.pinToScene(viewController: self, topoAnchor: anchor)
 
-        if let firstResult = results.first {
-            let anchor = ARAnchor(name: "PointCharge", transform: firstResult.worldTransform)
-            arView.session.add(anchor: anchor)
-            
-            /// Disable the Placement Indicator
-            EntityStore.shared.toggle_PlacementIndicator(anchor: placementIndicator, show: false)
-        } else {
-            print("No surface found.")
-        }
+        /// Open the bottom Coulomb Topology menu to choose topology
+        performSegue(withIdentifier: "toTopoMenuSegue", sender: nil)
+        
+//        let location = recognizer.location(in: arView)
+//
+//        let results = arView.raycast(from: location, allowing: .estimatedPlane, alignment: .any)
+//
+//        if let firstResult = results.first {
+//            let anchor = ARAnchor(name: "PointCharge", transform: firstResult.worldTransform)
+//            arView.session.add(anchor: anchor)
+//            
+//            /// Disable the Placement Indicator
+//            EntityStore.shared.toggle_PlacementIndicator(anchor: placementIndicator, show: false)
+//        } else {
+//            print("No surface found.")
+//        }
     }
 
     // MARK: - PointCharge LongPress

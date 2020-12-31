@@ -50,7 +50,8 @@ extension ViewController {
 //            let newPositions = newValue
             
             /// Place the selected Topology on the AnchorEntity placed in scene
-            if topology.topoAnchor != nil {
+            if topology.topoAnchorEntity != nil {
+//            if topology.topoAnchor != nil {
                 topology.placeTopology(topoModel: newTopoModel)
 //                topology.placeTopology(positions: newPositions)
             } else {

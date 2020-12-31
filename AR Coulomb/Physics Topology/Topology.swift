@@ -15,7 +15,7 @@ class Topology {
     /// The ViewController which contains the topology
     var viewController: ViewController?
     /// Anchor of the topology in the scene
-    var topoAnchor: ARAnchor?
+//    var topoAnchor: ARAnchor?
     /// Anchor Entity of the topology
     var topoAnchorEntity: AnchorEntity?
     /// Selected positions for the pointCharges Entities
@@ -39,12 +39,14 @@ class Topology {
     // MARK: - Topology functions
     
     //  Add the parent viewController and a ARAnchor
-    func pinToScene(viewController: ViewController, topoAnchor: ARAnchor) {
+    func pinToScene(viewController: ViewController, topoAnchor: AnchorEntity) {
+//    func pinToScene(viewController: ViewController, topoAnchor: ARAnchor) {
         self.viewController = viewController
-        self.topoAnchor = topoAnchor
+//        self.topoAnchor = topoAnchor
         
         /// Add the Anchor Entity to the scene (where the user tapped)
-        self.topoAnchorEntity = AnchorEntity(anchor: topoAnchor)
+        self.topoAnchorEntity = topoAnchor
+//        self.topoAnchorEntity = AnchorEntity(anchor: topoAnchor)
         self.topoAnchorEntity?.name = "Point Charge Scene AnchorEntity"
         self.viewController?.arView.scene.addAnchor(self.topoAnchorEntity!)
         
