@@ -27,9 +27,6 @@ class EntityStore {
         return pointChargeEntity
     }
     
-    func update_PointChargeEntity(pointChargeEntity: Entity, radius: Float, color: UIColor) {
-        self.update_PointChargeModel(on: pointChargeEntity, radius: radius, color: color)
-    }
     
     func update_PointChargeModel(on pointChargeEntity: Entity, radius: Float = PointChargeClass.pointChargeRadius, color: UIColor = UIColor.red) {
         // Add ModelComponent
@@ -50,10 +47,12 @@ class EntityStore {
             
             return mat
         }()
-        
         let model: ModelComponent = ModelComponent(mesh: .generateSphere(radius: radius), materials: [material])
-        
         return model
+    }
+    
+    func update_PointChargeEntity(pointChargeEntity: Entity, radius: Float, color: UIColor) {
+        self.update_PointChargeModel(on: pointChargeEntity, radius: radius, color: color)
     }
     
     // MARK: - Text
@@ -183,23 +182,20 @@ class EntityStore {
         return piEntity
     }
     
-    func toggle_PlacementIndicator(anchor: AnchorEntity, show: Bool) {
-        anchor.isEnabled = show
-    }
-    
     private func load_PlacementIndicator_ModelComponent(side: Float, imageAssetPath: String) -> ModelComponent {
         var material: UnlitMaterial = UnlitMaterial()
         material.baseColor = try! MaterialColorParameter.texture(TextureResource.load(named: imageAssetPath))
         material.tintColor = UIColor.white.withAlphaComponent(0.9)
         
-        let simpleMaterial: SimpleMaterial = SimpleMaterial()
-        
         /// Plane for placement indicator
         let mesh: MeshResource = .generatePlane(width: side, depth: side)
-        
-        let model: ModelComponent = .init(mesh: mesh, materials: [material, simpleMaterial])
+        let model: ModelComponent = .init(mesh: mesh, materials: [material])
         
         return model
+    }
+    
+    func toggle_PlacementIndicator(anchor: AnchorEntity, show: Bool) {
+        anchor.isEnabled = show
     }
     
     func update_PlacementIndicator_ModelComponent(on piAnchor: AnchorEntity, side: Float, imageAssetPath: String) {

@@ -385,18 +385,25 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     func restartExperience() {
         //        guard isRestartAvailable, !virtualObjectLoader.isLoading else { return }
+        /// Disable restart availability for at least 5 seconds
         guard isRestartAvailable else { return }
         isRestartAvailable = false
         
         status!.cancelAllScheduledMessages()
         
-        topology.clearTopology()
+        /// Hide the stack view (menu on bottom right)
+        self.toggleStackView(hide: true, animated: false)
         
-        resetTracking()
+        /// Clear the current topology
+        self.topology.clearTopology()
         
-//        EntityStore.shared.toggle_PlacementIndicator(anchor: placementIndicator, show: true)
+        /// Reset tracking
+        self.resetTracking()
         
-        // Disable restart for a while in order to give the session time to restart.
+        /// Restart Coaching Overlay
+        self.setupCoachingOverlay()
+        
+        /// Wait for 5 seconds to re-enable restart, give time to session to start
         DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
             self.isRestartAvailable = true
             self.messagePanel.isHidden = false
