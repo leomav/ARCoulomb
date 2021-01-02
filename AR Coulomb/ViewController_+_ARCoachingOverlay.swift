@@ -68,7 +68,7 @@ extension ViewController: ARCoachingOverlayViewDelegate {
             self.coachingOverlay.setActive(true, animated: true)
             
             /// After 2 seconds, leave it to autopilot
-            DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                 self.setAutoActivation(auto: true)
             }
             

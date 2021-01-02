@@ -33,8 +33,8 @@ var placementIndicator: AnchorEntity = EntityStore.shared.load_PlacementIndicato
 /// Coulomb Text Material
 let coulombTextMaterial: SimpleMaterial = {
     var mat = SimpleMaterial()
-    mat.metallic = MaterialScalarParameter(floatLiteral: 0.2)
-    mat.roughness = MaterialScalarParameter(floatLiteral: 0.1)
+    mat.metallic = MaterialScalarParameter(floatLiteral: 0)
+    mat.roughness = MaterialScalarParameter(floatLiteral: 1)
     mat.tintColor = UIColor.white
     return mat
 }()

@@ -14,8 +14,6 @@ class EntityStore {
     
     init() {}
     
-    
-    
     // MARK: - PointCharge
     
     func load_PointChargeEntity() -> Entity {
@@ -41,8 +39,8 @@ class EntityStore {
     private func load_PointChargeModel(radius: Float, color: UIColor) -> ModelComponent {
         let material: SimpleMaterial = {
             var mat = SimpleMaterial()
-            mat.metallic = MaterialScalarParameter(floatLiteral: 0.2)
-            mat.roughness = MaterialScalarParameter(floatLiteral: 0.1)
+            mat.metallic = MaterialScalarParameter(floatLiteral: 0.5)
+            mat.roughness = MaterialScalarParameter(floatLiteral: 0.5)
             mat.tintColor = color
             
             return mat
@@ -68,8 +66,8 @@ class EntityStore {
     
     func update_TextEntity(textEntity: Entity, material: SimpleMaterial, coulombStringValue: String) {
         let model: ModelComponent = ModelComponent(mesh: .generateText(coulombStringValue,
-                                                                       extrusionDepth: 0.003,
-                                                                       font: .systemFont(ofSize: 0.02),
+                                                                       extrusionDepth: 0.001,
+                                                                       font: .systemFont(ofSize: 0.012),
                                                                        containerFrame: CGRect.zero,
                                                                        alignment: .left,
                                                                        lineBreakMode: .byCharWrapping),
@@ -88,7 +86,7 @@ class EntityStore {
             return mat
         }()
         
-        let model: ModelComponent = ModelComponent(mesh: .generateBox(width: 0.002, height: 0.002, depth: length), materials: [material] )
+        let model: ModelComponent = ModelComponent(mesh: .generateBox(width: 0.001, height: 0.001, depth: length), materials: [material] )
         
         return model
     }
