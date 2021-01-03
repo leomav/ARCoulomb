@@ -16,18 +16,10 @@ extension Topology {
         self.viewController?.arView.scene.anchors.forEach{ anchor in
             if anchor.name == "Point Charge Scene AnchorEntity" {
                 
-                /// Get the ArrowEntity out of the ArrowAnchor
-//                let arrowAnchor = try! Experience.loadBox()
-//                let arrowEntity = arrowAnchor.arrow!
-                
-                // TESTING TESTING TESTING TESTING TESTING
-                /// Comment out the above two lines of code
-                
                 // Add a Force Object and Entity for every pointCharge<->pointCharge combo
                 self.pointCharges.forEach{ pointChargeObj in
                     
                     /// Create NetForce Object
-//                    let netForce = self.createNetForce(for: pointChargeObj, arrowEntity: arrowEntity)
                     let netForce = Force.createNetForce(for: pointChargeObj)
                     self.netForces.append(netForce)
 
@@ -65,15 +57,6 @@ extension Topology {
         
         /// Enable the Arrows for the SingleForces and the NetForce of the selectedPointChargeObj
         /// EXCEPT IF there are no other pointCharges, then there is no need for Arrows
-        
-        // TESTING
-//        if self.pointCharges.count > 1 {
-//            pointChargeObj.entity.children.forEach{ child in
-//                if child.name == "NetForce Arrow" || child.name == "SingleForce Arrow" {
-//                    child.isEnabled = true
-//                }
-//            }
-//        }
         if self.pointCharges.count > 1 {
             pointChargeObj.entity.children.forEach{ child in
                 if child.name == "Pivot Arrow" {

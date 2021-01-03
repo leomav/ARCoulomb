@@ -25,6 +25,8 @@
 		9F5E39FA25752BDE00E66279 /* NSTopology+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F5E39F625752BDE00E66279 /* NSTopology+CoreDataProperties.swift */; };
 		9F68AAD724F6FF95004F1A3C /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F68AAD624F6FF95004F1A3C /* Alert.swift */; };
 		9F6D256524BDFCCE00F25D06 /* NetForce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F6D256424BDFCCE00F25D06 /* NetForce.swift */; };
+		9F881C7F25A1272000B77589 /* DistanceIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F881C7E25A1272000B77589 /* DistanceIndicator.swift */; };
+		9F881C8425A1480900B77589 /* Topology_+_DistanceIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F881C8325A1480900B77589 /* Topology_+_DistanceIndicator.swift */; };
 		9F8E5A4924BB390900C69C27 /* TopologyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F8E5A4824BB390900C69C27 /* TopologyStore.swift */; };
 		9FAB03CE2573F45C00555B1E /* CustomPhotoAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FAB03CD2573F45C00555B1E /* CustomPhotoAlbum.swift */; };
 		9FAB03D12573F9FD00555B1E /* DatabaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FAB03D02573F9FD00555B1E /* DatabaseHelper.swift */; };
@@ -67,6 +69,8 @@
 		9F5E39F625752BDE00E66279 /* NSTopology+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTopology+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		9F68AAD624F6FF95004F1A3C /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		9F6D256424BDFCCE00F25D06 /* NetForce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetForce.swift; sourceTree = "<group>"; };
+		9F881C7E25A1272000B77589 /* DistanceIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceIndicator.swift; sourceTree = "<group>"; };
+		9F881C8325A1480900B77589 /* Topology_+_DistanceIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Topology_+_DistanceIndicator.swift"; sourceTree = "<group>"; };
 		9F8E5A4824BB390900C69C27 /* TopologyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopologyStore.swift; sourceTree = "<group>"; };
 		9FAB03CD2573F45C00555B1E /* CustomPhotoAlbum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPhotoAlbum.swift; sourceTree = "<group>"; };
 		9FAB03D02573F9FD00555B1E /* DatabaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseHelper.swift; sourceTree = "<group>"; };
@@ -111,6 +115,7 @@
 				9F6D256424BDFCCE00F25D06 /* NetForce.swift */,
 				9FACABBE24C24D2A0024962B /* Force.swift */,
 				9F1CC722258FF22A00233606 /* PointChargeEntity.swift */,
+				9F881C7E25A1272000B77589 /* DistanceIndicator.swift */,
 			);
 			path = "Physics Objects";
 			sourceTree = "<group>";
@@ -121,6 +126,7 @@
 				9F2FC67324F4006800D0BA7D /* Topology.swift */,
 				9F474FA724C37B3E004E1B54 /* Topology_+_Forces.swift */,
 				9F3E8B7424F7AD980018D250 /* Topology_+_PointCharges.swift */,
+				9F881C8325A1480900B77589 /* Topology_+_DistanceIndicator.swift */,
 			);
 			path = "Physics Topology";
 			sourceTree = "<group>";
@@ -278,6 +284,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9FAB03D12573F9FD00555B1E /* DatabaseHelper.swift in Sources */,
+				9F881C8425A1480900B77589 /* Topology_+_DistanceIndicator.swift in Sources */,
 				9F2350FC2571741300E739CB /* PersistenceService.swift in Sources */,
 				9FD94476249A258400C0E646 /* ViewController.swift in Sources */,
 				9FAB03CE2573F45C00555B1E /* CustomPhotoAlbum.swift in Sources */,
@@ -299,6 +306,7 @@
 				9F5E39F825752BDE00E66279 /* NSPointCharge+CoreDataProperties.swift in Sources */,
 				9F5E39F925752BDE00E66279 /* NSTopology+CoreDataClass.swift in Sources */,
 				9FD94478249A258400C0E646 /* Experience.rcproject in Sources */,
+				9F881C7F25A1272000B77589 /* DistanceIndicator.swift in Sources */,
 				9F8E5A4924BB390900C69C27 /* TopologyStore.swift in Sources */,
 				9FF77FD924A7E3EA003477C2 /* CoulombMenuVC.swift in Sources */,
 				9F5E39F725752BDE00E66279 /* NSPointCharge+CoreDataClass.swift in Sources */,

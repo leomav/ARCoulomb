@@ -24,6 +24,8 @@ class Topology {
     var pointCharges: [PointChargeClass]
     /// All the netForces
     var netForces: [NetForce]
+    /// All distance indicators
+    var distanceIndicators: [DistanceIndicator]
     /// A pointChargeEntity Template used for cloning
     var pointChargeEntityTemplate: Entity?
     
@@ -31,6 +33,7 @@ class Topology {
         self.selectedPositions = []
         self.pointCharges = []
         self.netForces = []
+        self.distanceIndicators = []
         
         /// Import the Point Charge Model, clone the entity as many times as needed
         self.pointChargeEntityTemplate = EntityStore.shared.load_PointChargeEntity()
@@ -78,16 +81,19 @@ class Topology {
         
         /// Add all forces to all the pointCharge Objects
         self.reloadAllForces()
+        /// Add all distance indicators
+        self.reloadDistanceIndicators()
         
-        
+        /// Show Forces and Distance Indicators only for selected pointCharge
         self.showForces(for: selectedPointChargeObj)
-        
+        self.showDistaneIndicators(for: selectedPointChargeObj)
         
     }
     
     func clearTopology() {
-        /// Clear all Forces
+        /// Clear all Forces and Distance Indicators
         self.clearAllForces()
+        self.clearDistanceIndicators()
         
         /// Clear all PointCharges
         self.removeAllPointCharges()
@@ -104,7 +110,8 @@ class Topology {
     // Show or Hide topology
     func toggleTopology(show: Bool) {
         self.toggleAllForces(show: show)
-        self.toggleAllForces(show: show)
+        self.toggleDistanceIndicators(show: show)
+        //        self.toggleAllForces(show: show)
     }
     
 }

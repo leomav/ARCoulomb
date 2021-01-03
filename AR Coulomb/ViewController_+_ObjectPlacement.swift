@@ -65,7 +65,7 @@ extension ViewController: ARSessionDelegate {
 //        arView.scene.anchors.forEach{ anchor in
 //            anchor.children.forEach{ child in
 //                child.children.forEach{ item in
-//                    if item.name == "text" {
+//                    if item.name == "Coulomb Text" {
 //                        item.look(at: cameraAnchor.position, from: item.position, relativeTo: item.parent)
 //                    }
 //                }

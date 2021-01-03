@@ -31,13 +31,13 @@ var trackedEntity: Entity = Entity()
 var placementIndicator: AnchorEntity = EntityStore.shared.load_PlacementIndicator()
 
 /// Coulomb Text Material
-let coulombTextMaterial: SimpleMaterial = {
-    var mat = SimpleMaterial()
-    mat.metallic = MaterialScalarParameter(floatLiteral: 0)
-    mat.roughness = MaterialScalarParameter(floatLiteral: 1)
-    mat.tintColor = UIColor.white
-    return mat
-}()
+//let coulombTextMaterial: SimpleMaterial = {
+//    var mat = SimpleMaterial()
+//    mat.metallic = MaterialScalarParameter(floatLiteral: 0)
+//    mat.roughness = MaterialScalarParameter(floatLiteral: 1)
+//    mat.tintColor = UIColor.white
+//    return mat
+//}()
 
 /// Captured Image for saving
 var capturedImage: UIImage = UIImage()
@@ -432,7 +432,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         trackedEntity.setScale(SIMD3<Float>(zoom, zoom, zoom), relativeTo: trackedEntity)
         /// Show/Hide the value label
         trackedEntity.children.forEach{ child in
-            if child.name == "text" {
+            if child.name == "Coulomb Text" {
                 child.isEnabled = showLabel
             }
         }

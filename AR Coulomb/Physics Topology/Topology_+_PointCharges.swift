@@ -27,11 +27,13 @@ extension Topology {
         /// Enable the new LongPressRecognizer for thisPointCharge and set .cancelsTouchesInView to false
         self.viewController?.enableRecognizers(withName: "Long Press Recognizer")
         
-        /// ReCalculate all Forces
+        /// ReCalculate all Forces and Distance Indicators
         self.reloadAllForces()
+        self.reloadDistanceIndicators()
         
         /// Enable Arrows for SingleForces and NetForce of the selectedPointChargeObj (the recently added)
         self.showForces(for: selectedPointChargeObj)
+        self.showDistaneIndicators(for: selectedPointChargeObj)
         
         /// Disable and hide the StackView Buttons 
         self.viewController?.toggleStackView(hide: true, animated: false)
@@ -63,11 +65,12 @@ extension Topology {
         longPressedEntity = point!
         
         /// Create Text Entity for the pointCharge
-        let textEntity = EntityStore.shared.load_TextEntity(pointCharge: newPointChargeObj)
+        let textPos = SIMD3<Float>(-0.02, -(PointChargeClass.pointChargeRadius + 0.005), PointChargeClass.pointChargeRadius + 0.005)
+        let textEntity = EntityStore.shared.load_TextEntity(on: newPointChargeObj.entity, name: "Coulomb Text", position: textPos)
 //        let textEntity = newPointChargeObj.createTextEntity(pointEntity: point!)
 
         /// Load the mesh and material for the model of the text entity
-        EntityStore.shared.update_TextEntity(textEntity: textEntity, material: coulombTextMaterial, coulombStringValue: "\(newPointChargeObj.value) Cb")
+        EntityStore.shared.update_TextEntity(textEntity: textEntity, material: EntityStore.shared.textMaterial, stringValue: "\(newPointChargeObj.value) Cb")
 //        PointChargeClass.loadText(textEntity: textEntity, material: coulombTextMaterial, coulombStringValue: "\(newPointChargeObj.value) Cb")
 
         /// Install gestures, careful to set its ".cancelTouchesInView" to false cause it cancels touches gestures  other than
@@ -99,11 +102,12 @@ extension Topology {
         longPressedEntity = point!
         
         /// Create Text Entity for the pointCharge
-        let textEntity = EntityStore.shared.load_TextEntity(pointCharge: newPointChargeObj)
+        let textPos = SIMD3<Float>(-0.02, -(PointChargeClass.pointChargeRadius + 0.005), PointChargeClass.pointChargeRadius + 0.005)
+        let textEntity = EntityStore.shared.load_TextEntity(on: newPointChargeObj.entity, name: "Coulomb Text", position: textPos)
 //        let textEntity = newPointChargeObj.createTextEntity(pointEntity: point!)
         
         /// Load the mesh and material for the model of the text entity
-        EntityStore.shared.update_TextEntity(textEntity: textEntity, material: coulombTextMaterial, coulombStringValue: "\(newPointChargeObj.value) Cb")
+        EntityStore.shared.update_TextEntity(textEntity: textEntity, material: EntityStore.shared.textMaterial, stringValue: "\(newPointChargeObj.value) Cb")
 //        PointChargeClass.loadText(textEntity: textEntity, material: coulombTextMaterial, coulombStringValue: "\(newPointChargeObj.value) Cb")
         
         /// Install gestures, careful to set its ".cancelTouchesInView" to false cause it cancels touches gestures  other than
@@ -135,8 +139,9 @@ extension Topology {
         /// And then remove the longPressedEntity (selected Entity)
         longPressedEntity.removeFromParent()
         
-        /// Finally, calculate again All Forces
+        /// Finally, calculate again All Forces and Distance Indicators
         self.reloadAllForces()
+        self.reloadDistanceIndicators()
         
         /// Set a new random selecrtedPointChargeObj ...
         if self.pointCharges.count > 0 {
@@ -145,6 +150,7 @@ extension Topology {
         }
         /// ... and show the forces relative to it
         self.showForces(for: selectedPointChargeObj)
+        self.showDistaneIndicators(for: selectedPointChargeObj)
     }
     
     // Show or Hide all PointCharges

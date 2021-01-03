@@ -54,18 +54,28 @@ class EntityStore {
     }
     
     // MARK: - Text
-    func load_TextEntity(pointCharge: PointChargeClass) -> Entity {
+    
+    /// Coulomb Text Material
+    let textMaterial: SimpleMaterial = {
+        var mat = SimpleMaterial()
+        mat.metallic = MaterialScalarParameter(floatLiteral: 0)
+        mat.roughness = MaterialScalarParameter(floatLiteral: 1)
+        mat.tintColor = UIColor.white
+        return mat
+    }()
+    
+    func load_TextEntity(on entity: Entity, name: String, position: SIMD3<Float>) -> Entity {
         let textEntity: Entity = Entity()
-        textEntity.name = "text"
-        textEntity.setParent(pointCharge.entity)
-        textEntity.setPosition(SIMD3<Float>(-0.02, -(PointChargeClass.pointChargeRadius + 0.005), PointChargeClass.pointChargeRadius + 0.005), relativeTo: pointCharge.entity)
+        textEntity.name = name
+        textEntity.setParent(entity)
+        textEntity.setPosition(position, relativeTo: entity)
 //        textEntity.setOrientation(simd_quatf(angle: Int(90).degreesToRadians(), axis: SIMD3<Float>(1, 0, 0)), relativeTo: pointCharge.entity)
         
         return textEntity
     }
     
-    func update_TextEntity(textEntity: Entity, material: SimpleMaterial, coulombStringValue: String) {
-        let model: ModelComponent = ModelComponent(mesh: .generateText(coulombStringValue,
+    func update_TextEntity(textEntity: Entity, material: SimpleMaterial, stringValue: String) {
+        let model: ModelComponent = ModelComponent(mesh: .generateText(stringValue,
                                                                        extrusionDepth: 0.001,
                                                                        font: .systemFont(ofSize: 0.012),
                                                                        containerFrame: CGRect.zero,
@@ -206,8 +216,48 @@ class EntityStore {
         piAnchor.position.y += 0.02
     }
     
+    // MARK: - Distance Indicator
     
+    func load_DistanceIndicator() -> Entity {
+        let distanceEntity: Entity = Entity()
+        distanceEntity.name = "Distance Indicator"
+//        distanceEntity.isEnabled = false
+
+        return distanceEntity
+    }
     
+    // MARK: - Distance Indicator Line
+    
+    func load_DistanceLine() -> Entity {
+        let distanceEntity: Entity = Entity()
+        distanceEntity.name = "Distance Line"
+//        distanceEntity.isEnabled = false
+
+        return distanceEntity
+    }
+    
+    func load_DistanceLine_Model(length: Float) -> ModelComponent {
+        var material: UnlitMaterial = UnlitMaterial()
+        material.tintColor = UIColor.yellow
+        
+        let mesh: MeshResource = .generateBox(width: 0.001, height: 0.001, depth: length)
+        let model: ModelComponent = ModelComponent(mesh: mesh, materials: [material])
+        return model
+    }
+    
+    func update_DistanceLine_Length(entity: Entity, length: Float) {
+        let model = load_DistanceLine_Model(length: length)
+        entity.components.set(model)
+    }
+    
+    func update_DistanceLines(sourceEntity: Entity, targetEntity: Entity, length: Float) {
+        let pos = length/2 + 0.02
+        sourceEntity.setPosition(SIMD3<Float>(-pos, 0, 0), relativeTo: sourceEntity.parent)
+        targetEntity.setPosition(SIMD3<Float>(pos, 0, 0), relativeTo: sourceEntity.parent)
+        
+        self.update_DistanceLine_Length(entity: sourceEntity, length: length)
+        self.update_DistanceLine_Length(entity: targetEntity, length: length)
+    }
     
     
 }

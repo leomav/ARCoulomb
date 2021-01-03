@@ -96,7 +96,6 @@ class Force {
     }
     
     static func createSingleForce(from otherPointChargeObj: PointChargeClass, to pointChargeObj: PointChargeClass) -> SingleForce{
-        // TODO: SingleForce.createForce()
         let singleForce: SingleForce = SingleForce.createForce(from: otherPointChargeObj, to: pointChargeObj)
         
         // DONT FORGET: AFTER RETURN: topology -> netForce.forces.append(force)
