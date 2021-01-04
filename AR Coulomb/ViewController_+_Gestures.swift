@@ -71,8 +71,9 @@ extension ViewController {
 //                    }
 //                }
                 
-                /// Show forces relative to the selectedPointChargeObj
+                /// Show forces and distance indicators relative to the selectedPointChargeObj
                 self.topology.showForces(for: selectedPointChargeObj)
+                self.topology.showDistaneIndicators(for: selectedPointChargeObj)
 
                 /// Disable and hide the StackView Buttons (add new pointCharge, add new topo)
                 self.toggleStackView(hide: true, animated: false)
@@ -106,6 +107,7 @@ extension ViewController {
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         if trackedEntity.name == "pointCharge" {
             self.topology.updateForces()
+            self.topology.updateDistanceIndicators()
         }
     }
 
@@ -135,8 +137,9 @@ extension ViewController {
                 }
             }
 
-            /// Update all forces magnetudes and directions
+            /// Update all forces magnetudes and directions and Distance Indicators
             self.topology.updateForces()
+            self.topology.updateDistanceIndicators()
 
             /// When touches end, no entity is tracked by the gesture
             trackedEntity = Entity()

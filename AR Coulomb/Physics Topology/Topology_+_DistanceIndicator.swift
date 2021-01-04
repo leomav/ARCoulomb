@@ -26,6 +26,7 @@ extension Topology {
                         let trgtPointCharge = self.pointCharges[counter]
                         
                         let distanceIndicator = DistanceIndicator(from: srcPointCharge, to: trgtPointCharge)
+                        self.topoAnchorEntity?.addChild(distanceIndicator.entity)
                         self.distanceIndicators.append(distanceIndicator)
                         
                         /// Source is ex-Target
@@ -35,6 +36,7 @@ extension Topology {
                         /// On the last one, complete the circle
                         if counter == self.pointCharges.count {
                             let distanceIndicator = DistanceIndicator(from: trgtPointCharge, to: initialPointCharge)
+                            self.topoAnchorEntity?.addChild(distanceIndicator.entity)
                             self.distanceIndicators.append(distanceIndicator)
                         }
                     }
@@ -72,6 +74,7 @@ extension Topology {
         self.distanceIndicators.forEach{ indicator in
             indicator.entity.removeFromParent()
         }
+        self.distanceIndicators.removeAll()
     }
     
     func reloadDistanceIndicators() {

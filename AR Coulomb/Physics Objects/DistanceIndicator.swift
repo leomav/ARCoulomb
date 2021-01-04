@@ -28,11 +28,14 @@ class DistanceIndicator {
     var labelPivot: Entity = Entity()
     var label: Entity
     
+    static let lineMaterial = UnlitMaterial(color: .yellow)
+    
     
     init(from source: PointChargeClass, to target: PointChargeClass) {
-        print("Created")
         self.id = DistanceIndicator.count
         DistanceIndicator.count = DistanceIndicator.count + 1
+        
+        print("DistanceIndicator init \(self.id)")
         
         self.sourcePointCharge = source
         self.targetPointCharge = target
@@ -41,15 +44,17 @@ class DistanceIndicator {
         
         self.labelPivot.name = "Distance Label Pivot"
         self.labelPivot.setParent(self.entity)
+        /// Horizontal Alignment : Center (brute force)
+        self.labelPivot.setPosition(SIMD3<Float>(-0.015, 0, 0), relativeTo: self.labelPivot.parent)
         
         self.label = EntityStore.shared.load_TextEntity(on: self.labelPivot, name: "Distance Label", position: SIMD3<Float>(0, 0, 0))
         
-        self.sourceLine = EntityStore.shared.load_DistanceLine()
-        self.targetLine = EntityStore.shared.load_DistanceLine()
+        self.sourceLine = EntityStore.shared.load_DistanceLine(on: self.entity)
+        self.targetLine = EntityStore.shared.load_DistanceLine(on: self.entity)
         
-        EntityStore.shared.update_TextEntity(textEntity: self.label, material: EntityStore.shared.textMaterial, stringValue: "\(0)m")
-        
-        EntityStore.shared.update_DistanceLines(sourceEntity: self.sourceLine, targetEntity: self.targetLine, length: self.distance)
+        // MAYBE COMMENT OUT?
+        self.updateLabel()
+        self.updateLines()
     }
     
     func updateIndicator() {
@@ -72,16 +77,21 @@ class DistanceIndicator {
     
     private func updateOrientation() {
         self.entity.look(at: targetPointCharge.entity.position, from: self.entity.position, relativeTo: self.entity.parent)
-//        self.entity.setOrientation(simd_quatf(angle: Int(90).degreesToRadians(), axis: SIMD3<Float>(1, 0, 0)), relativeTo: self.entity)
+        
+        /// Place it on the surface that the PointCharges sit on
+        let ydif = -PointChargeClass.pointChargeRadius
+        self.entity.setPosition(SIMD3<Float>(0, ydif, 0), relativeTo: self.entity)
 
+        
+        self.entity.setOrientation(simd_quatf(angle: Int(270).degreesToRadians(), axis: SIMD3<Float>(0, 1.0, 0)), relativeTo: self.entity)
     }
     
     private func updateLabel() {
-        EntityStore.shared.update_TextEntity(textEntity: self.label, material: EntityStore.shared.textMaterial, stringValue: "\(0)m")
+        EntityStore.shared.update_TextEntity(textEntity: self.label, material: EntityStore.shared.textMaterial, stringValue: String(format: "%.2fm", self.distance), fontSize: 0.008)
     }
     
     private func updateLines() {
-        EntityStore.shared.update_DistanceLines(sourceEntity: self.sourceLine, targetEntity: self.targetLine, length: self.distance)
+        EntityStore.shared.update_DistanceLines(sourceLine: self.sourceLine, targetLine: self.targetLine, length: self.distance)
     }
     
     

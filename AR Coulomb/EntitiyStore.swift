@@ -74,7 +74,7 @@ class EntityStore {
         return textEntity
     }
     
-    func update_TextEntity(textEntity: Entity, material: SimpleMaterial, stringValue: String) {
+    func update_TextEntity(textEntity: Entity, material: SimpleMaterial, stringValue: String, fontSize: Float = 0.012) {
         let model: ModelComponent = ModelComponent(mesh: .generateText(stringValue,
                                                                        extrusionDepth: 0.001,
                                                                        font: .systemFont(ofSize: 0.012),
@@ -221,28 +221,24 @@ class EntityStore {
     func load_DistanceIndicator() -> Entity {
         let distanceEntity: Entity = Entity()
         distanceEntity.name = "Distance Indicator"
-//        distanceEntity.isEnabled = false
 
         return distanceEntity
     }
     
     // MARK: - Distance Indicator Line
     
-    func load_DistanceLine() -> Entity {
+    func load_DistanceLine(on indicator: Entity) -> Entity {
         let distanceEntity: Entity = Entity()
         distanceEntity.name = "Distance Line"
+        indicator.addChild(distanceEntity)
 //        distanceEntity.isEnabled = false
 
         return distanceEntity
     }
     
     func load_DistanceLine_Model(length: Float) -> ModelComponent {
-        var material: UnlitMaterial = UnlitMaterial()
-        material.tintColor = UIColor.yellow
-        
-        let mesh: MeshResource = .generateBox(width: 0.001, height: 0.001, depth: length)
-        let model: ModelComponent = ModelComponent(mesh: mesh, materials: [material])
-        return model
+        let mesh: MeshResource = .generateBox(width: length, height: 0.0005, depth: 0.0005)
+        return ModelComponent(mesh: mesh, materials: [DistanceIndicator.lineMaterial])
     }
     
     func update_DistanceLine_Length(entity: Entity, length: Float) {
@@ -250,13 +246,18 @@ class EntityStore {
         entity.components.set(model)
     }
     
-    func update_DistanceLines(sourceEntity: Entity, targetEntity: Entity, length: Float) {
-        let pos = length/2 + 0.02
-        sourceEntity.setPosition(SIMD3<Float>(-pos, 0, 0), relativeTo: sourceEntity.parent)
-        targetEntity.setPosition(SIMD3<Float>(pos, 0, 0), relativeTo: sourceEntity.parent)
+    func update_DistanceLines(sourceLine: Entity, targetLine: Entity, length: Float) {
+        /// Line length = distance/2. Also, keep 0.02m to give distance label some space.
+        let lineLength: Float = length/2 - 0.02
+        ///So set position.x diff to (line)length/2, which technically is (paramter=distance)length/4
+        let xdif = length/4 + 0.01
         
-        self.update_DistanceLine_Length(entity: sourceEntity, length: length)
-        self.update_DistanceLine_Length(entity: targetEntity, length: length)
+        sourceLine.setPosition(SIMD3<Float>(-xdif, 0, 0), relativeTo: sourceLine.parent)
+        targetLine.setPosition(SIMD3<Float>(xdif, 0, 0), relativeTo: targetLine.parent)
+        
+        /// Actucally, set line length to distance/2, minus the space we gave for the  distance label
+        self.update_DistanceLine_Length(entity: sourceLine, length: lineLength)
+        self.update_DistanceLine_Length(entity: targetLine, length: lineLength)
     }
     
     
