@@ -40,34 +40,47 @@ extension Topology {
     }
     
     func showForces(for pointChargeObj: PointChargeClass) {
-        self.netForces.forEach{ netForce in
-            /// Disable the NetForce Arrow ...
-            netForce.arrowEntity.isEnabled = false
-            
-            netForce.forces.forEach{ force in
-                /// ... and the SingleForce Arrow for every PointChargeObj...
-                force.arrowEntity.isEnabled = false
-                
-                if force.sourcePointCharge.id == pointChargeObj.id {
-                    /// ... except from the Arrow pointing to selectedPointChargeObj
-                    force.arrowEntity.isEnabled = true
-                }
-            }
+//        self.netForces.forEach{ netForce in
+//            /// Disable the NetForce Arrow ...
+//            netForce.arrowEntity.isEnabled = false
+//
+//            netForce.forces.forEach{ force in
+//                /// ... and the SingleForce Arrow for every PointChargeObj...
+//                force.arrowEntity.isEnabled = false
+//
+//                if force.sourcePointCharge.id == pointChargeObj.id {
+//                    /// ... except from the Arrow pointing to selectedPointChargeObj
+//                    force.arrowEntity.isEnabled = true
+//                }
+//            }
+//        }
+//        
+//        /// Enable the Arrows for the SingleForces and the NetForce of the selectedPointChargeObj
+//        /// EXCEPT IF there are no other pointCharges, then there is no need for Arrows
+//        if self.pointCharges.count > 1 {
+//            pointChargeObj.entity.children.forEach{ child in
+//                if child.name == "Pivot Arrow" {
+//                    child.children.forEach{ child in
+//                        if child.name == "NetForce Arrow" || child.name == "SingleForce Arrow" {
+//                            child.isEnabled = true
+//                        }
+//                    }
+//                }
+//            }
+//        }
+        
+        
+        // NEW TRY
+        self.toggleAllForces(show: false)
+        pointChargeObj.netForce?.arrowEntity.isEnabled = true
+        pointChargeObj.netForce?.forces.forEach{ force in
+            force.arrowEntity.isEnabled = true
+        }
+        pointChargeObj.forcesOnOthers.forEach{ force in
+            force.arrowEntity.isEnabled = true
         }
         
-        /// Enable the Arrows for the SingleForces and the NetForce of the selectedPointChargeObj
-        /// EXCEPT IF there are no other pointCharges, then there is no need for Arrows
-        if self.pointCharges.count > 1 {
-            pointChargeObj.entity.children.forEach{ child in
-                if child.name == "Pivot Arrow" {
-                    child.children.forEach{ child in
-                        if child.name == "NetForce Arrow" || child.name == "SingleForce Arrow" {
-                            child.isEnabled = true
-                        }
-                    }
-                }
-            }
-        }
+        
     }
         
     // MARK:- UPDATE FORCES
@@ -88,6 +101,28 @@ extension Topology {
             
             // Update Net Force Arrow
             netForceObj.updateArrowModel()
+        }
+    }
+    
+    // TESTED
+    func updateForces(for pointCharge: PointChargeClass) {
+        
+        //  Forces rendered on the pointCharge
+        pointCharge.netForce?.forces.forEach{ force in
+            force.updateForce()
+        }
+        // Calculate Force Magnetude, Angle
+        pointCharge.netForce?.updateForce()
+        
+        // Update Net Force Arrow orientation
+        pointCharge.netForce?.updateForceArrowOrientation()
+        
+        // Update Net Force Arrow
+        pointCharge.netForce?.updateArrowModel()
+        
+        // Forces rendered with respect to that pointCharge on others
+        pointCharge.forcesOnOthers.forEach{ force in
+            force.updateForce()
         }
     }
     

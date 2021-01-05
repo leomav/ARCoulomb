@@ -14,6 +14,9 @@ class PointChargeClass {
     let id: Int
     let entity: Entity
     var value: Float
+    var netForce: NetForce?
+    var forcesOnOthers: [SingleForce]
+    var distanceIndicators: [DistanceIndicator]
     static var multiplier: Float = 0.000001
     static var pointChargeRadius: Float = 0.02
     
@@ -23,6 +26,9 @@ class PointChargeClass {
         self.id = PointChargeClass.volume
         self.entity = entity
         self.value = value
+        
+        self.forcesOnOthers = []
+        self.distanceIndicators = []
     }
     
     static func ==(lhs: PointChargeClass, rhs: PointChargeClass) -> Bool {

@@ -75,9 +75,10 @@ class EntityStore {
     }
     
     func update_TextEntity(textEntity: Entity, material: SimpleMaterial, stringValue: String, fontSize: Float = 0.012) {
+        let defaultFont = "TimesNewRomanPSMT"
         let model: ModelComponent = ModelComponent(mesh: .generateText(stringValue,
                                                                        extrusionDepth: 0.001,
-                                                                       font: .systemFont(ofSize: 0.012),
+                                                                       font: UIFont(name: defaultFont, size: CGFloat(fontSize))!,
                                                                        containerFrame: CGRect.zero,
                                                                        alignment: .left,
                                                                        lineBreakMode: .byCharWrapping),
@@ -213,7 +214,7 @@ class EntityStore {
     
     func update_PlacementIndicator_Transform(on piAnchor: AnchorEntity, transform: Transform) {
         piAnchor.transform = transform
-        piAnchor.position.y += 0.02
+        piAnchor.position.y += 0.01
     }
     
     // MARK: - Distance Indicator
@@ -231,7 +232,6 @@ class EntityStore {
         let distanceEntity: Entity = Entity()
         distanceEntity.name = "Distance Line"
         indicator.addChild(distanceEntity)
-//        distanceEntity.isEnabled = false
 
         return distanceEntity
     }

@@ -14,8 +14,6 @@ class Topology {
     
     /// The ViewController which contains the topology
     var viewController: ViewController?
-    /// Anchor of the topology in the scene
-//    var topoAnchor: ARAnchor?
     /// Anchor Entity of the topology
     var topoAnchorEntity: AnchorEntity?
     /// Selected positions for the pointCharges Entities
@@ -24,6 +22,8 @@ class Topology {
     var pointCharges: [PointChargeClass]
     /// All the netForces
     var netForces: [NetForce]
+    /// All Forces
+    var forces: [Force]
     /// All distance indicators
     var distanceIndicators: [DistanceIndicator]
     /// A pointChargeEntity Template used for cloning
@@ -33,6 +33,7 @@ class Topology {
         self.selectedPositions = []
         self.pointCharges = []
         self.netForces = []
+        self.forces=[]
         self.distanceIndicators = []
         
         /// Import the Point Charge Model, clone the entity as many times as needed

@@ -74,8 +74,8 @@ class SingleForce: Force {
         /// Create instance of Force Object with arrow entity
         let force = SingleForce(magnetude: 5, angle:0, from: otherPointChargeObj, to: pointChargeObj)
         
-        /// Integrate Force Obj to the Net Force Obj of the PointChargeObj. CAN BE DONE AFTER RETURN THOUGH.
-//        netForce.forces.append(force)
+        /// Add  force to pointCharge forcesToOthers Array
+        otherPointChargeObj.forcesOnOthers.append(force)
         
         return force
     }

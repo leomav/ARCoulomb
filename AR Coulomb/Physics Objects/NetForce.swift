@@ -44,6 +44,9 @@ class NetForce: Force {
         /// Initialize NetForce Object with Arrow Entity
         let netForce = NetForce(magnetude: 0, angle: 0, point: pointChargeObj, forces: [])
         
+        /// Add netForce to pointCharge
+        pointChargeObj.netForce = netForce
+        
         return netForce
     }
     

@@ -29,6 +29,10 @@ extension Topology {
                         self.topoAnchorEntity?.addChild(distanceIndicator.entity)
                         self.distanceIndicators.append(distanceIndicator)
                         
+                        /// Add distance indicators to pointCharge's collections for distance indicators
+                        srcPointCharge.distanceIndicators.append(distanceIndicator)
+                        trgtPointCharge.distanceIndicators.append(distanceIndicator)
+                        
                         /// Source is ex-Target
                         srcPointCharge = self.pointCharges[counter]
                         counter = counter + 1
@@ -38,6 +42,10 @@ extension Topology {
                             let distanceIndicator = DistanceIndicator(from: trgtPointCharge, to: initialPointCharge)
                             self.topoAnchorEntity?.addChild(distanceIndicator.entity)
                             self.distanceIndicators.append(distanceIndicator)
+                            
+                            /// Add distance indicators to pointCharge's collections for distance indicators
+                            srcPointCharge.distanceIndicators.append(distanceIndicator)
+                            trgtPointCharge.distanceIndicators.append(distanceIndicator)
                         }
                     }
                 }
@@ -48,18 +56,31 @@ extension Topology {
     }
     
     func showDistaneIndicators(for pointChargeObj: PointChargeClass) {
+//        self.distanceIndicators.forEach{ indicator in
+//            /// Disable the Indicator
+//            indicator.toggle(show: false)
+//            
+//            if indicator.sourcePointCharge.id == pointChargeObj.id || indicator.targetPointCharge.id == pointChargeObj.id {
+//                indicator.toggle(show: true)
+//            }
+//        }
+        
         self.distanceIndicators.forEach{ indicator in
-            /// Disable the Indicator
             indicator.toggle(show: false)
-            
-            if indicator.sourcePointCharge.id == pointChargeObj.id || indicator.targetPointCharge.id == pointChargeObj.id {
-                indicator.toggle(show: true)
-            }
+        }
+        pointChargeObj.distanceIndicators.forEach{ indicator in
+            indicator.toggle(show: true)
         }
     }
     
     func updateDistanceIndicators() {
         self.distanceIndicators.forEach{ indicator in
+            indicator.updateIndicator()
+        }
+    }
+    
+    func updateDistanceIndicators(for pointCharge: PointChargeClass) {
+        pointCharge.distanceIndicators.forEach{ indicator in
             indicator.updateIndicator()
         }
     }
