@@ -67,7 +67,8 @@ extension Topology {
         /// Create Text Entity for the pointCharge
         let textPos = SIMD3<Float>(-0.02, -(PointChargeClass.pointChargeRadius + 0.005), PointChargeClass.pointChargeRadius + 0.005)
         let textEntity = EntityStore.shared.load_TextEntity(on: newPointChargeObj.entity, name: "Coulomb Text", position: textPos)
-//        let textEntity = newPointChargeObj.createTextEntity(pointEntity: point!)
+        /// Add Label Entity to pointCharge
+        newPointChargeObj.labelEntity = textEntity
 
         /// Load the mesh and material for the model of the text entity
         EntityStore.shared.update_TextEntity(textEntity: textEntity, material: EntityStore.shared.textMaterial, stringValue: "\(newPointChargeObj.value) Cb")
@@ -104,7 +105,8 @@ extension Topology {
         /// Create Text Entity for the pointCharge
         let textPos = SIMD3<Float>(-0.02, -(PointChargeClass.pointChargeRadius + 0.005), PointChargeClass.pointChargeRadius + 0.005)
         let textEntity = EntityStore.shared.load_TextEntity(on: newPointChargeObj.entity, name: "Coulomb Text", position: textPos)
-//        let textEntity = newPointChargeObj.createTextEntity(pointEntity: point!)
+        /// Add Label Entity to pointCharge
+        newPointChargeObj.labelEntity = textEntity
         
         /// Load the mesh and material for the model of the text entity
         EntityStore.shared.update_TextEntity(textEntity: textEntity, material: EntityStore.shared.textMaterial, stringValue: "\(newPointChargeObj.value) Cb")
@@ -154,9 +156,16 @@ extension Topology {
     }
     
     // Show or Hide all PointCharges
-    func togglePointCharge(show: Bool) {
+    func togglePointCharges(show: Bool) {
         self.pointCharges.forEach{ pointChargeObj in
             pointChargeObj.entity.isEnabled = show
+        }
+    }
+    
+    // Show or Hide all PointCharges' coulomb label
+    func toggleCoulombLabels(show: Bool) {
+        self.pointCharges.forEach{ pointChargeObj in
+            pointChargeObj.labelEntity?.isEnabled = show
         }
     }
     

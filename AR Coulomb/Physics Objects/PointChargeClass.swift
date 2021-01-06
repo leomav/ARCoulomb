@@ -12,13 +12,23 @@ import RealityKit
 class PointChargeClass {
     static var volume: Int = 0
     let id: Int
+    
+    /// The Point Charge Entity (sphere mesh)
     let entity: Entity
-    var value: Float
-    var netForce: NetForce?
-    var forcesOnOthers: [SingleForce]
-    var distanceIndicators: [DistanceIndicator]
-    static var multiplier: Float = 0.000001
+    /// The Entity's mesh (sphere) radius
     static var pointChargeRadius: Float = 0.02
+    /// 3D Text Mesh for Value Labeling
+    var labelEntity: Entity?
+    /// Numeric Value Rendered (Coulomb)
+    var value: Float
+    /// The Net Force applied to the point of charge
+    var netForce: NetForce?
+    /// The forces applied to other points from this one
+    var forcesOnOthers: [SingleForce]
+    /// The distance Indicators on this point of charge
+    var distanceIndicators: [DistanceIndicator]
+    /// The Real Value Multiplier (C, mC. uC, nC)
+    static var multiplier: Float = 0.000001
     
     init(onEntity entity: Entity, withValue value: Float) {
         PointChargeClass.volume += 1

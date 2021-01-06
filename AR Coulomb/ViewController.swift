@@ -30,15 +30,6 @@ var trackedEntity: Entity = Entity()
 /// Placement Indicator
 var placementIndicator: AnchorEntity = EntityStore.shared.load_PlacementIndicator()
 
-/// Coulomb Text Material
-//let coulombTextMaterial: SimpleMaterial = {
-//    var mat = SimpleMaterial()
-//    mat.metallic = MaterialScalarParameter(floatLiteral: 0)
-//    mat.roughness = MaterialScalarParameter(floatLiteral: 1)
-//    mat.tintColor = UIColor.white
-//    return mat
-//}()
-
 /// Captured Image for saving
 var capturedImage: UIImage = UIImage()
 
@@ -327,6 +318,13 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         config.environmentTexturing = .automatic
         
         self.arView.session.run(config, options: [.resetTracking, .removeExistingAnchors])
+        
+        self.arView.debugOptions.insert(.showStatistics)
+        
+        
+        /// Enabel/Disable Renderer Options
+        // self.arView.renderOptions.insert([.disableCameraGrain, .disableDepthOfField, .disableFaceOcclusions, .disableHDR, .disableMotionBlur, .disablePersonOcclusion])
+        // self.arView.renderOptions.remove(.disableGroundingShadows)
         
         /// Add Placement Indicator Anchor
         self.arView.scene.addAnchor(placementIndicator)

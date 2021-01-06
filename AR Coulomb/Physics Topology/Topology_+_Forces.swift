@@ -104,23 +104,23 @@ extension Topology {
         }
     }
     
-    // TESTED
+    // TESTED -> WORKS!
     func updateForces(for pointCharge: PointChargeClass) {
         
-        //  Forces rendered on the pointCharge
+        ///  Forces rendered on the pointCharge
         pointCharge.netForce?.forces.forEach{ force in
             force.updateForce()
         }
-        // Calculate Force Magnetude, Angle
+        /// Calculate Net Force Magnetude, Angle
         pointCharge.netForce?.updateForce()
         
-        // Update Net Force Arrow orientation
+        /// Update Net Force Arrow orientation
         pointCharge.netForce?.updateForceArrowOrientation()
         
-        // Update Net Force Arrow
+        /// Update Net Force Arrow
         pointCharge.netForce?.updateArrowModel()
         
-        // Forces rendered with respect to that pointCharge on others
+        /// Forces rendered with respect to that pointCharge on others
         pointCharge.forcesOnOthers.forEach{ force in
             force.updateForce()
         }

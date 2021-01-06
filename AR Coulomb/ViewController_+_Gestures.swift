@@ -101,14 +101,18 @@ extension ViewController {
             
             /// Show PointCharge Interaction
             self.pointChargeInteract(zoom: ZOOM_IN_5_4, showLabel: false)
+            
+            /// Hide all forces
+            self.topology.toggleAllForces(show: false)
+            
+            /// Hide all Coulomb Labels
+            self.topology.toggleCoulombLabels(show: false)
         }
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         if trackedEntity.name == "pointCharge" {
-//            self.topology.updateForces()
-            self.topology.updateForces(for: selectedPointChargeObj)
-//            self.topology.updateDistanceIndicators()
+//            self.topology.updateForces(for: selectedPointChargeObj)
             self.topology.updateDistanceIndicators(for: selectedPointChargeObj)
 
         }
@@ -119,6 +123,12 @@ extension ViewController {
         /// If so, align it to them
         if trackedEntity.name == "pointCharge" {
             self.pointChargeInteract(zoom: ZOOM_OUT_4_5, showLabel: true)
+            
+            /// Enable Forces again
+            self.topology.showForces(for: selectedPointChargeObj)
+            
+            /// Show all Coulomb Labels
+            self.topology.toggleCoulombLabels(show: true)
 
             let x = trackedEntity.position.x
             let z = trackedEntity.position.z
