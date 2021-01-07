@@ -55,7 +55,7 @@ class EntityStore {
     
     // MARK: - Text
     
-    /// Coulomb Text Material
+    /// Text Material
     let textMaterial: SimpleMaterial = {
         var mat = SimpleMaterial()
         mat.metallic = MaterialScalarParameter(floatLiteral: 0)
@@ -79,7 +79,7 @@ class EntityStore {
         let model: ModelComponent = ModelComponent(mesh: .generateText(stringValue,
                                                                        extrusionDepth: 0.001,
                                                                        font: UIFont(name: defaultFont, size: CGFloat(fontSize))!,
-                                                                       containerFrame: CGRect.zero,
+                                                                       containerFrame: .zero,
                                                                        alignment: .left,
                                                                        lineBreakMode: .byCharWrapping),
                                                    materials: [material])

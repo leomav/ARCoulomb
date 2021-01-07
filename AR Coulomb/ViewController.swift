@@ -319,8 +319,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         
         self.arView.session.run(config, options: [.resetTracking, .removeExistingAnchors])
         
-        self.arView.debugOptions.insert(.showStatistics)
-        
         
         /// Enabel/Disable Renderer Options
         // self.arView.renderOptions.insert([.disableCameraGrain, .disableDepthOfField, .disableFaceOcclusions, .disableHDR, .disableMotionBlur, .disablePersonOcclusion])

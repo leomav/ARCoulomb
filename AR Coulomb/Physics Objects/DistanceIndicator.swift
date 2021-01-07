@@ -21,6 +21,7 @@ class DistanceIndicator {
                                          y2: targetPointCharge.entity.position.z)
         return distance
     }
+    var previousDistance: Float = 0
     
     var entity: Entity
     var sourceLine: Entity
@@ -36,23 +37,28 @@ class DistanceIndicator {
         DistanceIndicator.count = DistanceIndicator.count + 1
         
         print("DistanceIndicator init \(self.id)")
-        
+
         self.sourcePointCharge = source
         self.targetPointCharge = target
         
+        /// Initialize the root entity of the Distance Indicator
         self.entity = EntityStore.shared.load_DistanceIndicator()
         
+        /// Initialize Label Pivot Entity's properties and position
         self.labelPivot.name = "Distance Label Pivot"
         self.labelPivot.setParent(self.entity)
         /// Horizontal Alignment : Center (brute force)
         self.labelPivot.setPosition(SIMD3<Float>(-0.015, 0, 0), relativeTo: self.labelPivot.parent)
         
+        /// Load label and lines Entities
         self.label = EntityStore.shared.load_TextEntity(on: self.labelPivot, name: "Distance Label", position: SIMD3<Float>(0, 0, 0))
-        
         self.sourceLine = EntityStore.shared.load_DistanceLine(on: self.entity)
         self.targetLine = EntityStore.shared.load_DistanceLine(on: self.entity)
         
-        // MAYBE COMMENT OUT?
+        /// Initialize the previousDistance as distance
+        self.previousDistance = self.distance
+        
+        /// Update Label and Lines Entities
         self.updateLabel()
         self.updateLines()
     }
@@ -60,8 +66,13 @@ class DistanceIndicator {
     func updateIndicator() {
         self.updatePosition()
         self.updateOrientation()
-        self.updateLabel()
         self.updateLines()
+        if abs(self.distance - self.previousDistance) >= 0.01 {
+            self.updateLabel()
+            
+            /// Update new previous distance as the current one
+            self.previousDistance = self.distance
+        }
     }
     
     func toggle(show: Bool) {
