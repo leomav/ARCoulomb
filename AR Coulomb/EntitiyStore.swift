@@ -248,9 +248,9 @@ class EntityStore {
     
     func update_DistanceLines(sourceLine: Entity, targetLine: Entity, length: Float) {
         /// Line length = distance/2. Also, keep 0.02m to give distance label some space.
-        let lineLength: Float = length/2 - 0.02
+        let lineLength: Float = length/2 - 0.015
         ///So set position.x diff to (line)length/2, which technically is (paramter=distance)length/4
-        let xdif = length/4 + 0.01
+        let xdif = length/4 + 0.0075
         
         sourceLine.setPosition(SIMD3<Float>(-xdif, 0, 0), relativeTo: sourceLine.parent)
         targetLine.setPosition(SIMD3<Float>(xdif, 0, 0), relativeTo: targetLine.parent)

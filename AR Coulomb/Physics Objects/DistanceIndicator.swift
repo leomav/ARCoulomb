@@ -48,7 +48,7 @@ class DistanceIndicator {
         self.labelPivot.name = "Distance Label Pivot"
         self.labelPivot.setParent(self.entity)
         /// Horizontal Alignment : Center (brute force)
-        self.labelPivot.setPosition(SIMD3<Float>(-0.015, 0, 0), relativeTo: self.labelPivot.parent)
+        self.labelPivot.setPosition(SIMD3<Float>(-0.012, 0, 0), relativeTo: self.labelPivot.parent)
         
         /// Load label and lines Entities
         self.label = EntityStore.shared.load_TextEntity(on: self.labelPivot, name: "Distance Label", position: SIMD3<Float>(0, 0, 0))
@@ -90,7 +90,7 @@ class DistanceIndicator {
         self.entity.look(at: targetPointCharge.entity.position, from: self.entity.position, relativeTo: self.entity.parent)
         
         /// Place it on the surface that the PointCharges sit on
-        let ydif = -PointChargeClass.pointChargeRadius
+        let ydif = -(1.5 * PointChargeClass.pointChargeRadius)
         self.entity.setPosition(SIMD3<Float>(0, ydif, 0), relativeTo: self.entity)
 
         

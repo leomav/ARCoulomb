@@ -65,14 +65,13 @@ extension Topology {
         longPressedEntity = point!
         
         /// Create Text Entity for the pointCharge
-        let textPos = SIMD3<Float>(-0.02, -(PointChargeClass.pointChargeRadius + 0.005), PointChargeClass.pointChargeRadius + 0.005)
+        let textPos = SIMD3<Float>(-0.02, (PointChargeClass.pointChargeRadius + 0.005), PointChargeClass.pointChargeRadius + 0.005)
         let textEntity = EntityStore.shared.load_TextEntity(on: newPointChargeObj.entity, name: "Coulomb Text", position: textPos)
         /// Add Label Entity to pointCharge
         newPointChargeObj.labelEntity = textEntity
 
         /// Load the mesh and material for the model of the text entity
         EntityStore.shared.update_TextEntity(textEntity: textEntity, material: EntityStore.shared.textMaterial, stringValue: "\(newPointChargeObj.value) Cb")
-//        PointChargeClass.loadText(textEntity: textEntity, material: coulombTextMaterial, coulombStringValue: "\(newPointChargeObj.value) Cb")
 
         /// Install gestures, careful to set its ".cancelTouchesInView" to false cause it cancels touches gestures  other than
         /// the installed below (I do that in Topology Placement)
@@ -103,14 +102,13 @@ extension Topology {
         longPressedEntity = point!
         
         /// Create Text Entity for the pointCharge
-        let textPos = SIMD3<Float>(-0.02, -(PointChargeClass.pointChargeRadius + 0.005), PointChargeClass.pointChargeRadius + 0.005)
+        let textPos = SIMD3<Float>(-0.02, (PointChargeClass.pointChargeRadius + 0.01), PointChargeClass.pointChargeRadius + 0.005)
         let textEntity = EntityStore.shared.load_TextEntity(on: newPointChargeObj.entity, name: "Coulomb Text", position: textPos)
         /// Add Label Entity to pointCharge
         newPointChargeObj.labelEntity = textEntity
         
         /// Load the mesh and material for the model of the text entity
         EntityStore.shared.update_TextEntity(textEntity: textEntity, material: EntityStore.shared.textMaterial, stringValue: "\(newPointChargeObj.value) Cb")
-//        PointChargeClass.loadText(textEntity: textEntity, material: coulombTextMaterial, coulombStringValue: "\(newPointChargeObj.value) Cb")
         
         /// Install gestures, careful to set its ".cancelTouchesInView" to false cause it cancels touches gestures  other than
         /// the installed below (I do that in Topology Placement)
