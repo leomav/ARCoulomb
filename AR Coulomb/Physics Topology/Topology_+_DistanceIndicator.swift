@@ -12,41 +12,38 @@ extension Topology {
     
     func addDistanceIndicators() {
         self.viewController?.arView.scene.anchors.forEach{ anchor in
-            if anchor.name == "Point Charge Scene AnchorEntity" {
+            if anchor.name == "Topology" {
                 
-                if (self.pointCharges.count > 0) {
-                    /// Initialize source point charge and counter
-                    var srcPointCharge = self.pointCharges[0]
-                    let initialPointCharge = srcPointCharge
-                    var counter = 1
-                    /// On each step, rotate one pointCharge forwards until there are none left
-                    /// Create a DistanceIndicator for each couple
-                    while counter < self.pointCharges.count {
-                        /// Target is the next of Source
-                        let trgtPointCharge = self.pointCharges[counter]
-                        
-                        let distanceIndicator = DistanceIndicator(from: srcPointCharge, to: trgtPointCharge)
-                        self.topoAnchorEntity?.addChild(distanceIndicator.entity)
-                        self.distanceIndicators.append(distanceIndicator)
-                        
-                        /// Add distance indicators to pointCharge's collections for distance indicators
-                        srcPointCharge.distanceIndicators.append(distanceIndicator)
-                        trgtPointCharge.distanceIndicators.append(distanceIndicator)
-                        
-                        /// Source is ex-Target
-                        srcPointCharge = self.pointCharges[counter]
-                        counter = counter + 1
-                        
-                        /// On the last one, complete the circle
-                        if counter == self.pointCharges.count {
-                            let distanceIndicator = DistanceIndicator(from: trgtPointCharge, to: initialPointCharge)
-                            self.topoAnchorEntity?.addChild(distanceIndicator.entity)
-                            self.distanceIndicators.append(distanceIndicator)
-                            
-                            /// Add distance indicators to pointCharge's collections for distance indicators
-                            srcPointCharge.distanceIndicators.append(distanceIndicator)
-                            trgtPointCharge.distanceIndicators.append(distanceIndicator)
+                if (self.pointCharges.count > 1) {
+                    var finished: [PointChargeClass] = []
+                    
+                    self.pointCharges.forEach{ pointCharge in
+                        print("PointCharge: \(pointCharge.id)")
+                        self.pointCharges.forEach{ otherPointCharge in
+
+                            /// If the two point charges are not the same, and we haven't created all distance indicators for "otherPointCharge" yet...
+                            /// ... create one for these two
+                            if otherPointCharge.id != pointCharge.id && !finished.contains(where: { (point) -> Bool in
+                                return point.id == otherPointCharge.id
+                            }) {
+                                print("OtherPointCharge: \(otherPointCharge.id)")
+                                
+                                /// Create distance indicator, from pointcharge to otherPointcharge
+                                let distanceIndicator = DistanceIndicator(on: self, from: pointCharge, to: otherPointCharge)
+                                /// Add the distance indicator entity to the topo Anchor Entity
+                                self.topoAnchorEntity?.addChild(distanceIndicator.entity)
+                                /// Append the distance indicator to the topology's array
+                                self.distanceIndicators.append(distanceIndicator)
+                                
+                                /// Add distance indicators to pointCharges' collections for distance indicators
+                                pointCharge.distanceIndicators.append(distanceIndicator)
+                                otherPointCharge.distanceIndicators.append(distanceIndicator)
+                                
+                            }
                         }
+                        
+                        /// Mark the pointCharge as "finished" in terms of Distance Indicators
+                        finished.append(pointCharge)
                     }
                 }
                 
@@ -56,14 +53,6 @@ extension Topology {
     }
     
     func showDistaneIndicators(for pointChargeObj: PointChargeClass) {
-//        self.distanceIndicators.forEach{ indicator in
-//            /// Disable the Indicator
-//            indicator.toggle(show: false)
-//            
-//            if indicator.sourcePointCharge.id == pointChargeObj.id || indicator.targetPointCharge.id == pointChargeObj.id {
-//                indicator.toggle(show: true)
-//            }
-//        }
         
         self.distanceIndicators.forEach{ indicator in
             indicator.toggle(show: false)
@@ -92,9 +81,13 @@ extension Topology {
     }
     
     func clearDistanceIndicators() {
-        self.distanceIndicators.forEach{ indicator in
-            indicator.entity.removeFromParent()
+        self.pointCharges.forEach{ pointCharge in
+            pointCharge.distanceIndicators.forEach{ indicator in
+                indicator.entity.removeFromParent()
+            }
+            pointCharge.distanceIndicators.removeAll()
         }
+        /// Remove them from topology's array too
         self.distanceIndicators.removeAll()
     }
     

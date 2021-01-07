@@ -23,7 +23,7 @@ let photoTakenNotificationKey  = "com.leomav.topoCapturedImageDismissal"
 //var virtualObjectInteraction: VirtualObjectInteraction?
 
 /// PointCharge
-var selectedPointChargeObj: PointChargeClass = PointChargeClass(onEntity: Entity(), withValue: 0)
+var selectedPointChargeObj: PointChargeClass = PointChargeClass(on: Entity(), inside: Topology(), withValue: 0)
 var longPressedEntity: Entity = Entity()
 var trackedEntity: Entity = Entity()
 
@@ -42,6 +42,7 @@ let Ke: Float = 9 * pow(10, 9)
 //TESTING
 //var cameraAnchor: AnchorEntity = AnchorEntity()
 
+var cameraTransform: Transform = Transform()
 
 
 // MARK: - ViewController (main)
@@ -281,9 +282,10 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         
         
         // TESTING
+        cameraTransform = arView.cameraTransform
+        
 //        cameraAnchor = AnchorEntity(.camera)       // ARCamera anchor
 //        self.arView.scene.addAnchor(cameraAnchor)
-//
 //        let box = MeshResource.generateBox(size: 0.25)
 //        let material = SimpleMaterial(color: .systemPink, isMetallic: true)
 //        boxEntity = ModelEntity(mesh: box, materials: [material])
@@ -409,7 +411,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     // MARK: - Reset Tracking
     
     private func resetTracking() {
-        selectedPointChargeObj = PointChargeClass(onEntity: Entity(), withValue: 0)
+        selectedPointChargeObj = PointChargeClass(on: Entity(), inside: self.topology, withValue: 0)
         longPressedEntity = Entity()
         trackedEntity = Entity()
         

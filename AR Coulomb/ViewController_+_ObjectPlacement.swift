@@ -30,6 +30,8 @@ extension ViewController: ARSessionDelegate {
 //                performSegue(withIdentifier: "toTopoMenuSegue", sender: nil)
 //            }
 //        }
+//        print(self.arView.scene.anchors)
+//        print()
 //    }
     
     
@@ -48,6 +50,17 @@ extension ViewController: ARSessionDelegate {
     
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
                 
+        // Update cameraTransform variable
+        cameraTransform = arView.cameraTransform
+        
+        EntityStore.shared.update_AllTextOrientation(in: self.topology)
+        
+//        if let topoAnchor = self.arView.scene.anchors.first(where: {$0.name == "Topology"}) {
+//            print(true)
+//            EntityStore.shared.update_AllTextOrientation(anchor: topoAnchor as! AnchorEntity)
+//        }
+        
+
         // Raycast only if placement Indicator is enabled
         if (placementIndicator.isEnabled) {
             guard let query = arView.makeRaycastQuery(from: self.arView.center, allowing: .existingPlaneGeometry, alignment: .any) else { return }

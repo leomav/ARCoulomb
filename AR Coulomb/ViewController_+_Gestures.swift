@@ -17,10 +17,11 @@ extension ViewController {
     func handleTap(recognizer: UITapGestureRecognizer) {
         /// Create new Anchor Entity for Topology
         let anchor = AnchorEntity()
+        /// Set its properties
         anchor.name = "Topology"
         anchor.transform = placementIndicator.transform
         
-        /// Disable the Placement Indicator, which also stops updating pi's transform
+        /// Disable the Placement Indicator, which also stops updating indicator's transform
         EntityStore.shared.toggle_PlacementIndicator(anchor: placementIndicator, show: false)
         
         /// Remove gesture recognizer needed for the First Tap -> Topology Anchor Placement
@@ -51,6 +52,9 @@ extension ViewController {
     // MARK: - PointCharge LongPress
     @objc
     func handleLongPress(recognizer: UILongPressGestureRecognizer) {
+        /// Re-enable all pointCharge Labels because on first touch (see below) we disable them
+        self.topology.toggleCoulombLabels(show: true)
+        
         let location = recognizer.location(in: arView)
 
         guard let hitEntity = arView.entity(at: location) else {return}
@@ -58,7 +62,7 @@ extension ViewController {
         if recognizer.state == .began {
             if hitEntity == trackedEntity {
                 longPressedEntity = hitEntity
-                pointChargeInteract(zoom: ZOOM_OUT_4_5, showLabel: true)
+//                pointChargeInteract(zoom: ZOOM_OUT_4_5, showLabel: true)
 
                 trackedEntity = Entity()
 
@@ -73,6 +77,7 @@ extension ViewController {
                 
                 /// Show forces and distance indicators relative to the selectedPointChargeObj
                 self.topology.showForces(for: selectedPointChargeObj)
+                self.topology.updateDistanceIndicators(for: selectedPointChargeObj)
                 self.topology.showDistaneIndicators(for: selectedPointChargeObj)
 
                 /// Disable and hide the StackView Buttons (add new pointCharge, add new topo)
@@ -100,7 +105,7 @@ extension ViewController {
             trackedEntity = hitEntity
             
             /// Show PointCharge Interaction
-            self.pointChargeInteract(zoom: ZOOM_IN_5_4, showLabel: false)
+//            self.pointChargeInteract(zoom: ZOOM_IN_5_4, showLabel: false)
             
             /// Hide all forces
             self.topology.toggleAllForces(show: false)
@@ -122,7 +127,7 @@ extension ViewController {
         /// If tracked entity is a pointCharge, check if its alignment differ less than 0.02m from the other particles.
         /// If so, align it to them
         if trackedEntity.name == "pointCharge" {
-            self.pointChargeInteract(zoom: ZOOM_OUT_4_5, showLabel: true)
+//            self.pointChargeInteract(zoom: ZOOM_OUT_4_5, showLabel: true)
             
             /// Enable Forces again
             self.topology.showForces(for: selectedPointChargeObj)
@@ -133,9 +138,9 @@ extension ViewController {
             let x = trackedEntity.position.x
             let z = trackedEntity.position.z
 
-            // Loop through the scene anchors to find our "Point Charge Scene Anchor"
+            // Loop through the scene anchors to find our 'Topology' AnchorEntity
             arView.scene.anchors.forEach{ anchor in
-                if anchor.name == "Point Charge Scene AnchorEntity" {
+                if anchor.name == "Topology" {
                     // Loop through its children (pointChargeEntities) and check their (x, z) differences
                     anchor.children.forEach{ child in
                         if child.position.x != x && child.position.z != z{

@@ -64,14 +64,21 @@ class EntityStore {
         return mat
     }()
     
-    func load_TextEntity(on entity: Entity, name: String, position: SIMD3<Float>) -> Entity {
+    func load_TextEntity(on entity: Entity, inside topology: Topology, name: String, position: SIMD3<Float>) -> Entity {
+        let textPivotEntity: Entity = Entity()
+        textPivotEntity.name  = "Label Entity"
+        textPivotEntity.setParent(entity)
+        textPivotEntity.setPosition(position, relativeTo: entity)
+        
         let textEntity: Entity = Entity()
         textEntity.name = name
-        textEntity.setParent(entity)
-        textEntity.setPosition(position, relativeTo: entity)
+        textEntity.setParent(textPivotEntity)
 //        textEntity.setOrientation(simd_quatf(angle: Int(90).degreesToRadians(), axis: SIMD3<Float>(1, 0, 0)), relativeTo: pointCharge.entity)
         
-        return textEntity
+        /// Add label to Topology's labels[]
+        topology.labels.append(textPivotEntity)
+        
+        return textPivotEntity
     }
     
     func update_TextEntity(textEntity: Entity, material: SimpleMaterial, stringValue: String, fontSize: Float = 0.012) {
@@ -80,10 +87,22 @@ class EntityStore {
                                                                        extrusionDepth: 0.001,
                                                                        font: UIFont(name: defaultFont, size: CGFloat(fontSize))!,
                                                                        containerFrame: .zero,
-                                                                       alignment: .left,
+                                                                       alignment: .center,
                                                                        lineBreakMode: .byCharWrapping),
                                                    materials: [material])
-        textEntity.components.set(model)
+        /// Get the Label Entity, by accessing the Label Pivot Entity's child
+        let text = textEntity.children[0]
+        text.components.set(model)
+        
+        /// Update the xdif from the pivot (xdif: width of text Mesh / 2)
+        text.setPosition(SIMD3<Float>(-model.mesh.bounds.boundingRadius, 0, 0), relativeTo: textEntity)
+    }
+    
+    func update_AllTextOrientation(in topology: Topology) {
+        topology.labels.forEach{ label in
+//            label.look(at: cameraTransform.translation, from: label.position, relativeTo: label.parent)
+        }
+
     }
     
     // MARK: - Arrow Body

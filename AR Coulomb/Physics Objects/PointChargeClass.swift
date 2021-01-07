@@ -10,15 +10,17 @@ import UIKit
 import RealityKit
 
 class PointChargeClass {
-    static var volume: Int = 0
+    static var count: Int = 0
     let id: Int
     
     /// The Point Charge Entity (sphere mesh)
     let entity: Entity
     /// The Entity's mesh (sphere) radius
     static var pointChargeRadius: Float = 0.02
+    /// Topology
+    var topology: Topology
     /// 3D Text Mesh for Value Labeling
-    var labelEntity: Entity?
+    var label: Entity
     /// Numeric Value Rendered (Coulomb)
     var value: Float
     /// The Net Force applied to the point of charge
@@ -30,15 +32,30 @@ class PointChargeClass {
     /// The Real Value Multiplier (C, mC. uC, nC)
     static var multiplier: Float = 0.000001
     
-    init(onEntity entity: Entity, withValue value: Float) {
-        PointChargeClass.volume += 1
+    init(on entity: Entity, inside topology: Topology, withValue value: Float) {
+        PointChargeClass.count += 1
         
-        self.id = PointChargeClass.volume
+        self.id = PointChargeClass.count
         self.entity = entity
         self.value = value
+        self.topology = topology
+        
+        /// Set up Label Entity
+        let textPos = SIMD3<Float>(0, (PointChargeClass.pointChargeRadius + 0.01), PointChargeClass.pointChargeRadius + 0.005)
+        self.label = EntityStore.shared.load_TextEntity(on: self.entity, inside: self.topology, name: "Coulomb Text", position: textPos)
+        EntityStore.shared.update_TextEntity(textEntity: self.label, material: EntityStore.shared.textMaterial, stringValue: "\(self.value) Cb")
+
         
         self.forcesOnOthers = []
         self.distanceIndicators = []
+    }
+    
+    deinit {
+        /// Delete the label entity when pointCharge gets deleted
+        self.topology.labels.removeAll { (label) -> Bool in
+            return label.id == self.label.id
+        }
+        
     }
     
     static func ==(lhs: PointChargeClass, rhs: PointChargeClass) -> Bool {

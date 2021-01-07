@@ -26,13 +26,13 @@ class DistanceIndicator {
     var entity: Entity
     var sourceLine: Entity
     var targetLine: Entity
-    var labelPivot: Entity = Entity()
     var label: Entity
+    var topology: Topology
     
     static let lineMaterial = UnlitMaterial(color: .yellow)
     
     
-    init(from source: PointChargeClass, to target: PointChargeClass) {
+    init(on topology: Topology, from source: PointChargeClass, to target: PointChargeClass) {
         self.id = DistanceIndicator.count
         DistanceIndicator.count = DistanceIndicator.count + 1
         
@@ -40,18 +40,13 @@ class DistanceIndicator {
 
         self.sourcePointCharge = source
         self.targetPointCharge = target
+        self.topology = topology
         
         /// Initialize the root entity of the Distance Indicator
         self.entity = EntityStore.shared.load_DistanceIndicator()
         
-        /// Initialize Label Pivot Entity's properties and position
-        self.labelPivot.name = "Distance Label Pivot"
-        self.labelPivot.setParent(self.entity)
-        /// Horizontal Alignment : Center (brute force)
-        self.labelPivot.setPosition(SIMD3<Float>(-0.012, 0, 0), relativeTo: self.labelPivot.parent)
-        
         /// Load label and lines Entities
-        self.label = EntityStore.shared.load_TextEntity(on: self.labelPivot, name: "Distance Label", position: SIMD3<Float>(0, 0, 0))
+        self.label = EntityStore.shared.load_TextEntity(on: self.entity, inside: self.topology, name: "Distance Label", position: SIMD3<Float>(0, 0, 0))
         self.sourceLine = EntityStore.shared.load_DistanceLine(on: self.entity)
         self.targetLine = EntityStore.shared.load_DistanceLine(on: self.entity)
         
@@ -63,10 +58,19 @@ class DistanceIndicator {
         self.updateLines()
     }
     
+    deinit {
+        /// Delete the label entity when pointCharge gets deleted
+        self.topology.labels.removeAll { (label) -> Bool in
+            return label.id == self.label.id
+        }
+        
+    }
+    
     func updateIndicator() {
         self.updatePosition()
         self.updateOrientation()
         self.updateLines()
+        /// Update labels only if difference is >= 0.01 m
         if abs(self.distance - self.previousDistance) >= 0.01 {
             self.updateLabel()
             

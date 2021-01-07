@@ -14,7 +14,7 @@ extension Topology {
     // -------------------------- Add FORCE (Obj & Entity) -----------------------------
     func addAllForces() {
         self.viewController?.arView.scene.anchors.forEach{ anchor in
-            if anchor.name == "Point Charge Scene AnchorEntity" {
+            if anchor.name == "Topology" {
                 
                 // Add a Force Object and Entity for every pointCharge<->pointCharge combo
                 self.pointCharges.forEach{ pointChargeObj in

@@ -26,6 +26,8 @@ class Topology {
     var forces: [Force]
     /// All distance indicators
     var distanceIndicators: [DistanceIndicator]
+    /// All Label Entities
+    var labels: [Entity]
     /// A pointChargeEntity Template used for cloning
     var pointChargeEntityTemplate: Entity?
     
@@ -35,6 +37,7 @@ class Topology {
         self.netForces = []
         self.forces=[]
         self.distanceIndicators = []
+        self.labels = []
         
         /// Import the Point Charge Model, clone the entity as many times as needed
         self.pointChargeEntityTemplate = EntityStore.shared.load_PointChargeEntity()
@@ -44,14 +47,10 @@ class Topology {
     
     //  Add the parent viewController and a ARAnchor
     func pinToScene(viewController: ViewController, topoAnchor: AnchorEntity) {
-//    func pinToScene(viewController: ViewController, topoAnchor: ARAnchor) {
         self.viewController = viewController
-//        self.topoAnchor = topoAnchor
         
         /// Add the Anchor Entity to the scene (where the user tapped)
         self.topoAnchorEntity = topoAnchor
-//        self.topoAnchorEntity = AnchorEntity(anchor: topoAnchor)
-        self.topoAnchorEntity?.name = "Point Charge Scene AnchorEntity"
         self.viewController?.arView.scene.addAnchor(self.topoAnchorEntity!)
         
         /// Create the Coulomb's Observers (value change or deletion)
@@ -60,7 +59,6 @@ class Topology {
     }
     
     func placeTopology(topoModel: TopologyModel) {
-//    func placeTopology(positions: [SIMD3<Float>]) {
         /// Clear the topology, if there was one
         self.clearTopology()
         
@@ -75,9 +73,7 @@ class Topology {
         
         /// Create PointCharges in the selected Positions
         for pointChargeModel in topoModel.pointCharges {
-//        for pos in self.selectedPositions {
             self.add(pointCharge: pointChargeModel)
-//            self.addPointCharge(to: pos)
         }
         
         /// Add all forces to all the pointCharge Objects
@@ -88,6 +84,10 @@ class Topology {
         /// Show Forces and Distance Indicators only for selected pointCharge
         self.showForces(for: selectedPointChargeObj)
         self.showDistaneIndicators(for: selectedPointChargeObj)
+        
+        self.pointCharges.forEach{ p in
+            print(p.id)
+        }
         
     }
     
@@ -102,10 +102,13 @@ class Topology {
         /// Clear selectedPositions
         self.selectedPositions.removeAll()
         
+        /// Clear all Labels
+        self.labels.removeAll()
+        
         /// Set selected objects to none
         longPressedEntity = Entity()
         trackedEntity = Entity()
-        selectedPointChargeObj = PointChargeClass(onEntity: Entity(), withValue: 0)
+        selectedPointChargeObj = PointChargeClass(on: Entity(), inside: self, withValue: 0)
     }
     
     // Show or Hide topology

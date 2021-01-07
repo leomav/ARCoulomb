@@ -19,7 +19,7 @@ extension Topology {
         }
         
         /// Get a Random Position
-        let randomPos = randomPosition()
+        let randomPos = self.randomPosition()
         
         /// Create new PointCharge
         self.addPointCharge(to: randomPos)
@@ -57,7 +57,7 @@ extension Topology {
         point?.setPosition(pos, relativeTo: self.topoAnchorEntity)
         
         /// Create new PointChargeClass Object and append it to pointCharges[]
-        let newPointChargeObj = PointChargeClass(onEntity: point!, withValue: p.value)
+        let newPointChargeObj = PointChargeClass(on: point!, inside: self, withValue: p.value)
         self.pointCharges.append(newPointChargeObj)
         
         /// Set selectedEntity (longPressedEntity)
@@ -65,13 +65,13 @@ extension Topology {
         longPressedEntity = point!
         
         /// Create Text Entity for the pointCharge
-        let textPos = SIMD3<Float>(-0.02, (PointChargeClass.pointChargeRadius + 0.005), PointChargeClass.pointChargeRadius + 0.005)
-        let textEntity = EntityStore.shared.load_TextEntity(on: newPointChargeObj.entity, name: "Coulomb Text", position: textPos)
+//        let textPos = SIMD3<Float>(-0.02, (PointChargeClass.pointChargeRadius + 0.005), PointChargeClass.pointChargeRadius + 0.005)
+//        let textEntity = EntityStore.shared.load_TextEntity(on: newPointChargeObj.entity, name: "Coulomb Text", position: textPos)
         /// Add Label Entity to pointCharge
-        newPointChargeObj.labelEntity = textEntity
+//        newPointChargeObj.labelEntity = textEntity
 
         /// Load the mesh and material for the model of the text entity
-        EntityStore.shared.update_TextEntity(textEntity: textEntity, material: EntityStore.shared.textMaterial, stringValue: "\(newPointChargeObj.value) Cb")
+//        EntityStore.shared.update_TextEntity(textEntity: textEntity, material: EntityStore.shared.textMaterial, stringValue: "\(newPointChargeObj.value) Cb")
 
         /// Install gestures, careful to set its ".cancelTouchesInView" to false cause it cancels touches gestures  other than
         /// the installed below (I do that in Topology Placement)
@@ -94,7 +94,7 @@ extension Topology {
         point?.setPosition(pos, relativeTo: self.topoAnchorEntity)
         
         /// Create new PointChargeClass Object and append it to pointCharges[]
-        let newPointChargeObj = PointChargeClass(onEntity: point!, withValue: 5)
+        let newPointChargeObj = PointChargeClass(on: point!, inside: self, withValue: 5)
         self.pointCharges.append(newPointChargeObj)
         
         /// Set selectedEntity (longPressedEntity)
@@ -102,13 +102,13 @@ extension Topology {
         longPressedEntity = point!
         
         /// Create Text Entity for the pointCharge
-        let textPos = SIMD3<Float>(-0.02, (PointChargeClass.pointChargeRadius + 0.01), PointChargeClass.pointChargeRadius + 0.005)
-        let textEntity = EntityStore.shared.load_TextEntity(on: newPointChargeObj.entity, name: "Coulomb Text", position: textPos)
+//        let textPos = SIMD3<Float>(-0.02, (PointChargeClass.pointChargeRadius + 0.01), PointChargeClass.pointChargeRadius + 0.005)
+//        let textEntity = EntityStore.shared.load_TextEntity(on: newPointChargeObj.entity, name: "Coulomb Text", position: textPos)
         /// Add Label Entity to pointCharge
-        newPointChargeObj.labelEntity = textEntity
+//        newPointChargeObj.labelEntity = textEntity
         
         /// Load the mesh and material for the model of the text entity
-        EntityStore.shared.update_TextEntity(textEntity: textEntity, material: EntityStore.shared.textMaterial, stringValue: "\(newPointChargeObj.value) Cb")
+//        EntityStore.shared.update_TextEntity(textEntity: textEntity, material: EntityStore.shared.textMaterial, stringValue: "\(newPointChargeObj.value) Cb")
         
         /// Install gestures, careful to set its ".cancelTouchesInView" to false cause it cancels touches gestures  other than
         /// the installed below (I do that in Topology Placement)
@@ -163,7 +163,7 @@ extension Topology {
     // Show or Hide all PointCharges' coulomb label
     func toggleCoulombLabels(show: Bool) {
         self.pointCharges.forEach{ pointChargeObj in
-            pointChargeObj.labelEntity?.isEnabled = show
+            pointChargeObj.label.isEnabled = show
         }
     }
     
