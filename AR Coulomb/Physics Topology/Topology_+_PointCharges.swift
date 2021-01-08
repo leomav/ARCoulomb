@@ -48,7 +48,7 @@ extension Topology {
         let point = self.pointChargeEntityTemplate?.clone(recursive: true)
         
         /// Add it to the AnchorEntity of the Topology
-        self.topoAnchorEntity?.addChild(point!)
+        self.topoAnchorEntity.addChild(point!)
         
         /// Create a position based on PointChargeModel coordinates
         let pos: SIMD3<Float> = p.position
@@ -88,7 +88,7 @@ extension Topology {
         let point = self.pointChargeEntityTemplate?.clone(recursive: true)
         
         /// Add it to the AnchorEntity of the Topology
-        self.topoAnchorEntity?.addChild(point!)
+        self.topoAnchorEntity.addChild(point!)
         
         /// Set its position relative to the Anchor Entity
         point?.setPosition(pos, relativeTo: self.topoAnchorEntity)

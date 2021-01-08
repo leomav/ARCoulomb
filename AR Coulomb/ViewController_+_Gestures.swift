@@ -18,7 +18,7 @@ extension ViewController {
         /// Create new Anchor Entity for Topology
         let anchor = AnchorEntity()
         /// Set its properties
-        anchor.name = "Topology"
+        anchor.name = "Topology"	
         anchor.transform = placementIndicator.transform
         
         /// Disable the Placement Indicator, which also stops updating indicator's transform

@@ -35,8 +35,6 @@ class DistanceIndicator {
     init(on topology: Topology, from source: PointChargeClass, to target: PointChargeClass) {
         self.id = DistanceIndicator.count
         DistanceIndicator.count = DistanceIndicator.count + 1
-        
-        print("DistanceIndicator init \(self.id)")
 
         self.sourcePointCharge = source
         self.targetPointCharge = target
@@ -102,7 +100,7 @@ class DistanceIndicator {
     }
     
     private func updateLabel() {
-        EntityStore.shared.update_TextEntity(textEntity: self.label, material: EntityStore.shared.textMaterial, stringValue: String(format: "%.2fm", self.distance), fontSize: 0.008)
+        EntityStore.shared.update_TextEntity(textEntity: self.label, stringValue: String(format: "%.2fm", self.distance), fontSize: 0.008)
     }
     
     private func updateLines() {

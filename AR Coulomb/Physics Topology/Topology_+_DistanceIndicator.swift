@@ -18,7 +18,6 @@ extension Topology {
                     var finished: [PointChargeClass] = []
                     
                     self.pointCharges.forEach{ pointCharge in
-                        print("PointCharge: \(pointCharge.id)")
                         self.pointCharges.forEach{ otherPointCharge in
 
                             /// If the two point charges are not the same, and we haven't created all distance indicators for "otherPointCharge" yet...
@@ -26,12 +25,11 @@ extension Topology {
                             if otherPointCharge.id != pointCharge.id && !finished.contains(where: { (point) -> Bool in
                                 return point.id == otherPointCharge.id
                             }) {
-                                print("OtherPointCharge: \(otherPointCharge.id)")
                                 
                                 /// Create distance indicator, from pointcharge to otherPointcharge
                                 let distanceIndicator = DistanceIndicator(on: self, from: pointCharge, to: otherPointCharge)
                                 /// Add the distance indicator entity to the topo Anchor Entity
-                                self.topoAnchorEntity?.addChild(distanceIndicator.entity)
+                                self.topoAnchorEntity.addChild(distanceIndicator.entity)
                                 /// Append the distance indicator to the topology's array
                                 self.distanceIndicators.append(distanceIndicator)
                                 

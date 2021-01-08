@@ -11,11 +11,14 @@ import ARKit
 
 extension ViewController: ARCoachingOverlayViewDelegate {
     
-        
-    
         /// - Tag: HideUI
         func coachingOverlayViewWillActivate(_ coachingOverlayView: ARCoachingOverlayView) {
             print("coaching Overlay View will activate")
+            
+            /// Disable the gesturesRecognizers
+            self.arView.gestureRecognizers?.forEach{ recognizer in
+                recognizer.isEnabled = false
+            }
             
             /// Disable the Placement Indicator
             EntityStore.shared.toggle_PlacementIndicator(anchor: placementIndicator, show: false)

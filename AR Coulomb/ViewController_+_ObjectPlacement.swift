@@ -10,12 +10,12 @@ import Foundation
 import ARKit
 import RealityKit
 
-extension ViewController: ARSessionDelegate {
+extension ViewController: ARSessionDelegate{
     
     
     /// - Tag: Updated version uses Anchor Entities instead of ARAnchors
     /// Topology is instanciated in ViewController_+_Gestures, no need for the delegate
-//    func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
+    func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
 //        for anchor in anchors {
 //            if let anchorName = anchor.name, anchorName == "Topology" {
 //
@@ -32,7 +32,17 @@ extension ViewController: ARSessionDelegate {
 //        }
 //        print(self.arView.scene.anchors)
 //        print()
-//    }
+        anchors.forEach{ anchor in
+            
+            guard let planeAnchor = anchor as? ARPlaneAnchor else {return}
+            if planeAnchor.alignment == .horizontal {
+                print("horizontal")
+            } else {
+                print("vertical")
+            }
+            
+        }
+    }
     
     
     

@@ -43,7 +43,7 @@ class PointChargeClass {
         /// Set up Label Entity
         let textPos = SIMD3<Float>(0, (PointChargeClass.pointChargeRadius + 0.01), 0)
         self.label = EntityStore.shared.load_TextEntity(on: self.entity, inside: self.topology, name: "Coulomb Text", position: textPos)
-        EntityStore.shared.update_TextEntity(textEntity: self.label, material: EntityStore.shared.textMaterial, stringValue: "\(self.value) Cb")
+        EntityStore.shared.update_TextEntity(textEntity: self.label, stringValue: "\(self.value) Cb")
 
         
         self.forcesOnOthers = []

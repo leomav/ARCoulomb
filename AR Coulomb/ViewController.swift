@@ -341,6 +341,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         let firstPointTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(recognizer:)))
         firstPointTapRecognizer.name = "First Point Recognizer"
         self.arView.addGestureRecognizer(firstPointTapRecognizer)
+        firstPointTapRecognizer.isEnabled = false
     }
     
     private func setupLongPressRecognizer() {

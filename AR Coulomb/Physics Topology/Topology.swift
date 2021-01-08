@@ -15,7 +15,7 @@ class Topology {
     /// The ViewController which contains the topology
     var viewController: ViewController?
     /// Anchor Entity of the topology
-    var topoAnchorEntity: AnchorEntity?
+    var topoAnchorEntity: AnchorEntity = AnchorEntity()
     /// Selected positions for the pointCharges Entities
     var selectedPositions: [SIMD3<Float>]
     /// All the pointCharge Objects
@@ -51,7 +51,7 @@ class Topology {
         
         /// Add the Anchor Entity to the scene (where the user tapped)
         self.topoAnchorEntity = topoAnchor
-        self.viewController?.arView.scene.addAnchor(self.topoAnchorEntity!)
+        self.viewController?.arView.scene.addAnchor(self.topoAnchorEntity)
         
         /// Create the Coulomb's Observers (value change or deletion)
         self.viewController?.createCbObserver()
@@ -84,11 +84,6 @@ class Topology {
         /// Show Forces and Distance Indicators only for selected pointCharge
         self.showForces(for: selectedPointChargeObj)
         self.showDistaneIndicators(for: selectedPointChargeObj)
-        
-        self.pointCharges.forEach{ p in
-            print(p.id)
-        }
-        
     }
     
     func clearTopology() {

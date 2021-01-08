@@ -64,7 +64,9 @@ class EntityStore {
         return mat
     }()
     
-    func load_TextEntity(on entity: Entity, inside topology: Topology, name: String, position: SIMD3<Float>) -> Entity {
+    let textOcclussionMaterial: OcclusionMaterial = OcclusionMaterial()
+    
+    func load_TextEntity(on entity: Entity, inside topology: Topology, name: String, position: SIMD3<Float>, occlusion: Bool = false) -> Entity {
         let textPivotEntity: Entity = Entity()
         textPivotEntity.name  = "Label Entity"
         textPivotEntity.setParent(entity)
@@ -73,7 +75,6 @@ class EntityStore {
         let textEntity: Entity = Entity()
         textEntity.name = name
         textEntity.setParent(textPivotEntity)
-//        textEntity.setOrientation(simd_quatf(angle: Int(90).degreesToRadians(), axis: SIMD3<Float>(1, 0, 0)), relativeTo: pointCharge.entity)
         
         /// Add label to Topology's labels[]
         topology.labels.append(textPivotEntity)
@@ -81,17 +82,22 @@ class EntityStore {
         return textPivotEntity
     }
     
-    func update_TextEntity(textEntity: Entity, material: SimpleMaterial, stringValue: String, fontSize: Float = 0.012) {
+    func update_TextEntity(textEntity: Entity, stringValue: String, fontSize: Float = 0.012) {
         let defaultFont = "TimesNewRomanPSMT"
+        var materialsArray: [Material] = [EntityStore.shared.textMaterial]
+        
+        /// Get the Label Entity, by accessing the Label Pivot Entity's child
+        let text = textEntity.children[0]
+        text.name == "Force Label" ? materialsArray.append(EntityStore.shared.textOcclussionMaterial) : nil
+        
         let model: ModelComponent = ModelComponent(mesh: .generateText(stringValue,
                                                                        extrusionDepth: 0.001,
                                                                        font: UIFont(name: defaultFont, size: CGFloat(fontSize))!,
                                                                        containerFrame: .zero,
                                                                        alignment: .center,
                                                                        lineBreakMode: .byCharWrapping),
-                                                   materials: [material])
-        /// Get the Label Entity, by accessing the Label Pivot Entity's child
-        let text = textEntity.children[0]
+                                                   materials: materialsArray)
+       
         text.components.set(model)
         
         /// Update the xdif from the pivot (xdif: width of text Mesh / 2)

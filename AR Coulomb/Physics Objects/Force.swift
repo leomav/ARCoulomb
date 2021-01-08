@@ -203,7 +203,7 @@ class Force {
     }
     
     private func updateLabel() {
-        EntityStore.shared.update_TextEntity(textEntity: self.label, material: EntityStore.shared.textMaterial, stringValue: String(format: "%.2fN", self.magnetude), fontSize: 0.008)
+        EntityStore.shared.update_TextEntity(textEntity: self.label, stringValue: String(format: "%.2fN", self.magnetude), fontSize: 0.008)
     }
     
 }
