@@ -100,12 +100,13 @@ class EntityStore {
     
     func update_AllTextOrientation(in topology: Topology) {
         topology.labels.forEach{ label in
-//            label.look(at: cameraTransform.translation, from: label.position, relativeTo: label.parent)
+            label.look(at: cameraTransform.translation, from: label.position(relativeTo: nil), relativeTo: nil)
+            label.setOrientation(simd_quatf(angle: 180, axis: SIMD3<Float>(0, 1, 0)), relativeTo: label)
         }
 
     }
     
-    // MARK: - Arrow Body
+    // MARK: - Arrow Body 
     
     private func load_ArrowBody_ModelComponent(length: Float) -> ModelComponent{
         let material: SimpleMaterial = {
