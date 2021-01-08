@@ -21,7 +21,9 @@ import UIKit
 class Force {
     static var total: Int = 0
     let forceId: Int
+    var topology: Topology
     var magnetude: Float
+    var previousMagnetude: Float
     var angle: Float
     
     /// Force X, Y Components
@@ -45,19 +47,33 @@ class Force {
     
     var pivotEntity: Entity
     var arrowEntity: Entity
+    var label: Entity
     
-    init(magnetude: Float, angle: Float, arrowEntity: Entity) {
+    init(magnetude: Float, angle: Float, arrowEntity: Entity, inside topology: Topology) {
         Force.total += 1
         self.forceId = Force.total
         
-        // Set Magnetude, Angle
+        // Set Topology, Magnetude, Angle
+        self.topology = topology
         self.magnetude = magnetude
+        self.previousMagnetude = magnetude
         self.angle = angle
         
         // Set the arrowEntity and its parent the pivotEntity
         /// Pivot entity is used to rotate the arrowEntity
         self.arrowEntity = arrowEntity
         self.pivotEntity = arrowEntity.parent!
+        
+        /// Set up the Force's Label
+        let labelPos = SIMD3<Float>(0, 0, 0)
+        self.label = EntityStore.shared.load_TextEntity(on: arrowEntity, inside: topology, name: "Force Label", position: labelPos)
+    }
+    
+    deinit {
+        /// Delete the label entity when pointCharge gets deleted
+        self.topology.labels.removeAll { (label) -> Bool in
+            return label.id == self.label.id
+        }
     }
     
     // MARK: - STATIC FUNCTIONS
@@ -163,6 +179,15 @@ class Force {
         
         /// Update Head Model
         EntityStore.shared.update_ArrowHead(on: self.arrowEntity, magnetude: self.magnetude)
+        
+        /// Update Label
+        /// Update labels only if difference is >= 0.01 m
+        if abs(self.magnetude - self.previousMagnetude) >= 0.01 {
+            self.updateLabel()
+            
+            /// Update new previous distance as the current one
+            self.previousMagnetude = self.magnetude
+        }
     }
     
     func updateForceMagnetude() {
@@ -175,6 +200,10 @@ class Force {
     
     func updateForceArrowOrientation() {
         preconditionFailure("This method must be overridden")
+    }
+    
+    private func updateLabel() {
+        EntityStore.shared.update_TextEntity(textEntity: self.label, material: EntityStore.shared.textMaterial, stringValue: String(format: "%.2fN", self.magnetude), fontSize: 0.008)
     }
     
 }

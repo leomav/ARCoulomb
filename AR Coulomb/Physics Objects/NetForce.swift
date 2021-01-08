@@ -26,7 +26,7 @@ class NetForce: Force {
     var forces: [SingleForce]
     
 //    init(magnetude: Float, angle: Float, arrowEntity: Entity, point: PointChargeClass, forces: [SingleForce]) {
-    init(magnetude: Float, angle: Float, point: PointChargeClass, forces: [SingleForce]) {
+    init(magnetude: Float, angle: Float, point: PointChargeClass, forces: [SingleForce], inside topology: Topology) {
         NetForce.netForcesTotal += 1
         self.netForceId = NetForce.netForcesTotal
         
@@ -36,13 +36,13 @@ class NetForce: Force {
         
         let arrowEntity = Force.createArrowModel(on: self.pointChargeObj, magnetude: magnetude, name: "NetForce Arrow")
 
-        super.init(magnetude: magnetude, angle: angle, arrowEntity: arrowEntity)
+        super.init(magnetude: magnetude, angle: angle, arrowEntity: arrowEntity, inside: topology)
     }
     
     static func createForce(for pointChargeObj: PointChargeClass) -> NetForce {
 
         /// Initialize NetForce Object with Arrow Entity
-        let netForce = NetForce(magnetude: 0, angle: 0, point: pointChargeObj, forces: [])
+        let netForce = NetForce(magnetude: 0, angle: 0, point: pointChargeObj, forces: [], inside: pointChargeObj.topology)
         
         /// Add netForce to pointCharge
         pointChargeObj.netForce = netForce

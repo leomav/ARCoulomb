@@ -42,7 +42,7 @@ class SingleForce: Force {
     
     // TEST
 //    init(magnetude: Float, angle: Float, arrowEntity: Entity, from: PointChargeClass, to: PointChargeClass) {
-    init(magnetude: Float, angle: Float, from: PointChargeClass, to: PointChargeClass) {
+    init(magnetude: Float, angle: Float, from: PointChargeClass, to: PointChargeClass, inside topology: Topology) {
         SingleForce.singleForcesTotal += 1
         
         self.singleForceId = SingleForce.singleForcesTotal
@@ -59,7 +59,7 @@ class SingleForce: Force {
         let arrowEntity = Force.createArrowModel(on: self.targetPointCharge, magnetude: magnetude, name: "SingleForce Arrow")
         
         // Call the super init of Force Class
-        super.init(magnetude: magnetude, angle: angle, arrowEntity: arrowEntity)
+        super.init(magnetude: magnetude, angle: angle, arrowEntity: arrowEntity, inside: topology)
 
         
         /// Set the arrowEntity and its parent the pivotEntity
@@ -72,7 +72,7 @@ class SingleForce: Force {
     static func createForce(from otherPointChargeObj: PointChargeClass, to pointChargeObj: PointChargeClass) -> SingleForce{
         
         /// Create instance of Force Object with arrow entity
-        let force = SingleForce(magnetude: 5, angle:0, from: otherPointChargeObj, to: pointChargeObj)
+        let force = SingleForce(magnetude: 5, angle:0, from: otherPointChargeObj, to: pointChargeObj, inside: pointChargeObj.topology)
         
         /// Add  force to pointCharge forcesToOthers Array
         otherPointChargeObj.forcesOnOthers.append(force)
