@@ -15,7 +15,7 @@ extension ViewController: ARSessionDelegate{
     
     /// - Tag: Updated version uses Anchor Entities instead of ARAnchors
     /// Topology is instanciated in ViewController_+_Gestures, no need for the delegate
-    func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
+//    func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
 //        for anchor in anchors {
 //            if let anchorName = anchor.name, anchorName == "Topology" {
 //
@@ -32,17 +32,7 @@ extension ViewController: ARSessionDelegate{
 //        }
 //        print(self.arView.scene.anchors)
 //        print()
-        anchors.forEach{ anchor in
-            
-            guard let planeAnchor = anchor as? ARPlaneAnchor else {return}
-            if planeAnchor.alignment == .horizontal {
-                print("horizontal")
-            } else {
-                print("vertical")
-            }
-            
-        }
-    }
+//    }
     
     
     
@@ -65,18 +55,17 @@ extension ViewController: ARSessionDelegate{
         
         EntityStore.shared.update_AllTextOrientation(in: self.topology)
         
-//        if let topoAnchor = self.arView.scene.anchors.first(where: {$0.name == "Topology"}) {
-//            print(true)
-//            EntityStore.shared.update_AllTextOrientation(anchor: topoAnchor as! AnchorEntity)
-//        }
-        
 
         // Raycast only if placement Indicator is enabled
         if (placementIndicator.isEnabled) {
             guard let query = arView.makeRaycastQuery(from: self.arView.center, allowing: .existingPlaneGeometry, alignment: .any) else { return }
             guard let raycastResult = arView.session.raycast(query).first else { return }
-
-            // set a transform to an existing entity
+            
+            /// Update selected ARPlaneAnchor
+            guard let planeAnchor = raycastResult.anchor as? ARPlaneAnchor else { return}
+            self.currentARPlaneAnchor = planeAnchor
+            
+            /// Set a transform to an existing entity
             let transform = Transform(matrix: raycastResult.worldTransform)
             EntityStore.shared.update_PlacementIndicator_Transform(on: placementIndicator, transform: transform)
         }

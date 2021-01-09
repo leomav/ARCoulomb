@@ -15,6 +15,9 @@ extension ViewController {
     // MARK: - Initial Tap to place Topology Anchor
     @objc
     func handleTap(recognizer: UITapGestureRecognizer) {
+        /// Update selected ARPlaneAnchor
+        self.selectedARPlaneAnchor = self.currentARPlaneAnchor
+        
         /// Create new Anchor Entity for Topology
         let anchor = AnchorEntity()
         /// Set its properties
@@ -69,11 +72,6 @@ extension ViewController {
                 /// Find and set the new Selected PointChargeObj
                 selectedPointChargeObj = topology.pointCharges.first(where: {$0.entity == longPressedEntity})! 
                 
-//                topology!.pointCharges.forEach{ pointChargeObj in
-//                    if pointChargeObj.entity == longPressedEntity {
-//                        selectedPointChargeObj = pointChargeObj
-//                    }
-//                }
                 
                 /// Show forces and distance indicators relative to the selectedPointChargeObj
                 self.topology.showForces(for: selectedPointChargeObj)

@@ -52,7 +52,7 @@ class Topology {
         /// Add the Anchor Entity to the scene (where the user tapped)
         self.topoAnchorEntity = topoAnchor
         self.viewController?.arView.scene.addAnchor(self.topoAnchorEntity)
-        
+
         /// Create the Coulomb's Observers (value change or deletion)
         self.viewController?.createCbObserver()
         self.viewController?.setupObserverPointChargeDeletion()

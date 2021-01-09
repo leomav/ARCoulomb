@@ -231,6 +231,12 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: - Properties
     
+    /// Saved AR  Plane Anchors
+    /// current: The current ARPlaneAnchor under PlacementIndicator
+    /// selected: The ARPlaneAnchor that the user finally places the topology on
+    var selectedARPlaneAnchor: ARPlaneAnchor?
+    var currentARPlaneAnchor: ARPlaneAnchor?
+
     var topology: Topology = Topology()
     
     override func viewDidAppear(_ animated: Bool) {
