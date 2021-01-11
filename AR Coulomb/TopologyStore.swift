@@ -27,7 +27,7 @@ class TopologyStore {
     
     private func loadDefaultTopologies() {
         for positions in defaultPositions {
-            let topo = TopologyModel(pointCharges: [], image: UIImage(named: "kobe")!)
+            let topo = TopologyModel(id: <SomeObjectIdentifier>, pointCharges: [], image: UIImage(named: "kobe")!, name: "Some name", description: "Some Description")
             for pos in positions {
                 topo.addPointChargeModel(model: PointChargeModel(position: pos, value: 5))
             }
@@ -45,7 +45,7 @@ class TopologyStore {
             
             /// Convert NSTopology items to TopologyModel items
             for topo in savedTopos {
-                let newTopo = TopologyModel(pointCharges: [], image: UIImage(data: topo.image!)!)
+                let newTopo = TopologyModel(id: topo.id, pointCharges: [], image: UIImage(data: topo.image!)!, name: topo.name ?? "", description: topo.descr ?? "")
                 for pointCharge in topo.pointCharges! {
                     let p: NSPointCharge = (pointCharge as AnyObject) as! NSPointCharge
                     let x: Float = p.posX
@@ -62,11 +62,90 @@ class TopologyStore {
                 
                 savedTopologies.append(newTopo)
                 
+                
             }
             
         } catch {
             print("No saved topologies!")
         }
+    }
+    
+    func saveDefaultTopologies() {
+        if let capturedImage = (notification.userInfo?["imageData"] as? Data) {
+            
+            // TODO:  Open dialog to enter new topology's name and description
+            let alertController = UIAlertController(title: "Topology Details", message: "Enter a name and a description", preferredStyle: .alert)
+            
+            alertController.addTextField{ (textField) in
+                textField.placeholder = "Name"
+            }
+            
+            alertController.addTextField{ (textField) in
+                textField.placeholder = "Description"
+            }
+            
+            let confirmAction = UIAlertAction(title: "OK", style: .default) { (_) in
+                let name = alertController.textFields?[0].text
+                let description = alertController.textFields?[1].text
+                
+                
+                // Save the topology
+                let topology = NSTopology(context: PersistenceService.context)
+                topology.name = name
+                topology.descr = description
+                topology.image = capturedImage
+                PersistenceService.saveContext()
+                
+                // Save pointCharges info
+                self.topology.pointCharges.forEach{ pointChargeObj in
+                    let pointCharge = NSPointCharge(context: PersistenceService.context)
+                    pointCharge.posX = pointChargeObj.getPositionX()
+                    pointCharge.posY = pointChargeObj.getPositionY()
+                    pointCharge.posZ = pointChargeObj.getPositionZ()
+                    pointCharge.multiplier = PointChargeClass.multiplier
+                    pointCharge.value = pointChargeObj.value
+                    pointCharge.topology = topology
+                    PersistenceService.saveContext()
+                }
+                
+                // Reload the savedTopologies
+                TopologyStore.sharedInstance.loadTopologies()
+            }
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
+            
+            alertController.addAction(confirmAction)
+            alertController.addAction(cancelAction)
+            
+            self.present(alertController, animated: true, completion: nil)
+        }
+    }
+    
+    func deleteSavedTopology(topology: TopologyModel) {
+        /// Delete topo from savedTopologies[]
+        savedTopologies.removeAll { (topo) -> Bool in
+            topo.id == topology.id
+        }
+        
+        let fetchRequest: NSFetchRequest<NSTopology> = NSTopology.fetchRequest()
+        
+        do {
+            let savedTopos = try PersistenceService.context.fetch(fetchRequest)
+            
+            for topo in savedTopos {
+                if topology.id == topo.id {
+                    /// Delete the NS topo from Core Data
+                    PersistenceService.context.delete(topo)
+                    /// Save context
+                    PersistenceService.saveContext()
+                }
+            }
+        } catch {
+            print("No saved topologies!")
+        }
+        
+        
+//        PersistenceService.context.delete
     }
     
     func loadTopologies() {

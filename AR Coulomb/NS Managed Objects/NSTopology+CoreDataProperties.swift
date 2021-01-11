@@ -16,7 +16,8 @@ extension NSTopology {
     @nonobjc public class func fetchRequest() -> NSFetchRequest<NSTopology> {
         return NSFetchRequest<NSTopology>(entityName: "NSTopology")
     }
-
+    
+    
     @NSManaged public var descr: String?
     @NSManaged public var image: Data?
     @NSManaged public var name: String?
