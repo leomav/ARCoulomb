@@ -14,9 +14,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        /// First delete Default topologies, if any falsely still saved
+        let fetchRequest: NSFetchRequest<NSTopology> = NSTopology.fetchRequest()
+        do {
+            let savedTopos = try PersistenceService.context.fetch(fetchRequest)
+            for topo  in savedTopos {
+                print(topo.name)
+            }
+        } catch {}
+        
+        TopologyStore.sharedInstance.deleteDefaultTopologiesFromCoreData()
+        PersistenceService.saveContext()
+        do {
+            let savedTopos = try PersistenceService.context.fetch(fetchRequest)
+            print("After Deletion: \(savedTopos.count)")
+        } catch {}
+        /// Save the deafult topologies to Core Data
+        TopologyStore.sharedInstance.saveDefaultTopologiesToCoreData()
+        do {
+            let savedTopos = try PersistenceService.context.fetch(fetchRequest)
+            print("After Save: \(savedTopos.count)")
+        } catch {}
+        /// Load the default + saved Topologies into sharedInstance
+        /// SharedInstance is now ready for use around the app, containing all information
+        /// about topologies in a TopologyModel and PointChargeModel form.
+        /// All the topologies are stored in sharedInstanc.savedTopologies
+        TopologyStore.sharedInstance.reloadTopologies()
+        
         return true
     }
 
@@ -40,7 +67,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         
         // Delete default topos from core data
-        
         TopologyStore.sharedInstance.deleteDefaultTopologiesFromCoreData()
         
         // save context

@@ -310,13 +310,13 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     // Fetch Topology data when view is Loaded
     override func viewDidLoad() {
         /// Save the deafult topologies to Core Data
-        TopologyStore.sharedInstance.saveDefaultTopologiesToCoreData()
+//        TopologyStore.sharedInstance.saveDefaultTopologiesToCoreData()
         
         /// Load the default + saved Topologies into sharedInstance
         /// SharedInstance is now ready for use around the app, containing all information
         /// about topologies in a TopologyModel and PointChargeModel form.
         /// All the topologies are stored in sharedInstanc.savedTopologies
-        TopologyStore.sharedInstance.reloadTopologies()
+//        TopologyStore.sharedInstance.reloadTopologies()
     }
     
     override func viewWillDisappear(_ animated: Bool) {

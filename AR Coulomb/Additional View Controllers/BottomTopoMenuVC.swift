@@ -63,6 +63,28 @@ class BottomTopoMenuVC: UIViewController {
         return text
     }()
     
+    let selectTopoButton: UIButton = {
+        let btn = UIButton()
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.addTarget(self, action: #selector(buttonLoadTopoAction(sender:)), for: .touchUpInside)
+        btn.isEnabled = true
+        btn.setTitle("Select", for: .normal)
+        btn.setTitleColor(.blue, for: .normal)
+        btn.backgroundColor = .white
+        return btn
+    }()
+    
+    let deleteTopoButton: UIButton = {
+        let btn = UIButton()
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.addTarget(self, action: #selector(buttonDeleteTopoAction(sender:)), for: .touchUpInside)
+        btn.isEnabled = true
+        btn.setTitle("Delete", for: .normal)
+        btn.setTitleColor(.red, for: .normal)
+        btn.backgroundColor = .white
+        return btn
+    }()
+    
     
     
     @IBOutlet var bottomTopoMenuView: UIView!
@@ -74,7 +96,6 @@ class BottomTopoMenuVC: UIViewController {
         self.bottomTopoMenuView.backgroundColor = UIColor(white: 0, alpha: 0.7)
 
         // Do any additional setup after loading the view.
-        
         self.configureScrollView()
         self.configureStackView()
         self.configurePreviewView()
@@ -82,6 +103,8 @@ class BottomTopoMenuVC: UIViewController {
         self.configurePreviewDetailsView()
         self.configurePreviewTitleTextView()
         self.configurePreviewDetailsTextView()
+        self.configureSelectTopoButton()
+        self.configureDeleteTopoButton()
     }
     
     
@@ -90,16 +113,16 @@ class BottomTopoMenuVC: UIViewController {
         // You simply cannot constrain a view to another view if the view isn’t even on the screen yet.
         self.bottomTopoMenuView.addSubview(self.scrollView)
         
-        self.scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        self.scrollView.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -200).isActive = true
-        self.scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-        self.scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20).isActive = true
+        self.scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        self.scrollView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        self.scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        self.scrollView.bottomAnchor.constraint(equalTo: view.topAnchor, constant: 100).isActive = true
     }
     func configureStackView() {
         self.scrollView.addSubview(self.stackView)
         
         self.stackView.axis = .horizontal
-        self.stackView.spacing = 8
+        self.stackView.spacing = 2
         self.stackView.backgroundColor = .none
         self.stackView.distribution = .fillEqually
         //stack.alignment = .fill
@@ -118,7 +141,7 @@ class BottomTopoMenuVC: UIViewController {
             btn.addTarget(self, action: #selector(self.buttonSelectTopoAction(sender:)), for: .touchUpInside)
             btn.isEnabled = true
             btn.tag = i
-            btn.widthAnchor.constraint(equalToConstant: 120).isActive = true
+            btn.widthAnchor.constraint(equalToConstant: 80).isActive = true
             
             // If i=0, set selectedTopo
             if i == 0 {
@@ -135,8 +158,8 @@ class BottomTopoMenuVC: UIViewController {
         self.bottomTopoMenuView.addSubview(previewView)
         
         self.previewView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
-        self.previewView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        self.previewView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -210).isActive = true
+        self.previewView.topAnchor.constraint(equalTo: self.scrollView.bottomAnchor).isActive = true
+        self.previewView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         self.previewView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
         
     }
@@ -150,14 +173,36 @@ class BottomTopoMenuVC: UIViewController {
         self.previewImageView.trailingAnchor.constraint(equalTo: self.previewView.trailingAnchor).isActive = true
         
         self.previewImageView.image = selectedTopo?.getImage()
+        
     }
+    
+    func configureSelectTopoButton() {
+        self.previewImageView.addSubview(selectTopoButton)
+        
+//        self.selectTopoButton.topAnchor.constraint(equalTo: self.previewImageView.topAnchor, constant: 20).isActive = true
+        self.selectTopoButton.bottomAnchor.constraint(equalTo: self.previewImageView.bottomAnchor).isActive = true
+        self.selectTopoButton.leadingAnchor.constraint(equalTo: self.previewImageView.leadingAnchor, constant: 20).isActive = true
+        self.selectTopoButton.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        self.selectTopoButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+    }
+    
+    func configureDeleteTopoButton() {
+        self.previewImageView.addSubview(deleteTopoButton)
+        
+//        self.deleteTopoButton.topAnchor.constraint(equalTo: self.previewImageView.topAnchor, constant: 20).isActive = true
+        self.deleteTopoButton.bottomAnchor.constraint(equalTo: self.previewImageView.bottomAnchor).isActive = true
+        self.deleteTopoButton.trailingAnchor.constraint(equalTo: self.previewImageView.trailingAnchor, constant: -20).isActive = true
+        self.deleteTopoButton.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        self.deleteTopoButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+    }
+    
     
     func configurePreviewDetailsView() {
         self.previewImageView.addSubview(previewDetailsView)
         
         self.previewDetailsView.leadingAnchor.constraint(equalTo: self.previewImageView.leadingAnchor).isActive = true
-        self.previewDetailsView.topAnchor.constraint(equalTo: self.previewImageView.bottomAnchor, constant: -200).isActive = true
-        self.previewDetailsView.bottomAnchor.constraint(equalTo: self.previewImageView.bottomAnchor).isActive = true
+        self.previewDetailsView.topAnchor.constraint(equalTo: self.previewImageView.bottomAnchor, constant: -180).isActive = true
+        self.previewDetailsView.bottomAnchor.constraint(equalTo: self.previewImageView.bottomAnchor, constant: -30).isActive = true
         self.previewDetailsView.trailingAnchor.constraint(equalTo: self.previewImageView.trailingAnchor).isActive = true
         
         previewDetailsView.backgroundColor = UIColor.black.withAlphaComponent(0.8)
@@ -167,21 +212,21 @@ class BottomTopoMenuVC: UIViewController {
         self.previewDetailsView.addSubview(previewTitleTextView)
         
         self.previewTitleTextView.topAnchor.constraint(equalTo: self.previewDetailsView.topAnchor).isActive = true
-        self.previewTitleTextView.bottomAnchor.constraint(equalTo: self.previewDetailsView.topAnchor, constant: 70).isActive = true
+        self.previewTitleTextView.heightAnchor.constraint(equalToConstant: 30).isActive = true
         self.previewTitleTextView.leadingAnchor.constraint(equalTo: self.previewDetailsView.leadingAnchor, constant: 10).isActive = true
         self.previewTitleTextView.trailingAnchor.constraint(equalTo: self.previewDetailsView.trailingAnchor, constant: -10).isActive = true
         
         self.previewTitleTextView.text = selectedTopo?.getName().uppercased()
-        self.previewTitleTextView.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        self.previewTitleTextView.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         self.previewTitleTextView.textColor = .white
         self.previewTitleTextView.backgroundColor = UIColor.white.withAlphaComponent(0)
-        self.previewTitleTextView.textAlignment = .center
+        self.previewTitleTextView.textAlignment = .left
     }
     
     func configurePreviewDetailsTextView() {
         self.previewDetailsView.addSubview(previewDetailsTextView)
         
-        self.previewDetailsTextView.topAnchor.constraint(equalTo: self.previewDetailsView.topAnchor, constant: 70).isActive = true
+        self.previewDetailsTextView.topAnchor.constraint(equalTo: self.previewTitleTextView.bottomAnchor).isActive = true
         self.previewDetailsTextView.bottomAnchor.constraint(equalTo: self.previewDetailsView.bottomAnchor).isActive = true
         self.previewDetailsTextView.leadingAnchor.constraint(equalTo: self.previewDetailsView.leadingAnchor, constant: 10).isActive = true
         self.previewDetailsTextView.trailingAnchor.constraint(equalTo: self.previewDetailsView.trailingAnchor, constant: -10).isActive = true
@@ -225,25 +270,15 @@ class BottomTopoMenuVC: UIViewController {
     @objc
     func buttonDeleteTopoAction(sender: UIButton!) {
         let btnsend: UIButton = sender
-        
-        let totalTopologies = TopologyStore.sharedInstance.totalTopologies()
-        if btnsend.tag > -1 && btnsend.tag < totalTopologies {
-            /// Set the new topology (new positions)
-//            let pos = defaultPositions[btnsend.tag]
             
-            /// Set the new topology
-            let newTopo = TopologyStore.sharedInstance.savedTopologies[btnsend.tag]
+        /// Notify for new positions
+        let notifName = Notification.Name(rawValue: topoNotificationKey)
+        let valueDict: [String: TopologyModel] = ["updatedValue": selectedTopo!]
+        NotificationCenter.default.post(name: notifName, object: nil, userInfo: valueDict)
+    
+        ///Dismiss the menu view
+        dismiss(animated: true, completion: nil)
             
-            /// Notify for new positions
-            let notifName = Notification.Name(rawValue: topoNotificationKey)
-            let valueDict: [String: TopologyModel] = ["updatedValue": newTopo]
-//            let valueDict: [String: [SIMD3<Float>]] = ["updatedValue": pos]
-            NotificationCenter.default.post(name: notifName, object: nil, userInfo: valueDict)
-            
-            ///Dismiss the menu view
-            dismiss(animated: true, completion: nil)
-            
-        }
     }
     
     @objc

@@ -102,12 +102,30 @@ class TopologyStore {
     
     }
     func deleteDefaultTopologiesFromCoreData() {
-        savedTopologies.forEach{ savedTopo in
-            if savedTopo.getName() == "Default Topology"  {
-                print("Delete that shit")
-                deleteSavedTopologyFromCoreData(topology: savedTopo)
+        let fetchRequest: NSFetchRequest<NSTopology> = NSTopology.fetchRequest()
+        do {
+            let savedTopos = try PersistenceService.context.fetch(fetchRequest)
+            
+            for topo in savedTopos {
+                if topo.name == "Default Topology" {
+                    print("Delete that shit")
+                    deleteTopologyFromCoreData(topology: topo)
+                }
             }
-        }
+        } catch {}
+//        savedTopologies.forEach{ savedTopo in
+//            if savedTopo.getName() == "Default Topology"  {
+//                print("Delete that shit")
+//                deleteSavedTopologyFromCoreData(topology: savedTopo)
+//            }
+//        }
+    }
+    
+    func deleteTopologyFromCoreData(topology: NSTopology) {
+        /// Delete the NS topo from Core Data
+        PersistenceService.context.delete(topology)
+        /// Save context
+        PersistenceService.saveContext()
     }
     
     func deleteSavedTopologyFromCoreData(topology: TopologyModel) {
@@ -118,10 +136,7 @@ class TopologyStore {
             let savedTopos = try PersistenceService.context.fetch(fetchRequest)
             
             for topo in savedTopos {
-                print("topo: \(topo.id)")
-                print("topology: \(topology.id)")
                 if topology.id == topo.id {
-                    print("Actually delete that shit")
                     /// Delete the NS topo from Core Data
                     PersistenceService.context.delete(topo)
                     /// Save context
