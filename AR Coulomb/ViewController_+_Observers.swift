@@ -168,7 +168,7 @@ extension ViewController {
                 }
                 
                 // Reload the savedTopologies
-                TopologyStore.sharedInstance.loadTopologies()
+                TopologyStore.sharedInstance.reloadTopologies()
             }
             
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }

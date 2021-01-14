@@ -38,7 +38,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
+        
+        // Delete default topos from core data
+        
+        TopologyStore.sharedInstance.deleteDefaultTopologiesFromCoreData()
+        
+        // save context
         PersistenceService.saveContext()
+        
     }
     
     

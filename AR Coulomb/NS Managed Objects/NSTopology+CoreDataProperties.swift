@@ -17,7 +17,6 @@ extension NSTopology {
         return NSFetchRequest<NSTopology>(entityName: "NSTopology")
     }
     
-    
     @NSManaged public var descr: String?
     @NSManaged public var image: Data?
     @NSManaged public var name: String?
