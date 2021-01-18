@@ -172,7 +172,7 @@ class TopologyStore {
         savedTopologies.removeAll()
         savedTopologies += tempSaved
         savedTopologies += tempDefault
-        print(savedTopologies.count)
+//        print(savedTopologies.count)
         
         
         /// Load the default ones
