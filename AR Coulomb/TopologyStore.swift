@@ -16,10 +16,12 @@ class TopologyStore {
     /// savedTopologies:  All topologies that will be displayed in topomenu. (defaults  + saved)
     var savedTopologies: [TopologyModel] = []
     
+    /// total number of topologies
     func totalTopologies() -> Int{
         return self.savedTopologies.count
     }
     
+    /// remove topologies from savedTopologies array
     private func eraseTopologies() {
         self.savedTopologies.removeAll()
     }
@@ -32,6 +34,9 @@ class TopologyStore {
     }
     
     private func loadSavedTopologies() {
+        
+        print("Load Saved Topologies")
+        
         let fetchRequest: NSFetchRequest<NSTopology> = NSTopology.fetchRequest()
         
         do {
@@ -63,18 +68,9 @@ class TopologyStore {
         }
     }
     
-//    private func loadDefaultTopologies() {
-//        for positions in defaultPositions {
-//            let topo = TopologyModel(id: <SomeObjectIdentifier>, pointCharges: [], image: UIImage(named: "kobe")!, name: "Some name", description: "Some Description")
-//            for pos in positions {
-//                topo.addPointChargeModel(model: PointChargeModel(position: pos, value: 5))
-//            }
-//            savedTopologies.append(topo)
-//        }
-//
-//    }
-    
     func saveDefaultTopologiesToCoreData() {
+        
+        print("Save Default Topos To CoreData")
         
         for positions in defaultPositions {
             // Save the topology
@@ -98,37 +94,38 @@ class TopologyStore {
         }
         
         // Reload the savedTopologies
-        TopologyStore.sharedInstance.reloadTopologies()
+        TopologyStore.sharedInstance.reloadSavedTopologies()
     
     }
     func deleteDefaultTopologiesFromCoreData() {
+        
+        print("Delete Default Topologies From Core Data")
+
         let fetchRequest: NSFetchRequest<NSTopology> = NSTopology.fetchRequest()
         do {
             let savedTopos = try PersistenceService.context.fetch(fetchRequest)
             
             for topo in savedTopos {
                 if topo.name == "Default Topology" {
-                    print("Delete that shit")
                     deleteTopologyFromCoreData(topology: topo)
                 }
             }
         } catch {}
-//        savedTopologies.forEach{ savedTopo in
-//            if savedTopo.getName() == "Default Topology"  {
-//                print("Delete that shit")
-//                deleteSavedTopologyFromCoreData(topology: savedTopo)
-//            }
-//        }
     }
     
     func deleteTopologyFromCoreData(topology: NSTopology) {
+        
+        print("Delete Topology From Core Data  (Default)")
+
         /// Delete the NS topo from Core Data
         PersistenceService.context.delete(topology)
         /// Save context
-        PersistenceService.saveContext()
+//        PersistenceService.saveContext()
     }
     
     func deleteSavedTopologyFromCoreData(topology: TopologyModel) {
+        
+        print("Delete Saved Topology From Core Data")
         
         let fetchRequest: NSFetchRequest<NSTopology> = NSTopology.fetchRequest()
         
@@ -136,11 +133,13 @@ class TopologyStore {
             let savedTopos = try PersistenceService.context.fetch(fetchRequest)
             
             for topo in savedTopos {
+                
                 if topology.id == topo.id {
+                    
                     /// Delete the NS topo from Core Data
                     PersistenceService.context.delete(topo)
                     /// Save context
-                    PersistenceService.saveContext()
+//                    PersistenceService.saveContext()
                 }
             }
         } catch {
@@ -149,8 +148,11 @@ class TopologyStore {
     
     }
     
-    func reloadTopologies() {
-        ///  First, delete previous topologies
+    func reloadSavedTopologies() {
+        
+        print("Reload Topologies")
+        
+        ///  First, delete previous saved topologies
         self.eraseTopologies()
         
         /// Load the saved ones again and reverse it so recent ones are first
@@ -171,12 +173,7 @@ class TopologyStore {
         }
         savedTopologies.removeAll()
         savedTopologies += tempSaved
-        savedTopologies += tempDefault
-//        print(savedTopologies.count)
-        
-        
-        /// Load the default ones
-//        self.loadDefaultTopologies()
+        savedTopologies += tempDefault.reversed()
 
         /// Now, savedTopologies contain all topologies, starting from most recent saved ones
         /// and continueing with the  default ones

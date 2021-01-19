@@ -12,5 +12,5 @@ import CoreData
 
 @objc(NSTopology)
 public class NSTopology: NSManagedObject {
-
+    
 }

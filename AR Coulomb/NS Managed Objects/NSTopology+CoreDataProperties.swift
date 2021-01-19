@@ -60,5 +60,5 @@ extension NSTopology {
 }
 
 extension NSTopology : Identifiable {
-
+    
 }

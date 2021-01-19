@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class BottomTopoMenuVC: UIViewController {
     
@@ -99,12 +100,38 @@ class BottomTopoMenuVC: UIViewController {
         return btn
     }()
     
+    let dismissMenuButton: UIButton = {
+        let btn = UIButton()
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.addTarget(self, action: #selector(dismissMenu(sender:)), for: .touchUpInside)
+        btn.setTitle("Close", for: .normal)
+        btn.setTitleColor(.black, for: .normal)
+        btn.backgroundColor = .white
+        btn.layer.cornerRadius = 3
+        btn.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
+        btn.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
+        btn.layer.shadowOpacity = 1.0
+        btn.layer.shadowRadius = 0.0
+        btn.layer.masksToBounds = false
+        btn.isEnabled = true
+        btn.isHidden = false
+        
+        return btn
+    }()
+    
     
     
     @IBOutlet var bottomTopoMenuView: UIView!
     var selectedTopo: TopologyModel?
     
     override func viewDidLoad() {
+        
+        print("Bottom Topo Menu did load")
+        
+        /// Reload savedTopologies, cause Object Identifiers for custom saved topos
+        /// change for some reason. Also, do the same before deleting!
+        TopologyStore.sharedInstance.reloadSavedTopologies()
+        
         super.viewDidLoad()
         
         self.bottomTopoMenuView.backgroundColor = UIColor(white: 0, alpha: 0.7)
@@ -119,9 +146,12 @@ class BottomTopoMenuVC: UIViewController {
         self.configurePreviewDetailsTextView()
         self.configureSelectTopoButton()
         self.configureDeleteTopoButton()
+        self.configureDissmissMenuButton()
     }
     
     private func reloadTopoView() {
+        print("Reload Topo View")
+        
         self.stackView.removeFromSuperview()
         self.configureStackView()
         self.updatePreview()
@@ -139,6 +169,9 @@ class BottomTopoMenuVC: UIViewController {
         self.scrollView.bottomAnchor.constraint(equalTo: view.topAnchor, constant: 100).isActive = true
     }
     func configureStackView() {
+        
+        print("Configure Stack View")
+        
         self.scrollView.addSubview(self.stackView)
         
         self.stackView.axis = .horizontal
@@ -178,24 +211,8 @@ class BottomTopoMenuVC: UIViewController {
             
             // If i=0, set selectedTopo
             if i == 0 {
-//                selectedTopo = TopologyStore.sharedInstance.savedTopologies[i]
-//
-//                // If selectedTopo is a default one, disable and hide DELETE btn
-//                if selectedTopo!.name == "Default Topology" {
-//                    self.deleteTopoButton.isEnabled = false
-//                    self.deleteTopoButton.isHidden = true
-//                } else {
-//                    self.deleteTopoButton.isEnabled = true
-//                    self.deleteTopoButton.isHidden = false
-//                }
-//
-//                btn.isSelected = true
-//                btn.layer.borderWidth = 1
-//                btn.layer.borderColor = UIColor.white.cgColor
                 self.selectTopo(button: btn)
             }
-
-            
         }
     }
     
@@ -240,6 +257,14 @@ class BottomTopoMenuVC: UIViewController {
         self.deleteTopoButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
+    func configureDissmissMenuButton() {
+        self.previewView.addSubview(dismissMenuButton)
+        
+        self.dismissMenuButton.topAnchor.constraint(equalTo: self.previewImageView.topAnchor, constant: 10).isActive = true
+        self.dismissMenuButton.trailingAnchor.constraint(equalTo: self.previewImageView.trailingAnchor, constant: -10).isActive = true
+        self.dismissMenuButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        self.dismissMenuButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    }
     
     func configurePreviewDetailsView() {
         self.previewImageView.addSubview(previewDetailsView)
@@ -282,6 +307,9 @@ class BottomTopoMenuVC: UIViewController {
     }
     
     func updatePreview() {
+        
+        print("Update Preview")
+        
         self.previewImageView.image = selectedTopo?.getImage()
         self.previewTitleTextView.text = selectedTopo?.getName().uppercased()
         self.previewDetailsTextView.text = selectedTopo?.getDescription().uppercased()
@@ -300,7 +328,7 @@ class BottomTopoMenuVC: UIViewController {
     
     @objc
     func buttonLoadTopoAction(sender: UIButton!) {
-        print("load Topo")
+        print("Load Topo")
         
         let btnsend: UIButton = sender
         
@@ -324,17 +352,24 @@ class BottomTopoMenuVC: UIViewController {
     
     @objc
     func buttonDeleteTopoAction(sender: UIButton!) {
+        print("Delete Topo Action")
+        
         let btnsend: UIButton = sender
             
         let totalTopologies = TopologyStore.sharedInstance.totalTopologies()
-        if btnsend.tag > -1 && btnsend.tag < (totalTopologies) {
+        if btnsend.tag > -1 && btnsend.tag < totalTopologies {
+            
+            /// Reload topologies, if not,  Object Identifiers break!  (DONT KNOW WHY)
+            TopologyStore.sharedInstance.reloadSavedTopologies()
             
             /// Set the new topology
             let topoToDelete = TopologyStore.sharedInstance.savedTopologies[btnsend.tag]
     
             /// DeleteTheTopo
             TopologyStore.sharedInstance.deleteSavedTopologyFromCoreData(topology: topoToDelete)
-            TopologyStore.sharedInstance.reloadTopologies()
+            
+            /// Reload topologies
+            TopologyStore.sharedInstance.reloadSavedTopologies()
             
             /// Reload the view
             self.reloadTopoView()
@@ -347,7 +382,17 @@ class BottomTopoMenuVC: UIViewController {
         self.selectTopo(button: sender)
     }
     
+    @objc
+    func dismissMenu(sender:  UIButton){
+        dismiss(animated: true) {
+            self.notifyObserver(withKey: dismissalNotificationKey)
+        }
+    }
+    
     private func selectTopo(button: UIButton) {
+        
+        print("Select Topo")
+        
         let totalTopologies = TopologyStore.sharedInstance.totalTopologies()
         if button.tag > -1 && button.tag < (totalTopologies) {
             /// Set the new topology
@@ -360,7 +405,7 @@ class BottomTopoMenuVC: UIViewController {
             
             /// Highlight the selected one
             button.layer.borderColor = UIColor.white.cgColor
-    
+            
             /// Update Preview Backgound Image
             self.updatePreview()
         }
@@ -386,10 +431,10 @@ class BottomTopoMenuVC: UIViewController {
 //        }
 //    }
     
-//    private func notifyObserver(withKey key: String){
-//        let notifName = Notification.Name(rawValue: key)
-//        NotificationCenter.default.post(name: notifName, object: nil, userInfo: nil)
-//    }
+    private func notifyObserver(withKey key: String){
+        let notifName = Notification.Name(rawValue: key)
+        NotificationCenter.default.post(name: notifName, object: nil, userInfo: nil)
+    }
     
 
 }

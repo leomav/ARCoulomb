@@ -35,7 +35,8 @@ extension ViewController {
         self.topology.pinToScene(viewController: self, topoAnchor: anchor)
 
         /// Open the bottom Coulomb Topology menu to choose topology
-        performSegue(withIdentifier: "toTopoMenuSegue", sender: nil)
+        self.performSegueToTopoMenu()
+//        performSegue(withIdentifier: "toTopoMenuSegue", sender: nil)
         
 //        let location = recognizer.location(in: arView)
 //
