@@ -72,16 +72,37 @@ class TopologyStore {
         
         print("Save Default Topos To CoreData")
         
-        for positions in defaultPositions {
-            // Save the topology
+//        for positions in defaultPositions {
+//            // Save the topology
+//            let topology = NSTopology(context: PersistenceService.context)
+//            topology.name = "Default Topology"
+//            topology.descr = "Description"
+//            topology.image = UIImage(named: "kobe")?.pngData()
+//            PersistenceService.saveContext()
+//
+//            // Save pointCharges info
+//            for pos in positions {
+//                let pointCharge = NSPointCharge(context: PersistenceService.context)
+//                pointCharge.posX = pos.x
+//                pointCharge.posY = pos.y
+//                pointCharge.posZ = pos.z
+//                pointCharge.multiplier = PointChargeClass.multiplier
+//                pointCharge.value = 5
+//                pointCharge.topology = topology
+//                PersistenceService.saveContext()
+//            }
+//        }
+        
+        for defaultTopo in defaultTopologies {
+            // Save Topology
             let topology = NSTopology(context: PersistenceService.context)
-            topology.name = "Default Topology"
-            topology.descr = "Description"
-            topology.image = UIImage(named: "kobe")?.pngData()
+            topology.name = defaultTopo.name
+            topology.descr = defaultTopo.descr
+            topology.image = defaultTopo.image
             PersistenceService.saveContext()
             
             // Save pointCharges info
-            for pos in positions {
+            for pos in defaultTopo.positions {
                 let pointCharge = NSPointCharge(context: PersistenceService.context)
                 pointCharge.posX = pos.x
                 pointCharge.posY = pos.y
@@ -106,7 +127,7 @@ class TopologyStore {
             let savedTopos = try PersistenceService.context.fetch(fetchRequest)
             
             for topo in savedTopos {
-                if topo.name == "Default Topology" {
+                if topo.name!.hasPrefix("Default:") == true {
                     deleteTopologyFromCoreData(topology: topo)
                 }
             }
@@ -165,7 +186,7 @@ class TopologyStore {
         var tempSaved: [TopologyModel] = []
         
         for savedTopo in savedTopologies {
-            if savedTopo.name == "Default Topology" {
+            if savedTopo.name.hasPrefix("Default:") {
                 tempDefault.append(savedTopo)
             } else {
                 tempSaved.append(savedTopo)

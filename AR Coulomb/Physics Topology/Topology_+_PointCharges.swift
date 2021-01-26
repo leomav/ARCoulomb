@@ -180,32 +180,43 @@ extension Topology {
         /// If there are not enough ( less than 2 ) pointCharges select a random position
         
         if self.pointCharges.count < 2 {
+            
             if self.selectedPositions.isEmpty {
                 /// If there are no selectedPositions, no topo was selected from the menu.
+                /// So, no pointCharge is present.
                 /// So set a random position in a radius = 0.1 around the Anchor Entity of the topology (around the center)
+                
                 xmin = -0.1
                 xmax = 0.1
                 zmin = -0.1
                 zmax = 0.1
             } else {
-                /// Else if there are selectedPositions set a random position with them as a radius
-                self.selectedPositions.forEach{ pos in
-                    if pos.x > xmax {
-                        xmax = pos.x
-                    }
-                    
-                    if pos.x < xmin {
-                        xmin = pos.x
-                    }
-                    
-                    if pos.z > zmax {
-                        zmax = pos.z
-                    }
-                    
-                    if pos.z < zmin {
-                        zmin = pos.z
-                    }
-                }
+                /// Else if there are selectedPositions, only 1 pointCharge is being present (caused we are in case  less than 2)
+                /// So, create a radius of 0.1 around it
+                
+                let selectedPosition = self.selectedPositions[0]                
+//                self.selectedPositions.forEach{ pos in
+//                    if pos.x > xmax {
+//                        xmax = pos.x
+//                    }
+//
+//                    if pos.x < xmin {
+//                        xmin = pos.x
+//                    }
+//
+//                    if pos.z > zmax {
+//                        zmax = pos.z
+//                    }
+//
+//                    if pos.z < zmin {
+//                        zmin = pos.z
+//                    }
+//                }
+                
+                xmin = selectedPosition.x - 0.1
+                xmax = selectedPosition.x + 0.1
+                zmin = selectedPosition.z - 0.1
+                zmax = selectedPosition.z + 0.1
             }
             /// Else select one between the current pointCharges' positions
         } else {

@@ -315,7 +315,7 @@ class BottomTopoMenuVC: UIViewController {
         self.previewDetailsTextView.text = selectedTopo?.getDescription().uppercased()
         
         /// If selected Topo is a default one, don't show DELETE button
-        if selectedTopo?.name == "Default Topology" {
+        if selectedTopo?.name.hasPrefix("Default:") == true {
             self.deleteTopoButton.isEnabled = false
             self.deleteTopoButton.isHidden = true
         } else {
@@ -328,26 +328,16 @@ class BottomTopoMenuVC: UIViewController {
     
     @objc
     func buttonLoadTopoAction(sender: UIButton!) {
-        print("Load Topo")
+        print("Load Topo \(selectedTopo!.name)")
         
-        let btnsend: UIButton = sender
-        
-        let totalTopologies = TopologyStore.sharedInstance.totalTopologies()
-        if btnsend.tag > -1 && btnsend.tag < (totalTopologies) {
+        /// Notify for new positions
+        let notifName = Notification.Name(rawValue: topoNotificationKey)
+        let valueDict: [String: TopologyModel] = ["updatedValue": selectedTopo!]
+        NotificationCenter.default.post(name: notifName, object: nil, userInfo: valueDict)
             
-            /// Set the new topology
-            let newTopo = TopologyStore.sharedInstance.savedTopologies[btnsend.tag]
+        ///Dismiss the menu view
+        dismiss(animated: true, completion: nil)
             
-            /// Notify for new positions
-            let notifName = Notification.Name(rawValue: topoNotificationKey)
-            let valueDict: [String: TopologyModel] = ["updatedValue": newTopo]
-//            let valueDict: [String: [SIMD3<Float>]] = ["updatedValue": pos]
-            NotificationCenter.default.post(name: notifName, object: nil, userInfo: valueDict)
-            
-            ///Dismiss the menu view
-            dismiss(animated: true, completion: nil)
-            
-        }
     }
     
     @objc

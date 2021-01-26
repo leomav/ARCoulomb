@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9F07A8DB25B71B1400654BC2 /* DefaultTopologyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F07A8DA25B71B1400654BC2 /* DefaultTopologyModel.swift */; };
 		9F17B77724F91E3500A98253 /* ViewController_+_UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F17B77624F91E3500A98253 /* ViewController_+_UI.swift */; };
 		9F1CC723258FF22A00233606 /* PointChargeEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1CC722258FF22A00233606 /* PointChargeEntity.swift */; };
 		9F1FAA2124F1D95600BF6137 /* ViewController_+_ARCoachingOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1FAA2024F1D95600BF6137 /* ViewController_+_ARCoachingOverlay.swift */; };
@@ -51,6 +52,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9F07A8DA25B71B1400654BC2 /* DefaultTopologyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTopologyModel.swift; sourceTree = "<group>"; };
 		9F17B77624F91E3500A98253 /* ViewController_+_UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController_+_UI.swift"; sourceTree = "<group>"; };
 		9F1CC722258FF22A00233606 /* PointChargeEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointChargeEntity.swift; sourceTree = "<group>"; };
 		9F1FAA2024F1D95600BF6137 /* ViewController_+_ARCoachingOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController_+_ARCoachingOverlay.swift"; sourceTree = "<group>"; };
@@ -208,6 +210,7 @@
 			children = (
 				9FF874DE2577B54600D5532F /* PointChargeModel.swift */,
 				9FF874E22577B72100D5532F /* TopologyModel.swift */,
+				9F07A8DA25B71B1400654BC2 /* DefaultTopologyModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -314,6 +317,7 @@
 				9F474FA824C37B3E004E1B54 /* Topology_+_Forces.swift in Sources */,
 				9F37040924FAA82900960422 /* Status.swift in Sources */,
 				9FF77FDB24AA8470003477C2 /* SingleForce.swift in Sources */,
+				9F07A8DB25B71B1400654BC2 /* DefaultTopologyModel.swift in Sources */,
 				9FFD6FC824ABA5BF00D8DE89 /* ArrowHead.rcproject in Sources */,
 				9FF874DF2577B54600D5532F /* PointChargeModel.swift in Sources */,
 				9F1CC723258FF22A00233606 /* PointChargeEntity.swift in Sources */,
