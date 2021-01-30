@@ -35,7 +35,7 @@ class Topology {
         self.selectedPositions = []
         self.pointCharges = []
         self.netForces = []
-        self.forces=[]
+        self.forces = []
         self.distanceIndicators = []
         self.labels = []
         

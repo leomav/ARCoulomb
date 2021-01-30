@@ -158,9 +158,17 @@ extension ViewController {
             self.topology.updateForces(for: selectedPointChargeObj)
             self.topology.updateDistanceIndicators(for: selectedPointChargeObj)
 
+            //DELETE
+            self.topology.netForces.forEach{ netForce in
+                netForce.forces.forEach{ force in
+                    print(force.angle.radiansToDegrees)
+                }
+            }
 
             /// When touches end, no entity is tracked by the gesture
             trackedEntity = Entity()
+            
+            
         }
     }
     

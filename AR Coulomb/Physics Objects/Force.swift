@@ -49,9 +49,18 @@ class Force {
     var arrowEntity: Entity
     var label: Entity
     
-    init(magnetude: Float, angle: Float, arrowEntity: Entity, inside topology: Topology) {
+    /// Drawing
+    var color: UIColor {
+        let color = self.type == ForceType.net ? UIColor.yellow : UIColor.white
+        return color
+    }
+    var selected: Bool = false
+    var type: ForceType
+    
+    init(type: ForceType, magnetude: Float, angle: Float, arrowEntity: Entity, inside topology: Topology) {
         Force.total += 1
         self.forceId = Force.total
+        self.type = type
         
         // Set Topology, Magnetude, Angle
         self.topology = topology

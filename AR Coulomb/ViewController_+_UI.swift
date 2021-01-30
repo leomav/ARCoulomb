@@ -23,6 +23,18 @@ extension ViewController {
     
     // MARK: - Configurations
     
+    func configureAngleOverview() {
+        
+    }
+    
+    func configureAngleDraw() {
+        
+    }
+    
+    func configureAngleLabel() {
+        
+    }
+    
     func configureMessagePanel() {
         /// Add the Stack View to the arView
         self.arView.addSubview(self.messagePanel)

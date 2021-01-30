@@ -19,8 +19,8 @@ let removalNotificationKey = "com.leomav.coulombRemoval"
 let dismissalNotificationKey = "com.leomav.coulombMenuDismissal"
 let photoTakenNotificationKey  = "com.leomav.topoCapturedImageDismissal"
 
-///// Add object Interaction and Gestures
-//var virtualObjectInteraction: VirtualObjectInteraction?
+/// Selected Force
+var selectedForce: Force = Force(type: ForceType.single, magnetude: 0, angle: 0, arrowEntity: Entity(), inside: Topology())
 
 /// PointCharge
 var selectedPointChargeObj: PointChargeClass = PointChargeClass(on: Entity(), inside: Topology(), withValue: 0)
@@ -37,10 +37,6 @@ let ZOOM_IN_5_4: Float = 1.25
 let ZOOM_OUT_4_5: Float = 0.8
 
 let Ke: Float = 9 * pow(10, 9)
-
-
-//TESTING
-//var cameraAnchor: AnchorEntity = AnchorEntity()
 
 var cameraTransform: Transform = Transform()
 
@@ -60,6 +56,33 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         view.accessibilityIdentifier = "Shutter View"
         
         return view
+    }()
+    
+    let angleOverview: UIStackView = {
+        let overview = UIStackView()
+        
+        overview.translatesAutoresizingMaskIntoConstraints = false
+        overview.accessibilityIdentifier = "Angle Overview"
+        
+        return overview
+    }()
+    
+    let angleDraw: UIView = {
+        let view = UIView()
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.accessibilityIdentifier = "Angle Draw"
+        
+        return view
+    }()
+    
+    let angleLabel: UILabel = {
+        let label = UILabel()
+        
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.accessibilityIdentifier = "Angle Label"
+        
+        return label
     }()
     
     let messagePanel: UIView = {
@@ -288,16 +311,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         
         
         // TESTING
-        cameraTransform = arView.cameraTransform
-        
-//        cameraAnchor = AnchorEntity(.camera)       // ARCamera anchor
-//        self.arView.scene.addAnchor(cameraAnchor)
-//        let box = MeshResource.generateBox(size: 0.25)
-//        let material = SimpleMaterial(color: .systemPink, isMetallic: true)
-//        boxEntity = ModelEntity(mesh: box, materials: [material])
-//
-//        cameraAnchor.addChild(boxEntity)
-//
+//        cameraTransform = arView.cameraTransform
 ////        boxEntity.transform.translation = [0, 0,-1]
 //
 ////        arrowHeadEntity.setScale(SIMD3<Float>(0.1,0.1,0.1), relativeTo: arrowHeadEntity)

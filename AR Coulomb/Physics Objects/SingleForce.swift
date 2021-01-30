@@ -59,7 +59,7 @@ class SingleForce: Force {
         let arrowEntity = Force.createArrowModel(on: self.targetPointCharge, magnetude: magnetude, name: "SingleForce Arrow")
         
         // Call the super init of Force Class
-        super.init(magnetude: magnetude, angle: angle, arrowEntity: arrowEntity, inside: topology)
+        super.init(type: ForceType.single, magnetude: magnetude, angle: angle, arrowEntity: arrowEntity, inside: topology)
 
         
         /// Set the arrowEntity and its parent the pivotEntity

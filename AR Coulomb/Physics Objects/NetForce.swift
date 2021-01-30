@@ -36,7 +36,7 @@ class NetForce: Force {
         
         let arrowEntity = Force.createArrowModel(on: self.pointChargeObj, magnetude: magnetude, name: "NetForce Arrow")
 
-        super.init(magnetude: magnetude, angle: angle, arrowEntity: arrowEntity, inside: topology)
+        super.init(type: ForceType.net, magnetude: magnetude, angle: angle, arrowEntity: arrowEntity, inside: topology)
     }
     
     static func createForce(for pointChargeObj: PointChargeClass) -> NetForce {
