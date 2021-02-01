@@ -25,6 +25,14 @@ extension ViewController {
     
     func configureAngleOverview() {
         
+        print("Angle Overview configuration")
+        self.arView.addSubview(self.angleOverview)
+        
+        self.angleOverview.leadingAnchor.constraint(equalTo: self.arView.leadingAnchor, constant: 20).isActive = true
+        self.angleOverview.topAnchor.constraint(equalTo: self.arView.topAnchor, constant: 20).isActive = true
+        self.angleOverview.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        self.angleOverview.widthAnchor.constraint(equalToConstant: 100).isActive = true
+
     }
     
     func configureAngleDraw() {

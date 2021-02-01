@@ -58,22 +58,15 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         return view
     }()
     
-    let angleOverview: UIStackView = {
-        let overview = UIStackView()
+    let angleOverview: AnglesOverviewView = {
+        let overview = AnglesOverviewView(frame: CGRect(x: -50, y: -50, width: 100, height: 100))
         
         overview.translatesAutoresizingMaskIntoConstraints = false
         overview.accessibilityIdentifier = "Angle Overview"
         
+        overview.backgroundColor = .black
+        
         return overview
-    }()
-    
-    let angleDraw: UIView = {
-        let view = UIView()
-        
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.accessibilityIdentifier = "Angle Draw"
-        
-        return view
     }()
     
     let angleLabel: UILabel = {
@@ -292,6 +285,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         
         /// Set up the Shutter View (Used for Visual Effect when screenshot happens)
         self.configureShutterView()
+        
+        /// TESTING
+        self.configureAngleOverview()
         
         /// Set up coaching overlay.
         /// Careful to set it up after setting up the GestureRecognizers.

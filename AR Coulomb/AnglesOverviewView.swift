@@ -15,15 +15,30 @@ enum ForceType {
 
 class AnglesOverviewView: UIStackView {
     
-    let FORCE_ARROW_TAIL_LENGTH: Float = 0.003
-    let NETFORCE_ARROW_TAIL_LENGTH: Float = 0.005
-    let ARROW_TAIL_WIDTH: Float = 0.0005
-    let HEAD_LENGTH: Float = 0.001
-    let HEAD_WIDTH: Float = 0.001
-    let ARC_RADIUS: Float = 0.002
+//    let FORCE_ARROW_TAIL_LENGTH: Float = 0.003
+//    let NETFORCE_ARROW_TAIL_LENGTH: Float = 0.005
+//    let ARROW_TAIL_WIDTH: Float = 0.0005
+//    let HEAD_LENGTH: Float = 0.001
+//    let HEAD_WIDTH: Float = 0.001
+//    let ARC_RADIUS: Float = 0.002
+    
+    let FORCE_ARROW_TAIL_LENGTH: Float = 30
+    let NETFORCE_ARROW_TAIL_LENGTH: Float = 50
+    let ARROW_TAIL_WIDTH: Float = 2
+    let HEAD_LENGTH: Float = 10
+    let HEAD_WIDTH: Float = 8
+    let ARC_RADIUS: Float = 10
+    
     let ARC_COLOR: UIColor = UIColor.orange
     
-    var forcesDrawings: [ForceDrawing]
+    
+    var forcesDrawings: [ForceDrawing] = [
+        ForceDrawing(type: ForceType.single, angle: 0, color: .white, selected: false),
+        ForceDrawing(type: ForceType.single, angle: 45.degreesToRadians(), color: .lightGray, selected: false),
+        ForceDrawing(type: ForceType.single, angle: 90.degreesToRadians(), color: .darkGray, selected: false),
+        ForceDrawing(type: ForceType.single, angle: 135.degreesToRadians(), color: .black, selected: true),
+        ForceDrawing(type: ForceType.net, angle: 225.degreesToRadians(), color: .green, selected: false),
+    ]
     
     
     // MARK: - Initialization
@@ -37,22 +52,26 @@ class AnglesOverviewView: UIStackView {
     
     // MARK: - Drawing
     override func draw(_ rect: CGRect) {
-        drawForces(forces)
-    }
-
-    // MARK: - Actions
-    private func drawForces() {
-        
         // Obtain the center point of the pie chart
         let center = CGPoint(
             x: bounds.width / 2,
             y: bounds.height / 2
         )
         
-        // Set starting angle
-        var startAngle = 0
+        let selectedForceDrawing = forcesDrawings.first { (f) -> Bool in
+            f.selected == true
+        }
+        drawAngleArc(center: center, force: selectedForceDrawing!)
         
-        self.drawForce()
+        drawForces(center: center)
+        
+    }
+
+    // MARK: - Actions
+    private func drawForces(center: CGPoint) {
+        forcesDrawings.forEach{ f in
+            self.drawForce(center: center, force: f)
+        }
     }
     
     
@@ -76,11 +95,12 @@ class AnglesOverviewView: UIStackView {
     private func drawAngleArc(center: CGPoint, force: ForceDrawing) {
         
         let startAngle: CGFloat = 0
-        let forceAngle: CGFloat = CGFloat(force.angle) - .pi/2
-        let endAngle: CGFloat = startAngle - forceAngle
+//        let forceAngle: CGFloat = CGFloat(force.angle) - .pi/2
+        let forceAngle: CGFloat = CGFloat(force.angle)
+//        let endAngle: CGFloat = startAngle - forceAngle
         
         // Create arc path starting from 0 angle
-        let arcPath = UIBezierPath(arcCenter: center, radius: CGFloat(ARC_RADIUS), startAngle: startAngle, endAngle: endAngle, clockwise: false)
+        let arcPath = UIBezierPath(arcCenter: center, radius: CGFloat(ARC_RADIUS), startAngle: startAngle, endAngle: forceAngle, clockwise: true)
         
         // Add line to center
         arcPath.addLine(to: center)
