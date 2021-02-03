@@ -18,12 +18,26 @@ let topoNotificationKey = "com.leomav.topologyChange"
 let removalNotificationKey = "com.leomav.coulombRemoval"
 let dismissalNotificationKey = "com.leomav.coulombMenuDismissal"
 let photoTakenNotificationKey  = "com.leomav.topoCapturedImageDismissal"
-
-/// Selected Force
-var selectedForce: Force = Force(type: ForceType.single, magnetude: 0, angle: 0, arrowEntity: Entity(), inside: Topology())
+let newSelectedPointChargeNotificationKey = "com.leomav.newSelectedPointCharge"
 
 /// PointCharge
-var selectedPointChargeObj: PointChargeClass = PointChargeClass(on: Entity(), inside: Topology(), withValue: 0)
+//var selectedPointChargeObj: PointChargeClass = PointChargeClass(on: Entity(), inside: Topology(), withValue: 0)
+var selectedPointChargeObj: PointChargeClass = PointChargeClass(on: Entity(), inside: Topology(), withValue: 0){
+    willSet {
+        newValue.netForce?.selected = true
+        print("will set")
+        
+    }
+    didSet {
+        oldValue.netForce?.selected = false
+        oldValue.netForce?.forces.forEach{ f in f.selected = false}
+        
+        // Update AnglesOverview view
+        let notifName = Notification.Name(rawValue: newSelectedPointChargeNotificationKey)
+        NotificationCenter.default.post(name: notifName, object: nil)
+    }
+}
+
 var longPressedEntity: Entity = Entity()
 var trackedEntity: Entity = Entity()
 
@@ -301,6 +315,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         
         /// Create the CapturedImage Dismissal Observer
         self.createCapturedImageObserver()
+        
+        /// Create the New Selected Point Charge Observer
+        self.createNewSelectedPointChargeObjectObserver()
         
         //        /// Set up the Top Guide Text (helper text to place the topology)
         //        self.configureGuideTextView()

@@ -51,7 +51,8 @@ class Force {
     
     /// Drawing
     var color: UIColor {
-        let color = self.type == ForceType.net ? UIColor.yellow : UIColor.white
+        var color = self.type == ForceType.net ? UIColor.yellow : UIColor.white
+        color = self.selected ? UIColor.green : color
         return color
     }
     var selected: Bool = false

@@ -61,25 +61,94 @@ class AnglesOverviewView: UIView {
             y: bounds.height / 2
         )
         
-        if !(forcesDrawings.isEmpty) {
-//            let selectedForceDrawingTuple = forcesDrawings.first { (f) -> Bool in
-//                f.value.selected == true
-//            }
-            let selectedForceDrawing = self.forcesDrawings[selectedForceDrawIndex]!
-//            drawAngleArc(center: center, force: selectedForceDrawingTuple!.value)
-            drawAngleArc(center: center, force: selectedForceDrawing)
-
-            drawForces(center: center)
+        print("draw")
+        
+        if selectedPointChargeObj.netForce != nil {
+            print("selected pc has netforce")
+            
+            if selectedPointChargeObj.netForce!.forces.count > 0 {
+                /**
+                    
+                 TODO HERE:
+                 1) draw Angle Arc
+                 2) draw Forces
+                 */
+                
+                drawForces(center: center)
+            }
         }
+        
+//        if !(forcesDrawings.isEmpty) {
+////            let selectedForceDrawingTuple = forcesDrawings.first { (f) -> Bool in
+////                f.value.selected == true
+////            }
+//            let selectedForceDrawing = self.forcesDrawings[selectedForceDrawIndex]!
+////            drawAngleArc(center: center, force: selectedForceDrawingTuple!.value)
+//            drawAngleArc(center: center, force: selectedForceDrawing)
+//
+//            drawForces(center: center)
+//        }
     }
 
     // MARK: - Actions
     private func drawForces(center: CGPoint) {
-        forcesDrawings.forEach{ f in
-            self.drawForce(center: center, force: f.value)
+        
+        let netForce = selectedPointChargeObj.netForce!
+        drawForce(center: center, angle: netForce.angle, forceType: netForce.type, color: netForce.color, selected: netForce.selected)
+        
+        netForce.forces.forEach{ f in
+            drawForce(center: center, angle: f.angle, forceType: f.type, color: f.color, selected: f.selected)
+        }
+        
+//        forcesDrawings.forEach{ f in
+//            self.drawForce(center: center, force: f.value)
+//        }
+    }
+    
+    private func drawForce(center: CGPoint, angle: Float, forceType: ForceType, color: UIColor, selected: Bool) {
+        
+        print(forceType, color, selected)
+        
+        // Get the tail length
+        let tailLength: Float = forceType == ForceType.single ? FORCE_ARROW_TAIL_LENGTH : NETFORCE_ARROW_TAIL_LENGTH
+        
+        // Find the end point based on the angle
+        let end_x_Point = CGFloat(center.x) + CGFloat( tailLength * cos(angle) )
+        let end_y_Point = CGFloat(center.y) + CGFloat( tailLength * sin(angle) )
+        
+        // Create the arrow path
+        let arrowPath = UIBezierPath.arrow(from: center, to: CGPoint(x: end_x_Point, y: end_y_Point), tailWidth: CGFloat(ARROW_TAIL_WIDTH), headWidth: CGFloat(HEAD_WIDTH), headLength: CGFloat(HEAD_LENGTH))
+    
+        // Fill with color
+        color.setFill()
+        arrowPath.fill()
+        
+        
+        // If force is the selected one, draw Arc
+        if selected {
+            print("selected")
+            drawAngleArc(center: center, angle: angle)
         }
     }
     
+    private func drawAngleArc(center: CGPoint, angle: Float) {
+        
+        let startAngle: CGFloat = 0
+//        let forceAngle: CGFloat = CGFloat(force.angle) - .pi/2
+        let forceAngle: CGFloat = CGFloat(angle)
+//        let endAngle: CGFloat = startAngle - forceAngle
+        
+        // Create arc path starting from 0 angle
+        let arcPath = UIBezierPath(arcCenter: center, radius: CGFloat(ARC_RADIUS), startAngle: startAngle, endAngle: forceAngle, clockwise: true)
+        
+        // Add line to center
+        arcPath.addLine(to: center)
+        
+        // Fill color
+        ARC_COLOR.setFill()
+        arcPath.fill()
+        
+    }
     
     private func drawForce(center: CGPoint, force: ForceDrawing) {
         
@@ -97,6 +166,7 @@ class AnglesOverviewView: UIView {
         force.color.setFill()
         arrowPath.fill()
     }
+    
     
     private func drawAngleArc(center: CGPoint, force: ForceDrawing) {
         

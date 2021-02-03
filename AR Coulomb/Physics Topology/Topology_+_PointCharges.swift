@@ -38,7 +38,6 @@ extension Topology {
         /// Disable and hide the StackView Buttons 
         self.viewController?.toggleStackView(hide: true, animated: false)
         
-        
         /// Update Angle Overview Dict
 //        self.viewController?.angleOverview.updateForcesDrawings(netForce: selectedPointChargeObj.netForce!)
         

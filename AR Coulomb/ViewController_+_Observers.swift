@@ -185,4 +185,17 @@ extension ViewController {
         }
     }
     
+    // (6)
+    // MARK: - New Selected Point Charge Object
+    
+    func createNewSelectedPointChargeObjectObserver() {
+        let notifName = Notification.Name(rawValue: newSelectedPointChargeNotificationKey)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateAnglesOverviewView(notification:)), name: notifName, object: nil)
+
+    }
+    
+    @objc
+    func updateAnglesOverviewView(notification: Notification) {
+        self.angleOverview.setNeedsDisplay()
+    }
 }

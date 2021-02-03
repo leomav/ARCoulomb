@@ -102,6 +102,9 @@ extension Topology {
             netForceObj.updateArrowModel()
         }
         
+        // RE-DRAW: Angle Overview View
+        self.viewController?.angleOverview.setNeedsDisplay()
+        
         // Update Angle Overview angles
 //        self.viewController?.angleOverview.updateAllForcesAngles(netForce: selectedPointChargeObj.netForce!)
     }
@@ -125,6 +128,9 @@ extension Topology {
         pointCharge.forcesOnOthers.forEach{ force in
             force.updateForce()
         }
+        
+        // RE-DRAW: Angle Overview View
+        self.viewController?.angleOverview.setNeedsDisplay()
         
         // Update Angle Overview angles
 //        self.viewController?.angleOverview.updateAllForcesAngles(netForce: selectedPointChargeObj.netForce!)
