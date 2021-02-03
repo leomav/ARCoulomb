@@ -195,12 +195,10 @@ class CoulombMenuVC: UIViewController {
     @objc
     func sliderButtonAction(sender: UIButton) {
         if sender.tag == 0 {
-            print("-")
             if (slider.value > slider.minimumValue) {
                 updateSlider(constant: -0.5)
             }
         } else if sender.tag == 1 {
-            print("+")
             if (slider.value < slider.maximumValue) {
                 updateSlider(constant: 0.5)
             }

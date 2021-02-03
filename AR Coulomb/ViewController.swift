@@ -395,6 +395,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         /// Disable and hide the StackView Buttons (add new pointCharge, add new topo)
         self.toggleStackView(hide: true, animated: false)
         
+        /// Hide the Angle Overview View
+        self.angleOverview.isHidden = true
+        
         self.status?.cancelScheduledMessage(for: .contentPlacement)
         
         /// Open the bottom Coulomb Topology menu to choose topology
@@ -417,6 +420,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         
         /// Hide the stack view (menu on bottom right)
         self.toggleStackView(hide: true, animated: false)
+        
+        /// Hide the Angle Overview
+        self.angleOverview.isHidden = true
         
         /// Clear the current topology
         self.topology.clearTopology()

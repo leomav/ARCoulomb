@@ -33,7 +33,7 @@ class PersistenceService {
         let context = persistentContainer.viewContext
         if context.hasChanges {
             do {
-                print("context: saved")
+//                print("context: saved")
                 try context.save()
             } catch {
                 let nserror = error as NSError

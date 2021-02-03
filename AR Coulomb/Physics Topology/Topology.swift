@@ -84,6 +84,18 @@ class Topology {
         /// Show Forces and Distance Indicators only for selected pointCharge
         self.showForces(for: selectedPointChargeObj)
         self.showDistaneIndicators(for: selectedPointChargeObj)
+    
+        
+        
+        
+        /// Update Angle Overview Dict
+//        self.viewController?.angleOverview.updateForcesDrawings(netForce: selectedPointChargeObj.netForce!)
+        
+        /// Update Selected ForceDraw
+//        self.viewController?.angleOverview.selectForceDrawing(index: selectedPointChargeObj.netForce!.forceId)
+        
+        /// Update Angle Overview angles
+//        self.viewController?.angleOverview.updateAllForcesAngles(netForce: selectedPointChargeObj.netForce!)
     }
     
     func clearTopology() {

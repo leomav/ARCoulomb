@@ -37,8 +37,14 @@ struct Alert {
             /// Enable the Stack View Buttons (add pointChaege, add topo)
             vc.toggleStackView(hide: false, animated: false)
             
+            /// Update Angle Overview
+//            vc.angleOverview.updateAllForcesAngles(netForce: selectedPointChargeObj.netForce!)
+            
+            /// Enable the Angle Overview View
+            vc.angleOverview.isHidden = false
+            
+            /// Probably impossible since one was just deleted, but whatever, SAFETY FIRST...
             /// If the Limit Number is reached, disable the Add Button
-            /// Probably impossible since one was just deleted, but whatever, SAFETY FIRST
             if vc.topology.pointCharges.count == 6 {
                 vc.addButton.isEnabled = false
             }

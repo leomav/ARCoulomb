@@ -35,7 +35,7 @@ class TopologyStore {
     
     private func loadSavedTopologies() {
         
-        print("Load Saved Topologies")
+//        print("Load Saved Topologies")
         
         let fetchRequest: NSFetchRequest<NSTopology> = NSTopology.fetchRequest()
         
@@ -70,7 +70,7 @@ class TopologyStore {
     
     func saveDefaultTopologiesToCoreData() {
         
-        print("Save Default Topos To CoreData")
+//        print("Save Default Topos To CoreData")
         
 //        for positions in defaultPositions {
 //            // Save the topology
@@ -120,7 +120,7 @@ class TopologyStore {
     }
     func deleteDefaultTopologiesFromCoreData() {
         
-        print("Delete Default Topologies From Core Data")
+//        print("Delete Default Topologies From Core Data")
 
         let fetchRequest: NSFetchRequest<NSTopology> = NSTopology.fetchRequest()
         do {
@@ -136,7 +136,7 @@ class TopologyStore {
     
     func deleteTopologyFromCoreData(topology: NSTopology) {
         
-        print("Delete Topology From Core Data  (Default)")
+//        print("Delete Topology From Core Data  (Default)")
 
         /// Delete the NS topo from Core Data
         PersistenceService.context.delete(topology)
@@ -146,7 +146,7 @@ class TopologyStore {
     
     func deleteSavedTopologyFromCoreData(topology: TopologyModel) {
         
-        print("Delete Saved Topology From Core Data")
+//        print("Delete Saved Topology From Core Data")
         
         let fetchRequest: NSFetchRequest<NSTopology> = NSTopology.fetchRequest()
         
@@ -171,7 +171,7 @@ class TopologyStore {
     
     func reloadSavedTopologies() {
         
-        print("Reload Topologies")
+//        print("Reload Topologies")
         
         ///  First, delete previous saved topologies
         self.eraseTopologies()

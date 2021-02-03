@@ -24,14 +24,20 @@ extension ViewController {
     // MARK: - Configurations
     
     func configureAngleOverview() {
-        
-        print("Angle Overview configuration")
         self.arView.addSubview(self.angleOverview)
+        
         
         self.angleOverview.leadingAnchor.constraint(equalTo: self.arView.leadingAnchor, constant: 20).isActive = true
         self.angleOverview.topAnchor.constraint(equalTo: self.arView.topAnchor, constant: 20).isActive = true
         self.angleOverview.heightAnchor.constraint(equalToConstant: 100).isActive = true
         self.angleOverview.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        
+        /// Starts off hidden
+        /// Note: Hide AngleOverview when
+        ///     1) Before a topo is placed
+        ///     2) When Coulomb or Topo menu open
+        ///     3) When capturing a snapshot
+        self.angleOverview.isHidden = true
 
     }
     
@@ -213,6 +219,7 @@ extension ViewController {
     func toggleViewsOnSnapshot(hide: Bool) {
         self.messagePanel.isHidden = hide
         self.stackView.isHidden = hide
+        self.angleOverview.isHidden = hide
     }
     
     // MARK: - SubViews existance

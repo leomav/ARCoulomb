@@ -25,6 +25,9 @@ extension ViewController {
         /// Enable the StackView Buttons (add new pointCharge, add new topo)
         self.toggleStackView(hide: false, animated: false)
         
+        /// Enable Angle Overview View
+        self.angleOverview.isHidden = false
+        
         /// If the Limit Number is reached, disable the Add Button
         if self.topology.pointCharges.count == 6 {
             self.addButton.isEnabled = false
@@ -58,6 +61,9 @@ extension ViewController {
             /// Enable the StackView Buttons (add new pointCharge, add new topo)
             self.toggleStackView(hide: false, animated: false)
             
+            /// Enable the Angle Overview View
+            self.angleOverview.isHidden = false
+            
             /// If the Limit Number is reached, disable the Add Button
             if self.topology.pointCharges.count == 6 {
                 self.addButton.isEnabled = false
@@ -79,8 +85,6 @@ extension ViewController {
     /// Remove the selected pointCharge
     @objc
     func removePointCharge(notification: Notification) {
-        
-        print("--------- Observer: Delete.")
         Alert.showDeletionConfirmation(on: self)
     }
     
@@ -99,16 +103,15 @@ extension ViewController {
             
             selectedPointChargeObj.value = newValue
             
-            // CHANGE THAT !!!
-            
+            EntityStore.shared.update_TextEntity(textEntity: selectedPointChargeObj.label, stringValue: "\(newValue) Cb")
             // Find text entity of pointCharge
-            for entity in longPressedEntity.children {
-                if entity.name == "Coulomb Text" {
-                    EntityStore.shared.update_TextEntity(textEntity: entity, stringValue: "\(newValue) Cb")
-//                    PointChargeClass.loadText(textEntity: entity, material: coulombTextMaterial, coulombStringValue: "\(newValue) Cb")
-                    break
-                }
-            }
+//            for entity in longPressedEntity.children {
+//                if entity.name == "Coulomb Text" {
+//                    EntityStore.shared.update_TextEntity(textEntity: entity, stringValue: "\(newValue) Cb")
+////                    PointChargeClass.loadText(textEntity: entity, material: coulombTextMaterial, coulombStringValue: "\(newValue) Cb")
+//                    break
+//                }
+//            }
 //            PointChargeClass.loadText(textEntity: longPressedEntity.children[1], material: coulombTextMaterial, coulombStringValue: "\(newValue) Cb")
             
             self.topology.updateForces()

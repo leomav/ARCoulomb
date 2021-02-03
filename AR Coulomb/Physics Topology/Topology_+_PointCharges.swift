@@ -38,6 +38,19 @@ extension Topology {
         /// Disable and hide the StackView Buttons 
         self.viewController?.toggleStackView(hide: true, animated: false)
         
+        
+        /// Update Angle Overview Dict
+//        self.viewController?.angleOverview.updateForcesDrawings(netForce: selectedPointChargeObj.netForce!)
+        
+        /// Update Selected Force Draw
+//        self.viewController?.angleOverview.selectForceDrawing(index: selectedPointChargeObj.netForce!.forceId)
+    
+        /// Update Angle Overview angles
+//        self.viewController?.angleOverview.updateAllForcesAngles(netForce: selectedPointChargeObj.netForce!)
+        
+        /// Hide the Angle Overview
+        self.viewController?.angleOverview.isHidden = true
+        
         /// Perform seague to CoulombMenu ViewController
         self.viewController?.performSegue(withIdentifier: "toCoulombMenuSegue", sender: nil)
     }
@@ -64,15 +77,6 @@ extension Topology {
         selectedPointChargeObj = newPointChargeObj
         longPressedEntity = point!
         
-        /// Create Text Entity for the pointCharge
-//        let textPos = SIMD3<Float>(-0.02, (PointChargeClass.pointChargeRadius + 0.005), PointChargeClass.pointChargeRadius + 0.005)
-//        let textEntity = EntityStore.shared.load_TextEntity(on: newPointChargeObj.entity, name: "Coulomb Text", position: textPos)
-        /// Add Label Entity to pointCharge
-//        newPointChargeObj.labelEntity = textEntity
-
-        /// Load the mesh and material for the model of the text entity
-//        EntityStore.shared.update_TextEntity(textEntity: textEntity, material: EntityStore.shared.textMaterial, stringValue: "\(newPointChargeObj.value) Cb")
-
         /// Install gestures, careful to set its ".cancelTouchesInView" to false cause it cancels touches gestures  other than
         /// the installed below (I do that in Topology Placement)
         self.viewController?.arView.installGestures([.translation, .rotation], for: point as! HasCollision)
@@ -100,15 +104,6 @@ extension Topology {
         /// Set selectedEntity (longPressedEntity)
         selectedPointChargeObj = newPointChargeObj
         longPressedEntity = point!
-        
-        /// Create Text Entity for the pointCharge
-//        let textPos = SIMD3<Float>(-0.02, (PointChargeClass.pointChargeRadius + 0.01), PointChargeClass.pointChargeRadius + 0.005)
-//        let textEntity = EntityStore.shared.load_TextEntity(on: newPointChargeObj.entity, name: "Coulomb Text", position: textPos)
-        /// Add Label Entity to pointCharge
-//        newPointChargeObj.labelEntity = textEntity
-        
-        /// Load the mesh and material for the model of the text entity
-//        EntityStore.shared.update_TextEntity(textEntity: textEntity, material: EntityStore.shared.textMaterial, stringValue: "\(newPointChargeObj.value) Cb")
         
         /// Install gestures, careful to set its ".cancelTouchesInView" to false cause it cancels touches gestures  other than
         /// the installed below (I do that in Topology Placement)
@@ -151,6 +146,11 @@ extension Topology {
         /// ... and show the forces relative to it
         self.showForces(for: selectedPointChargeObj)
         self.showDistaneIndicators(for: selectedPointChargeObj)
+        
+        /// Update Angle Overview Dict
+//        self.viewController?.angleOverview.updateForcesDrawings(netForce: selectedPointChargeObj.netForce!)
+        /// Update Angle Overview angles
+//        self.viewController?.angleOverview.updateAllForcesAngles(netForce: selectedPointChargeObj.netForce!)
     }
     
     // Show or Hide all PointCharges

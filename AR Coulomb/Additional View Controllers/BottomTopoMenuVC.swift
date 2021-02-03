@@ -126,7 +126,7 @@ class BottomTopoMenuVC: UIViewController {
     
     override func viewDidLoad() {
         
-        print("Bottom Topo Menu did load")
+//        print("Bottom Topo Menu did load")
         
         /// Reload savedTopologies, cause Object Identifiers for custom saved topos
         /// change for some reason. Also, do the same before deleting!
@@ -150,7 +150,7 @@ class BottomTopoMenuVC: UIViewController {
     }
     
     private func reloadTopoView() {
-        print("Reload Topo View")
+//        print("Reload Topo View")
         
         self.stackView.removeFromSuperview()
         self.configureStackView()
@@ -170,7 +170,7 @@ class BottomTopoMenuVC: UIViewController {
     }
     func configureStackView() {
         
-        print("Configure Stack View")
+//        print("Configure Stack View")
         
         self.scrollView.addSubview(self.stackView)
         
@@ -308,7 +308,7 @@ class BottomTopoMenuVC: UIViewController {
     
     func updatePreview() {
         
-        print("Update Preview")
+//        print("Update Preview")
         
         self.previewImageView.image = selectedTopo?.getImage()
         self.previewTitleTextView.text = selectedTopo?.getName().uppercased()
@@ -328,7 +328,7 @@ class BottomTopoMenuVC: UIViewController {
     
     @objc
     func buttonLoadTopoAction(sender: UIButton!) {
-        print("Load Topo \(selectedTopo!.name)")
+//        print("Load Topo \(selectedTopo!.name)")
         
         /// Notify for new positions
         let notifName = Notification.Name(rawValue: topoNotificationKey)
@@ -342,7 +342,7 @@ class BottomTopoMenuVC: UIViewController {
     
     @objc
     func buttonDeleteTopoAction(sender: UIButton!) {
-        print("Delete Topo Action")
+//        print("Delete Topo Action")
         
         let btnsend: UIButton = sender
             
@@ -381,7 +381,7 @@ class BottomTopoMenuVC: UIViewController {
     
     private func selectTopo(button: UIButton) {
         
-        print("Select Topo")
+//        print("Select Topo")
         
         let totalTopologies = TopologyStore.sharedInstance.totalTopologies()
         if button.tag > -1 && button.tag < (totalTopologies) {

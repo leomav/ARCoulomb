@@ -13,7 +13,7 @@ extension ViewController: ARCoachingOverlayViewDelegate {
     
         /// - Tag: HideUI
         func coachingOverlayViewWillActivate(_ coachingOverlayView: ARCoachingOverlayView) {
-            print("coaching Overlay View will activate")
+//            print("coaching Overlay View will activate")
             
             /// Disable the gesturesRecognizers
             self.arView.gestureRecognizers?.forEach{ recognizer in

@@ -34,7 +34,6 @@ extension Topology {
                     }
                 }
                 
-                self.updateForces()
             }
         }
     }
@@ -102,9 +101,11 @@ extension Topology {
             // Update Net Force Arrow
             netForceObj.updateArrowModel()
         }
+        
+        // Update Angle Overview angles
+//        self.viewController?.angleOverview.updateAllForcesAngles(netForce: selectedPointChargeObj.netForce!)
     }
     
-    // TESTED -> WORKS!
     func updateForces(for pointCharge: PointChargeClass) {
         
         ///  Forces rendered on the pointCharge
@@ -124,12 +125,24 @@ extension Topology {
         pointCharge.forcesOnOthers.forEach{ force in
             force.updateForce()
         }
+        
+        // Update Angle Overview angles
+//        self.viewController?.angleOverview.updateAllForcesAngles(netForce: selectedPointChargeObj.netForce!)
     }
     
     // Recalculate all Forces (after point charge was added/removed)
     func reloadAllForces() {
         self.clearAllForces()
         self.addAllForces()
+        
+        /// Initialize again Angle Overview ForcesDrawings Dict
+//        self.viewController?.angleOverview.updateForcesDrawings(netForce: selectedPointChargeObj.netForce!)
+        /// Select a ForceDrawing
+//        self.viewController?.angleOverview.selectForceDrawing(index: selectedPointChargeObj.netForce!.forceId)
+        
+        /// Update Forces (values, arrows, angles, etc...)
+        self.updateForces()
+
     }
     
     func clearAllForces() {

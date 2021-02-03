@@ -36,21 +36,6 @@ extension ViewController {
 
         /// Open the bottom Coulomb Topology menu to choose topology
         self.performSegueToTopoMenu()
-//        performSegue(withIdentifier: "toTopoMenuSegue", sender: nil)
-        
-//        let location = recognizer.location(in: arView)
-//
-//        let results = arView.raycast(from: location, allowing: .estimatedPlane, alignment: .any)
-//
-//        if let firstResult = results.first {
-//            let anchor = ARAnchor(name: "Topology", transform: firstResult.worldTransform)
-//            arView.session.add(anchor: anchor)
-//            
-//            /// Disable the Placement Indicator
-//            EntityStore.shared.toggle_PlacementIndicator(anchor: placementIndicator, show: false)
-//        } else {
-//            print("No surface found.")
-//        }
     }
 
     // MARK: - PointCharge LongPress
@@ -64,15 +49,15 @@ extension ViewController {
         guard let hitEntity = arView.entity(at: location) else {return}
 
         if recognizer.state == .began {
+            
             if hitEntity == trackedEntity {
                 longPressedEntity = hitEntity
-//                pointChargeInteract(zoom: ZOOM_OUT_4_5, showLabel: true)
+//                pointChargeInteract(zoom: ZOOM_IN_5_4, showLabel: false)
 
                 trackedEntity = Entity()
 
                 /// Find and set the new Selected PointChargeObj
                 selectedPointChargeObj = topology.pointCharges.first(where: {$0.entity == longPressedEntity})! 
-                
                 
                 /// Show forces and distance indicators relative to the selectedPointChargeObj
                 self.topology.showForces(for: selectedPointChargeObj)
@@ -81,6 +66,12 @@ extension ViewController {
 
                 /// Disable and hide the StackView Buttons (add new pointCharge, add new topo)
                 self.toggleStackView(hide: true, animated: false)
+                
+                
+//                self.angleOverview.selectForceDrawing(index: selectedPointChargeObj.netForce!.forceId)
+                
+                /// Hide Angle Overview View
+                self.angleOverview.isHidden = true
                 
                 self.status?.cancelScheduledMessage(for: .contentPlacement)
 
@@ -91,6 +82,7 @@ extension ViewController {
 
         if recognizer.state == .ended {
             if hitEntity.name == "pointCharge" {
+//            self.pointChargeInteract(zoom: ZOOM_OUT_4_5, showLabel: true)
             }
         }
     }
@@ -101,7 +93,23 @@ extension ViewController {
         guard let hitEntity = self.arView.entity(at: location) else {return}
 
         if hitEntity.name == "pointCharge" {
+            
             trackedEntity = hitEntity
+            
+            /// Update Angle Overview Selected Force Draw
+            if !(topology.pointCharges.isEmpty) && selectedPointChargeObj.entity.id != trackedEntity.id {
+                let tappedPointCharge: PointChargeClass = self.topology.pointCharges.first { (p) -> Bool in
+                    p.entity.id == trackedEntity.id
+                }!
+                
+                let selectedForce = tappedPointCharge.forcesOnOthers.first { (force) -> Bool in
+                    (selectedPointChargeObj.netForce?.forces.contains(where: { (f) -> Bool in
+                        force.forceId == f.forceId
+                    }))!
+                }
+                
+//                self.angleOverview.selectForceDrawing(index: selectedForce!.forceId)
+            }
             
             /// Show PointCharge Interaction
 //            self.pointChargeInteract(zoom: ZOOM_IN_5_4, showLabel: false)
@@ -116,9 +124,11 @@ extension ViewController {
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         if trackedEntity.name == "pointCharge" {
-            //  self.topology.updateForces(for: selectedPointChargeObj)
+            self.topology.updateForces(for: selectedPointChargeObj)
             self.topology.updateDistanceIndicators(for: selectedPointChargeObj)
-
+            
+            // Update angles in Angle Overview
+//            self.angleOverview.updateAllForcesAngles(netForce: selectedPointChargeObj.netForce!)
         }
     }
 
@@ -157,13 +167,6 @@ extension ViewController {
             /// Update all forces magnetudes,directions and all Distance Indicators
             self.topology.updateForces(for: selectedPointChargeObj)
             self.topology.updateDistanceIndicators(for: selectedPointChargeObj)
-
-            //DELETE
-            self.topology.netForces.forEach{ netForce in
-                netForce.forces.forEach{ force in
-                    print(force.angle.radiansToDegrees)
-                }
-            }
 
             /// When touches end, no entity is tracked by the gesture
             trackedEntity = Entity()

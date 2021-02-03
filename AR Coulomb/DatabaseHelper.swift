@@ -22,7 +22,7 @@ class DataBaseHelper {
 
         do {
             try context.save()
-            print("Topology is saved")
+//            print("Topology is saved")
             completion(true, "")
         } catch {
             print(error.localizedDescription)
