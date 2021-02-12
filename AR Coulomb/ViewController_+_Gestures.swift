@@ -97,19 +97,41 @@ extension ViewController {
             trackedEntity = hitEntity
             
             /// Update Angle Overview Selected Force Draw
-            if !(topology.pointCharges.isEmpty) && selectedPointChargeObj.entity.id != trackedEntity.id {
+//            if !(topology.pointCharges.isEmpty) && selectedPointChargeObj.entity.id != trackedEntity.id {
+            if !(topology.pointCharges.isEmpty) {
+
+                // Deselect the previous selected force by
+                // deselecting them all first
+                selectedPointChargeObj.netForce?.selected = false
+                selectedPointChargeObj.netForce?.forces.forEach{ f in
+                    f.selected = false
+                }
+                
+                // Find the tapped PointCharge Object
                 let tappedPointCharge: PointChargeClass = self.topology.pointCharges.first { (p) -> Bool in
                     p.entity.id == trackedEntity.id
                 }!
                 
-                let selectedForce = tappedPointCharge.forcesOnOthers.first { (force) -> Bool in
+                if (tappedPointCharge.entity.id == selectedPointChargeObj.entity.id) {
+                    print("same")
+                    selectedPointChargeObj.netForce?.selected = true
+                }
+                
+                // Else, find and select the right force on the selected Point Charge
+                tappedPointCharge.forcesOnOthers.first { (force) -> Bool in
                     (selectedPointChargeObj.netForce?.forces.contains(where: { (f) -> Bool in
                         force.forceId == f.forceId
                     }))!
-                }
+                }?.selected = true
                 
 //                self.angleOverview.selectForceDrawing(index: selectedForce!.forceId)
             }
+            
+            // DELETE AFTER
+//            print(selectedPointChargeObj.netForce!.forceId, selectedPointChargeObj.netForce?.selected)
+//            selectedPointChargeObj.netForce?.forces.forEach{ f in
+//                print(f.forceId, f.selected)
+//            }
             
             /// Show PointCharge Interaction
 //            self.pointChargeInteract(zoom: ZOOM_IN_5_4, showLabel: false)

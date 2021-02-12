@@ -40,11 +40,6 @@ class AnglesOverviewView: UIView {
     
     // MARK: - Initialization
     override init(frame: CGRect) {
-        print("Arc Color:", ARC_COLOR)
-        print("Single Force Color:", FORCE_COLOR)
-        print("Net Force Color:", NETFORCE_COLOR)
-        print("Selected Force Color:", SELECTED_FORCE_COLOR)
-        
         super.init(frame: frame)
     }
     
@@ -78,16 +73,6 @@ class AnglesOverviewView: UIView {
             }
         }
         
-//        if !(forcesDrawings.isEmpty) {
-////            let selectedForceDrawingTuple = forcesDrawings.first { (f) -> Bool in
-////                f.value.selected == true
-////            }
-//            let selectedForceDrawing = self.forcesDrawings[selectedForceDrawIndex]!
-////            drawAngleArc(center: center, force: selectedForceDrawingTuple!.value)
-//            drawAngleArc(center: center, force: selectedForceDrawing)
-//
-//            drawForces(center: center)
-//        }
     }
 
     // MARK: - Actions
