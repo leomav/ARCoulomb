@@ -19,13 +19,37 @@ let removalNotificationKey = "com.leomav.coulombRemoval"
 let dismissalNotificationKey = "com.leomav.coulombMenuDismissal"
 let photoTakenNotificationKey  = "com.leomav.topoCapturedImageDismissal"
 let newSelectedPointChargeNotificationKey = "com.leomav.newSelectedPointCharge"
+let newSelectedForceValueNotificationKey = "com.leomav.newSelectedForceValue"
+
+var selectedForceObj: Force = Force(type: .single, magnitude: 0, angle: 0, arrowEntity: Entity(), inside: Topology()) 
+
+var selectedForceAngleFloatValue: Float = 90 {
+    willSet {
+        selectedForceValue = String(format: "%.0f°", newValue.radiansToDegrees)
+    }
+    
+    didSet {
+        previouslySelectedForceAngleFloatValue = oldValue
+    }
+}
+var previouslySelectedForceAngleFloatValue: Float = 90
 
 /// PointCharge
 //var selectedPointChargeObj: PointChargeClass = PointChargeClass(on: Entity(), inside: Topology(), withValue: 0)
 var selectedPointChargeObj: PointChargeClass = PointChargeClass(on: Entity(), inside: Topology(), withValue: 0){
     willSet {
         newValue.netForce?.selected = true
+        if let force = newValue.netForce {
+            selectedForceObj = force
+
+        }
         print("will set")
+        
+        if let angle = newValue.netForce?.angle {
+            if abs(angle.radiansToDegrees - selectedForceAngleFloatValue.radiansToDegrees) >= 1 {
+                selectedForceAngleFloatValue = angle
+            }
+        }
         
     }
     didSet {
@@ -34,6 +58,14 @@ var selectedPointChargeObj: PointChargeClass = PointChargeClass(on: Entity(), in
         
         // Update AnglesOverview view
         let notifName = Notification.Name(rawValue: newSelectedPointChargeNotificationKey)
+        NotificationCenter.default.post(name: notifName, object: nil)
+    }
+}
+
+var selectedForceValue: String = "90°" {
+    didSet {
+        // Notify for new value
+        let notifName = Notification.Name(rawValue: newSelectedForceValueNotificationKey)
         NotificationCenter.default.post(name: notifName, object: nil)
     }
 }
@@ -264,8 +296,8 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     /// Saved AR  Plane Anchors
     /// current: The current ARPlaneAnchor under PlacementIndicator
     /// selected: The ARPlaneAnchor that the user finally places the topology on
-    var selectedARPlaneAnchor: ARPlaneAnchor?
-    var currentARPlaneAnchor: ARPlaneAnchor?
+//    var selectedARPlaneAnchor: ARPlaneAnchor?
+//    var currentARPlaneAnchor: ARPlaneAnchor?
 
     var topology: Topology = Topology()
     
@@ -303,6 +335,8 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         /// TESTING
         self.configureAngleOverview()
         
+        self.configureAngleLabel()
+        
         /// Set up coaching overlay.
         /// Careful to set it up after setting up the GestureRecognizers.
         self.setupCoachingOverlay()
@@ -314,10 +348,13 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         self.setupObserverMenuDismissal()
         
         /// Create the CapturedImage Dismissal Observer
-        self.createCapturedImageObserver()
+        self.setupObserverCapturedImage()
         
         /// Create the New Selected Point Charge Observer
-        self.createNewSelectedPointChargeObjectObserver()
+        self.setupObserverNewSelectedPointChargeObject()
+        
+        /// Create the New Selected Force Value Observer
+        self.setupObserverNewSelectedForceValue()
         
         //        /// Set up the Top Guide Text (helper text to place the topology)
         //        self.configureGuideTextView()
@@ -414,6 +451,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         
         /// Hide the Angle Overview View
         self.angleOverview.isHidden = true
+        self.angleLabel.isHidden = true
         
         self.status?.cancelScheduledMessage(for: .contentPlacement)
         
@@ -428,7 +466,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     // MARK: - Restart Experience
     
     func restartExperience() {
-        //        guard isRestartAvailable, !virtualObjectLoader.isLoading else { return }
+        
         /// Disable restart availability for at least 5 seconds
         guard isRestartAvailable else { return }
         isRestartAvailable = false
@@ -440,6 +478,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         
         /// Hide the Angle Overview
         self.angleOverview.isHidden = true
+        self.angleLabel.isHidden = true
         
         /// Clear the current topology
         self.topology.clearTopology()

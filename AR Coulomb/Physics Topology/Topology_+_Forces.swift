@@ -7,6 +7,7 @@
 //
 
 import RealityKit
+import Foundation
 
 extension Topology {
     
@@ -92,7 +93,7 @@ extension Topology {
                 forceObj.updateForce()
             }
             
-            // Calculate Force Magnetude, Angle
+            // Calculate Force Magnitude, Angle
             netForceObj.updateForce()
             
             // Update Net Force Arrow orientation
@@ -103,8 +104,13 @@ extension Topology {
         }
         
         // RE-DRAW: Angle Overview View
-        self.viewController?.angleOverview.setNeedsDisplay()
-        
+        if abs(selectedForceAngleFloatValue.radiansToDegrees - previouslySelectedForceAngleFloatValue.radiansToDegrees) >= 1 {
+//            print(previouslySelectedForceAngleFloatValue.radiansToDegrees, selectedForceAngleFloatValue.radiansToDegrees)
+
+            self.viewController?.angleOverview.setNeedsDisplay()
+        }
+        self.viewController?.angleLabel.setNeedsDisplay()
+
         // Update Angle Overview angles
 //        self.viewController?.angleOverview.updateAllForcesAngles(netForce: selectedPointChargeObj.netForce!)
     }
@@ -115,7 +121,7 @@ extension Topology {
         pointCharge.netForce?.forces.forEach{ force in
             force.updateForce()
         }
-        /// Calculate Net Force Magnetude, Angle
+        /// Calculate Net Force Magnitude, Angle
         pointCharge.netForce?.updateForce()
         
         /// Update Net Force Arrow orientation
@@ -130,7 +136,12 @@ extension Topology {
         }
         
         // RE-DRAW: Angle Overview View
-        self.viewController?.angleOverview.setNeedsDisplay()
+        if abs(selectedForceAngleFloatValue.radiansToDegrees - previouslySelectedForceAngleFloatValue.radiansToDegrees) >= 1 {
+//            print(previouslySelectedForceAngleFloatValue.radiansToDegrees, selectedForceAngleFloatValue.radiansToDegrees)
+            self.viewController?.angleOverview.setNeedsDisplay()
+        }
+        self.viewController?.angleLabel.setNeedsDisplay()
+
         
         // Update Angle Overview angles
 //        self.viewController?.angleOverview.updateAllForcesAngles(netForce: selectedPointChargeObj.netForce!)
@@ -216,7 +227,7 @@ extension Topology {
 //        let arrow = createArrowEntity(for: pointChargeObj, name: "NetForce Arrow")
 //
 //        /// Initialize NetForce Object with Arrow Entity
-//        let netForce = NetForce(magnetude: 0, angle: 0, arrowEntity: arrow ,point: pointChargeObj, forces: [])
+//        let netForce = NetForce(magnitude: 0, angle: 0, arrowEntity: arrow ,point: pointChargeObj, forces: [])
 //
 //        /// Append it to netForces of topology. CAN BE DONE AFTER RETURN THOUGH.
 //        self.netForces.append(netForce)
@@ -230,7 +241,7 @@ extension Topology {
 //        let arrow = createArrowEntity(for: pointChargeObj, name: "SingleForce Arrow")
 //
 //        /// Create instance of Force Object with arrow entity
-//        let force = SingleForce(magnetude: 5, angle:0, arrowEntity: arrow, from: otherPointChargeObj, to: pointChargeObj)
+//        let force = SingleForce(magnitude: 5, angle:0, arrowEntity: arrow, from: otherPointChargeObj, to: pointChargeObj)
 //
 //        /// Integrate Force Obj to the Net Force Obj of the PointChargeObj. CAN BE DONE AFTER RETURN THOUGH.
 //        netForce.forces.append(force)

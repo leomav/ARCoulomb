@@ -16,7 +16,7 @@ extension ViewController {
     @objc
     func handleTap(recognizer: UITapGestureRecognizer) {
         /// Update selected ARPlaneAnchor
-        self.selectedARPlaneAnchor = self.currentARPlaneAnchor
+//        self.selectedARPlaneAnchor = self.currentARPlaneAnchor
         
         /// Create new Anchor Entity for Topology
         let anchor = AnchorEntity()
@@ -41,6 +41,7 @@ extension ViewController {
     // MARK: - PointCharge LongPress
     @objc
     func handleLongPress(recognizer: UILongPressGestureRecognizer) {
+        
         /// Re-enable all pointCharge Labels because on first touch (see below) we disable them
         self.topology.toggleCoulombLabels(show: true)
         
@@ -72,6 +73,7 @@ extension ViewController {
                 
                 /// Hide Angle Overview View
                 self.angleOverview.isHidden = true
+                self.angleLabel.isHidden = true
                 
                 self.status?.cancelScheduledMessage(for: .contentPlacement)
 
@@ -112,18 +114,37 @@ extension ViewController {
                     p.entity.id == trackedEntity.id
                 }!
                 
+                // If the tappedPointCharge is the selectedPointCharge, select its netForce
                 if (tappedPointCharge.entity.id == selectedPointChargeObj.entity.id) {
-                    print("same")
                     selectedPointChargeObj.netForce?.selected = true
+                    selectedForceObj = selectedPointChargeObj.netForce!
+                    if let angle = selectedPointChargeObj.netForce?.angle {
+                        if abs(angle.radiansToDegrees - selectedForceAngleFloatValue.radiansToDegrees) >= 1 {
+                            selectedForceAngleFloatValue = angle
+                        }
+                    }
+                        //"\(String(describing: selectedPointChargeObj.netForce?.angle))°"
+                } else {
+                    // Else, find and select the right force on the selected Point Charge
+                    let selectedForce = tappedPointCharge.forcesOnOthers.first { (force) -> Bool in
+                        (selectedPointChargeObj.netForce?.forces.contains(where: { (f) -> Bool in
+                            force.forceId == f.forceId
+                        }))!
+                    }
+                    selectedForce?.selected = true
+                    selectedForceObj = selectedForce!
+                    if let angle = selectedForce?.angle {
+                        if abs(angle.radiansToDegrees - selectedForceAngleFloatValue.radiansToDegrees) >= 1 {
+                            selectedForceAngleFloatValue = angle
+                        }
+
+                    }
+//                    selectedForceValue = "\(String(describing: selectedForce?.angle))°"
                 }
                 
-                // Else, find and select the right force on the selected Point Charge
-                tappedPointCharge.forcesOnOthers.first { (force) -> Bool in
-                    (selectedPointChargeObj.netForce?.forces.contains(where: { (f) -> Bool in
-                        force.forceId == f.forceId
-                    }))!
-                }?.selected = true
                 
+                
+
 //                self.angleOverview.selectForceDrawing(index: selectedForce!.forceId)
             }
             
@@ -149,12 +170,20 @@ extension ViewController {
             self.topology.updateForces(for: selectedPointChargeObj)
             self.topology.updateDistanceIndicators(for: selectedPointChargeObj)
             
+            
+            let angle = selectedForceObj.angle
+            if abs(angle.radiansToDegrees - selectedForceAngleFloatValue.radiansToDegrees) >= 1 {
+                selectedForceAngleFloatValue = angle
+            }
+            
+            
             // Update angles in Angle Overview
 //            self.angleOverview.updateAllForcesAngles(netForce: selectedPointChargeObj.netForce!)
         }
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
         /// If tracked entity is a pointCharge, check if its alignment differ less than 0.02m from the other particles.
         /// If so, align it to them
         if trackedEntity.name == "pointCharge" {
@@ -186,7 +215,7 @@ extension ViewController {
                 }
             }
 
-            /// Update all forces magnetudes,directions and all Distance Indicators
+            /// Update all forces magnitude,directions and all Distance Indicators
             self.topology.updateForces(for: selectedPointChargeObj)
             self.topology.updateDistanceIndicators(for: selectedPointChargeObj)
 

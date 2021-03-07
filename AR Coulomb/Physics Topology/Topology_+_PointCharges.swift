@@ -49,6 +49,7 @@ extension Topology {
         
         /// Hide the Angle Overview
         self.viewController?.angleOverview.isHidden = true
+        self.viewController?.angleLabel.isHidden = true
         
         /// Perform seague to CoulombMenu ViewController
         self.viewController?.performSegue(withIdentifier: "toCoulombMenuSegue", sender: nil)

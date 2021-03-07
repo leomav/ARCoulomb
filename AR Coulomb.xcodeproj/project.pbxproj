@@ -31,7 +31,6 @@
 		9F8BC76525C44F5800AFC79F /* AnglesOverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F8BC76425C44F5800AFC79F /* AnglesOverviewView.swift */; };
 		9F8E5A4924BB390900C69C27 /* TopologyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F8E5A4824BB390900C69C27 /* TopologyStore.swift */; };
 		9FAB03CE2573F45C00555B1E /* CustomPhotoAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FAB03CD2573F45C00555B1E /* CustomPhotoAlbum.swift */; };
-		9FAB03D12573F9FD00555B1E /* DatabaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FAB03D02573F9FD00555B1E /* DatabaseHelper.swift */; };
 		9FACABBF24C24D2A0024962B /* Force.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FACABBE24C24D2A0024962B /* Force.swift */; };
 		9FD23275258282440027D349 /* EntitiyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD23274258282440027D349 /* EntitiyStore.swift */; };
 		9FD94474249A258400C0E646 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD94473249A258400C0E646 /* AppDelegate.swift */; };
@@ -77,7 +76,6 @@
 		9F8BC76425C44F5800AFC79F /* AnglesOverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnglesOverviewView.swift; sourceTree = "<group>"; };
 		9F8E5A4824BB390900C69C27 /* TopologyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopologyStore.swift; sourceTree = "<group>"; };
 		9FAB03CD2573F45C00555B1E /* CustomPhotoAlbum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPhotoAlbum.swift; sourceTree = "<group>"; };
-		9FAB03D02573F9FD00555B1E /* DatabaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseHelper.swift; sourceTree = "<group>"; };
 		9FACABBE24C24D2A0024962B /* Force.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Force.swift; sourceTree = "<group>"; };
 		9FD23274258282440027D349 /* EntitiyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntitiyStore.swift; sourceTree = "<group>"; };
 		9FD94470249A258400C0E646 /* AR Coulomb.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AR Coulomb.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -189,12 +187,12 @@
 				9F37040824FAA82900960422 /* Status.swift */,
 				9F8E5A4824BB390900C69C27 /* TopologyStore.swift */,
 				9F68AAD624F6FF95004F1A3C /* Alert.swift */,
-				9FAB03D02573F9FD00555B1E /* DatabaseHelper.swift */,
-				9FAB03CD2573F45C00555B1E /* CustomPhotoAlbum.swift */,
 				9FF874E72578192D00D5532F /* DefaultPositions.swift */,
 				9FD23274258282440027D349 /* EntitiyStore.swift */,
+				9F8BC76425C44F5800AFC79F /* AnglesOverviewView.swift */,
 				9F2350FA2571608100E739CB /* Physics Topology */,
 				9F2350F525715EB800E739CB /* Physics Objects */,
+				9FAB03CD2573F45C00555B1E /* CustomPhotoAlbum.swift */,
 				9FD94479249A258400C0E646 /* Main.storyboard */,
 				9FD9447C249A258600C0E646 /* Assets.xcassets */,
 				9FD9447E249A258600C0E646 /* LaunchScreen.storyboard */,
@@ -203,7 +201,6 @@
 				9FFD6FC724ABA5BF00D8DE89 /* ArrowHead.rcproject */,
 				9FD94481249A258600C0E646 /* Info.plist */,
 				9F2350F62571601C00E739CB /* Topologies.xcdatamodeld */,
-				9F8BC76425C44F5800AFC79F /* AnglesOverviewView.swift */,
 			);
 			path = "AR Coulomb";
 			sourceTree = "<group>";
@@ -289,7 +286,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9FAB03D12573F9FD00555B1E /* DatabaseHelper.swift in Sources */,
 				9F881C8425A1480900B77589 /* Topology_+_DistanceIndicator.swift in Sources */,
 				9F2350FC2571741300E739CB /* PersistenceService.swift in Sources */,
 				9FD94476249A258400C0E646 /* ViewController.swift in Sources */,

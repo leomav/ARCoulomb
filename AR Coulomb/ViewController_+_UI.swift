@@ -29,7 +29,7 @@ extension ViewController {
         
         self.angleOverview.leadingAnchor.constraint(equalTo: self.arView.leadingAnchor, constant: 20).isActive = true
         self.angleOverview.topAnchor.constraint(equalTo: self.arView.topAnchor, constant: 20).isActive = true
-        self.angleOverview.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        self.angleOverview.heightAnchor.constraint(equalToConstant: 150).isActive = true
         self.angleOverview.widthAnchor.constraint(equalToConstant: 100).isActive = true
         
         /// Starts off hidden
@@ -46,7 +46,20 @@ extension ViewController {
     }
     
     func configureAngleLabel() {
+        self.arView.addSubview(self.angleLabel)
         
+        self.angleLabel.leadingAnchor.constraint(equalTo: self.angleOverview.leadingAnchor).isActive = true
+        self.angleLabel.topAnchor.constraint(equalTo: self.angleOverview.bottomAnchor).isActive = true
+        self.angleLabel.trailingAnchor.constraint(equalTo: self.angleOverview.trailingAnchor).isActive = true
+        self.angleLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        self.angleLabel.text = selectedForceValue
+        self.angleLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        self.angleLabel.textAlignment = .center
+        self.angleLabel.textColor = .white
+        self.angleLabel.backgroundColor = .black
+        
+        self.angleLabel.isHidden = true
     }
     
     func configureMessagePanel() {
@@ -220,6 +233,7 @@ extension ViewController {
         self.messagePanel.isHidden = hide
         self.stackView.isHidden = hide
         self.angleOverview.isHidden = hide
+        self.angleLabel.isHidden = hide
     }
     
     // MARK: - SubViews existance

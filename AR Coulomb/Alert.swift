@@ -42,6 +42,7 @@ struct Alert {
             
             /// Enable the Angle Overview View
             vc.angleOverview.isHidden = false
+            vc.angleLabel.isHidden = false
             
             /// Probably impossible since one was just deleted, but whatever, SAFETY FIRST...
             /// If the Limit Number is reached, disable the Add Button

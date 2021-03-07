@@ -36,7 +36,7 @@ class PointChargeModel {
         return self.value
     }
     
-    func setMultiplier(value: Float) {
+    func setMultiplier(multiplier: Float) {
         self.multiplier = value
     }
     

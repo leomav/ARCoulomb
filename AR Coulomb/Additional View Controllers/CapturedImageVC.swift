@@ -130,10 +130,6 @@ class CapturedImageVC: UIViewController {
         
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        
-        
-    }
     
     func configureImageView() {
         self.capturedImageView.addSubview(self.imageView)

@@ -11,7 +11,7 @@ import RealityKit
 import UIKit
 
 /// forceId:    Id of the netforce entity
-/// magnetude:  Force Magnetude (Newtons)
+/// magnitude:  Force Magnitude (Newtons)
 /// angle:      Angle (rads) of the force (arrowEntity) relativily to the pointChargeEntity (target)
 /// length:     Length of the arrow entity
 /// arrowEntity:    The Arrow Entity of the force
@@ -22,8 +22,8 @@ class Force {
     static var total: Int = 0
     let forceId: Int
     var topology: Topology
-    var magnetude: Float
-    var previousMagnetude: Float
+    var magnitude: Float
+    var previousMagnitude: Float
     var angle: Float
     
     /// Force X, Y Components
@@ -38,7 +38,7 @@ class Force {
     
     /// Length of the arrow body in meters
     var length: Float {
-        let l = self.magnetude * Force.metersPerNewton
+        let l = self.magnitude * Force.metersPerNewton
         return l
     }
     
@@ -58,21 +58,25 @@ class Force {
     var selected: Bool = false
     var type: ForceType
     
-    init(type: ForceType, magnetude: Float, angle: Float, arrowEntity: Entity, inside topology: Topology) {
+    init(type: ForceType, magnitude: Float, angle: Float, arrowEntity: Entity, inside topology: Topology) {
         Force.total += 1
         self.forceId = Force.total
         self.type = type
         
-        // Set Topology, Magnetude, Angle
+        // Set Topology, Magnitude, Angle
         self.topology = topology
-        self.magnetude = magnetude
-        self.previousMagnetude = magnetude
+        self.magnitude = magnitude
+        self.previousMagnitude = magnitude
         self.angle = angle
         
         // Set the arrowEntity and its parent the pivotEntity
         /// Pivot entity is used to rotate the arrowEntity
         self.arrowEntity = arrowEntity
-        self.pivotEntity = arrowEntity.parent!
+        if let parent = arrowEntity.parent {
+            self.pivotEntity = parent
+        } else {
+            self.pivotEntity = Entity()
+        }
         
         /// Set up the Force's Label
         let labelPos = SIMD3<Float>(0, 0, 0)
@@ -88,7 +92,7 @@ class Force {
     
     // MARK: - STATIC FUNCTIONS
     
-    static func createArrowModel(on pointChargeObj: PointChargeClass, magnetude: Float, name: String) -> Entity {
+    static func createArrowModel(on pointChargeObj: PointChargeClass, magnitude: Float, name: String) -> Entity {
         // Create an EMPTY Pivot Entity
         let pivotEntity: Entity = Entity()
         pivotEntity.name = "Pivot Arrow"
@@ -98,7 +102,7 @@ class Force {
         pivotEntity.setPosition(SIMD3<Float>(0, 0, 0), relativeTo: pointChargeObj.entity)
         
         // Load Arrow Body Entity
-        let arrow = EntityStore.shared.load_ArrowBody_Entity(pointEntity: pointChargeObj.entity, magnetude: magnetude)
+        let arrow = EntityStore.shared.load_ArrowBody(pointEntity: pointChargeObj.entity, magnitude: magnitude)
         arrow.name = name
         
         // Add it as a Pivot Child
@@ -109,10 +113,10 @@ class Force {
         /// its parent pivot point entity, EASIER
         
         // Update Arrow Body's Length and Position
-        EntityStore.shared.update_ArrowBody_Entity(arrowBodyEntity: arrow, magnetude: magnetude)
+        EntityStore.shared.update_ArrowBody(arrowBodyEntity: arrow, magnitude: magnitude)
 
         // Add an Arrow Head on Arrow Body Entity
-        EntityStore.shared.load_ArrowHead(on: arrow, magnetude: magnetude)
+        EntityStore.shared.load_ArrowHead(on: arrow, magnitude: magnitude)
         
         /// Disable the arrow Entity.
         /// Later, the arrows relative to the selectedPointChargeObj will be enabled
@@ -142,10 +146,10 @@ class Force {
         let quarter = self.angle.radiansToDegrees / 90
         let f_angleMod = (self.angle.radiansToDegrees.truncatingRemainder(dividingBy: 90)).degreesToRadians
         
-        let f: Float = self.magnetude
+        let f: Float = self.magnitude
         let f_component: Float
         
-        /// To calculate correctly the Fx, Fy components, the Force Magnetude
+        /// To calculate correctly the Fx, Fy components, the Force Magnitude
         /// has to have its ABSOLUTE VALUE
         /// Thankfully, it is saved that way in the SingleForce Object
         
@@ -185,22 +189,22 @@ class Force {
     
     func updateArrowModel() {
         /// Update Body Model Length
-        EntityStore.shared.update_ArrowBody_Entity(arrowBodyEntity: self.arrowEntity, magnetude: self.magnetude)
+        EntityStore.shared.update_ArrowBody(arrowBodyEntity: self.arrowEntity, magnitude: self.magnitude)
         
         /// Update Head Model
-        EntityStore.shared.update_ArrowHead(on: self.arrowEntity, magnetude: self.magnetude)
+        EntityStore.shared.update_ArrowHead(on: self.arrowEntity, magnitude: self.magnitude)
         
         /// Update Label
         /// Update labels only if difference is >= 0.01 m
-        if abs(self.magnetude - self.previousMagnetude) >= 0.01 {
+        if abs(self.magnitude - self.previousMagnitude) >= 0.01 {
             self.updateLabel()
             
             /// Update new previous distance as the current one
-            self.previousMagnetude = self.magnetude
+            self.previousMagnitude = self.magnitude
         }
     }
     
-    func updateForceMagnetude() {
+    func updateForceMagnitude() {
         preconditionFailure("This method must be overridden")
     }
     
@@ -213,7 +217,7 @@ class Force {
     }
     
     private func updateLabel() {
-        EntityStore.shared.update_TextEntity(textEntity: self.label, stringValue: String(format: "%.2fN", self.magnetude), fontSize: 0.008)
+        EntityStore.shared.update_TextEntity(textEntity: self.label, stringValue: String(format: "%.2fN", self.magnitude), fontSize: 0.008)
     }
     
 }

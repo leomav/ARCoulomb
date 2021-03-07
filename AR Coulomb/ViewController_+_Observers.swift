@@ -27,6 +27,7 @@ extension ViewController {
         
         /// Enable Angle Overview View
         self.angleOverview.isHidden = false
+        self.angleLabel.isHidden = false
         
         /// If the Limit Number is reached, disable the Add Button
         if self.topology.pointCharges.count == 6 {
@@ -63,6 +64,7 @@ extension ViewController {
             
             /// Enable the Angle Overview View
             self.angleOverview.isHidden = false
+            self.angleLabel.isHidden = false
             
             /// If the Limit Number is reached, disable the Add Button
             if self.topology.pointCharges.count == 6 {
@@ -92,7 +94,7 @@ extension ViewController {
     //  MARK: - Coulomb Value Observer
     
     /// When new value occurs for the selected PointChargeObj
-    func createCbObserver() {
+    func setupObserverCoulomb() {
         let notifName = Notification.Name(rawValue: cbNotificationKey)
         NotificationCenter.default.addObserver(self, selector: #selector(updateCoulombValue(notification:)), name: notifName, object: nil)
     }
@@ -125,7 +127,7 @@ extension ViewController {
     // (5)
     // MARK: - Topology Captured Image View was dismissed
     
-    func createCapturedImageObserver() {
+    func setupObserverCapturedImage() {
         let notifName = Notification.Name(rawValue: photoTakenNotificationKey)
         NotificationCenter.default.addObserver(self, selector: #selector(saveTopologyToCoreData(notification:)), name: notifName, object: nil)
 
@@ -188,7 +190,7 @@ extension ViewController {
     // (6)
     // MARK: - New Selected Point Charge Object
     
-    func createNewSelectedPointChargeObjectObserver() {
+    func setupObserverNewSelectedPointChargeObject() {
         let notifName = Notification.Name(rawValue: newSelectedPointChargeNotificationKey)
         NotificationCenter.default.addObserver(self, selector: #selector(updateAnglesOverviewView(notification:)), name: notifName, object: nil)
 
@@ -196,6 +198,23 @@ extension ViewController {
     
     @objc
     func updateAnglesOverviewView(notification: Notification) {
+        print(previouslySelectedForceAngleFloatValue.radiansToDegrees, selectedForceAngleFloatValue.radiansToDegrees)
         self.angleOverview.setNeedsDisplay()
+        self.angleLabel.setNeedsDisplay()
+    }
+    
+    
+    // (7)
+    // MARK: - New Selected Force
+    
+    func setupObserverNewSelectedForceValue() {
+        let notifName = Notification.Name(rawValue: newSelectedForceValueNotificationKey)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateAnglesLabel(notification:)), name: notifName, object: nil)
+
+    }
+    
+    @objc
+    func updateAnglesLabel(notification: Notification) {
+        self.angleLabel.text = selectedForceValue
     }
 }

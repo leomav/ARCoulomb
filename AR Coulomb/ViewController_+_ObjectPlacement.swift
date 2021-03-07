@@ -62,8 +62,8 @@ extension ViewController: ARSessionDelegate{
             guard let raycastResult = arView.session.raycast(query).first else { return }
             
             /// Update selected ARPlaneAnchor
-            guard let planeAnchor = raycastResult.anchor as? ARPlaneAnchor else { return}
-            self.currentARPlaneAnchor = planeAnchor
+//            guard let planeAnchor = raycastResult.anchor as? ARPlaneAnchor else { return}
+//            self.currentARPlaneAnchor = planeAnchor
             
             /// Set a transform to an existing entity
             let transform = Transform(matrix: raycastResult.worldTransform)

@@ -13,7 +13,6 @@ extension ViewController: ARCoachingOverlayViewDelegate {
     
         /// - Tag: HideUI
         func coachingOverlayViewWillActivate(_ coachingOverlayView: ARCoachingOverlayView) {
-//            print("coaching Overlay View will activate")
             
             /// Disable the gesturesRecognizers
             self.arView.gestureRecognizers?.forEach{ recognizer in
@@ -26,6 +25,7 @@ extension ViewController: ARCoachingOverlayViewDelegate {
         
         /// - Tag: PresentUI
         func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
+            
             /// Enable the Tap Recognizer to place the Topology after finding a surface
             self.arView.gestureRecognizers?.first(where: {$0.name == "First Point Recognizer"})?.isEnabled = true
             
@@ -43,8 +43,6 @@ extension ViewController: ARCoachingOverlayViewDelegate {
             }
         }
     
-        
-
         /// - Tag: StartOver
         func coachingOverlayViewDidRequestSessionReset(_ coachingOverlayView: ARCoachingOverlayView) {
             print("coaching Overlay View did REQUEST SESSION RESET")

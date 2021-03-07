@@ -10,7 +10,7 @@ import Foundation
 import RealityKit
 
 /// forceId:    Id of the netforce entity
-/// magnetude:  Force Magnetude (Newtons)
+/// magnitude:  Force Magnitude (Newtons)
 /// angle:      Angle (rads) of the force (arrowEntity) relativily to the pointEntity
 /// length:     Length of the arrow entity
 /// arrowEntity:    The Arrow Entity of the force
@@ -25,8 +25,8 @@ class NetForce: Force {
     let pointChargeObj: PointChargeClass
     var forces: [SingleForce]
     
-//    init(magnetude: Float, angle: Float, arrowEntity: Entity, point: PointChargeClass, forces: [SingleForce]) {
-    init(magnetude: Float, angle: Float, point: PointChargeClass, forces: [SingleForce], inside topology: Topology) {
+//    init(magnitude: Float, angle: Float, arrowEntity: Entity, point: PointChargeClass, forces: [SingleForce]) {
+    init(magnitude: Float, angle: Float, point: PointChargeClass, forces: [SingleForce], inside topology: Topology) {
         NetForce.netForcesTotal += 1
         self.netForceId = NetForce.netForcesTotal
         
@@ -34,15 +34,15 @@ class NetForce: Force {
         
         self.forces = forces
         
-        let arrowEntity = Force.createArrowModel(on: self.pointChargeObj, magnetude: magnetude, name: "NetForce Arrow")
+        let arrowEntity = Force.createArrowModel(on: self.pointChargeObj, magnitude: magnitude, name: "NetForce Arrow")
 
-        super.init(type: ForceType.net, magnetude: magnetude, angle: angle, arrowEntity: arrowEntity, inside: topology)
+        super.init(type: ForceType.net, magnitude: magnitude, angle: angle, arrowEntity: arrowEntity, inside: topology)
     }
     
     static func createForce(for pointChargeObj: PointChargeClass) -> NetForce {
 
         /// Initialize NetForce Object with Arrow Entity
-        let netForce = NetForce(magnetude: 0, angle: 0, point: pointChargeObj, forces: [], inside: pointChargeObj.topology)
+        let netForce = NetForce(magnitude: 0, angle: 0, point: pointChargeObj, forces: [], inside: pointChargeObj.topology)
         
         /// Add netForce to pointCharge
         pointChargeObj.netForce = netForce
@@ -71,7 +71,7 @@ class NetForce: Force {
         self.angle = self.netForceAngle(fx: fx, fy: fy)
     }
     
-    override func updateForceMagnetude() {
+    override func updateForceMagnitude() {
         //
     }
     
@@ -85,7 +85,7 @@ class NetForce: Force {
         
         self.forces.forEach{ force in
 //            let fx: Float; let fy: Float
-//            (fx, fy) = self.calculateForceComponents(f: force.magnetude, f_angle: force.angle)
+//            (fx, fy) = self.calculateForceComponents(f: force.magnitude, f_angle: force.angle)
 //            netFx += fx
 //            netFy += fy
             
@@ -95,16 +95,16 @@ class NetForce: Force {
         }
         
         /// - Tag: CAREFUL
-        /// DON'T USE:  <updateForceMagnetude()> and <updateForceAngle()>
+        /// DON'T USE:  <updateForceMagnitude()> and <updateForceAngle()>
         /// They use X_Force_Component, Y_Force_Component which are not correctly
-        /// evaluated until the magnetude and angle are calculated.
+        /// evaluated until the magnitude and angle are calculated.
         ///
         /// Use  the following instead, which take as args the netFx, netFy calculated above.
-        self.magnetude = self.netForceMagnetude(fx: netFx, fy: netFy)
+        self.magnitude = self.netForceMagnitude(fx: netFx, fy: netFy)
         self.angle = self.netForceAngle(fx: netFx, fy: netFy)
     }
     
-    private func netForceMagnetude(fx: Float, fy: Float) -> Float {
+    private func netForceMagnitude(fx: Float, fy: Float) -> Float {
         return sqrt(fx*fx + fy*fy)
     }
     

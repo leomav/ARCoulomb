@@ -11,7 +11,7 @@ import RealityKit
 import UIKit
 
 /// forceId:    Id of the netforce entity
-/// magnetude:  Force Magnetude (Newtons)
+/// magnitude:  Force Magnitude (Newtons)
 /// angle:      Angle (rads) of the force (arrowEntity) relativily to the pointChargeEntity (target)
 /// length:     Length of the arrow entity
 /// arrowEntity:    The Arrow Entity of the force
@@ -41,8 +41,8 @@ class SingleForce: Force {
     var targetPointCharge: PointChargeClass
     
     // TEST
-//    init(magnetude: Float, angle: Float, arrowEntity: Entity, from: PointChargeClass, to: PointChargeClass) {
-    init(magnetude: Float, angle: Float, from: PointChargeClass, to: PointChargeClass, inside topology: Topology) {
+//    init(magnitude: Float, angle: Float, arrowEntity: Entity, from: PointChargeClass, to: PointChargeClass) {
+    init(magnitude: Float, angle: Float, from: PointChargeClass, to: PointChargeClass, inside topology: Topology) {
         SingleForce.singleForcesTotal += 1
         
         self.singleForceId = SingleForce.singleForcesTotal
@@ -53,13 +53,13 @@ class SingleForce: Force {
         self.targetPointCharge = to
         
         // TEST
-//        self.arrowEntity = Force.createArrowEntity(on: self.targetPointCharge, magnetude: magnetude, name: "SingleForce Arrow")
+//        self.arrowEntity = Force.createArrowEntity(on: self.targetPointCharge, magnitude: magnitude, name: "SingleForce Arrow")
 //        self.pivotEntity = self.arrowEntity.parent!
         
-        let arrowEntity = Force.createArrowModel(on: self.targetPointCharge, magnetude: magnetude, name: "SingleForce Arrow")
+        let arrowEntity = Force.createArrowModel(on: self.targetPointCharge, magnitude: magnitude, name: "SingleForce Arrow")
         
         // Call the super init of Force Class
-        super.init(type: ForceType.single, magnetude: magnetude, angle: angle, arrowEntity: arrowEntity, inside: topology)
+        super.init(type: ForceType.single, magnitude: magnitude, angle: angle, arrowEntity: arrowEntity, inside: topology)
 
         
         /// Set the arrowEntity and its parent the pivotEntity
@@ -72,7 +72,7 @@ class SingleForce: Force {
     static func createForce(from otherPointChargeObj: PointChargeClass, to pointChargeObj: PointChargeClass) -> SingleForce{
         
         /// Create instance of Force Object with arrow entity
-        let force = SingleForce(magnetude: 5, angle:0, from: otherPointChargeObj, to: pointChargeObj, inside: pointChargeObj.topology)
+        let force = SingleForce(magnitude: 5, angle:0, from: otherPointChargeObj, to: pointChargeObj, inside: pointChargeObj.topology)
         
         /// Add  force to pointCharge forcesToOthers Array
         otherPointChargeObj.forcesOnOthers.append(force)
@@ -83,7 +83,7 @@ class SingleForce: Force {
     func updateForce() {
         self.updateForceArrowOrientation()
         self.updateForceAngle()
-        self.updateForceMagnetude()
+        self.updateForceMagnitude()
         
         /// Update the Force Arrow
         self.updateArrowModel()
@@ -148,9 +148,9 @@ class SingleForce: Force {
         }
     }
     
-    override func updateForceMagnetude(){
+    override func updateForceMagnitude(){
         /// Make sure to get the absolute Value of coulomb's Law
-        self.magnetude = abs(self.coulombsLaw())
+        self.magnitude = abs(self.coulombsLaw())
     }
     
     // Returns the value of Coulombs Law. NOT ABSOLUTE VALUE

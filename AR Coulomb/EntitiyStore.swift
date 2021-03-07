@@ -16,19 +16,19 @@ class EntityStore {
     
     // MARK: - PointCharge
     
-    func load_PointChargeEntity() -> Entity {
+    func load_PointCharge() -> Entity {
         let pointChargeEntity: PointChargeEntity = PointChargeEntity()
         pointChargeEntity.name = "pointCharge"
 
-        self.update_PointChargeModel(on: pointChargeEntity)
+        self.update_PointCharge_ModelComponent(on: pointChargeEntity)
 
         return pointChargeEntity
     }
     
     
-    func update_PointChargeModel(on pointChargeEntity: Entity, radius: Float = PointChargeClass.pointChargeRadius, color: UIColor = UIColor.red) {
+    func update_PointCharge_ModelComponent(on pointChargeEntity: Entity, radius: Float = PointChargeClass.pointChargeRadius, color: UIColor = UIColor.red) {
         // Add ModelComponent
-        let model = load_PointChargeModel(radius: radius, color: color)
+        let model = load_PointCharge_ModelComponent(radius: radius, color: color)
         pointChargeEntity.components.set(model)
         
         // Add CollisionComponent
@@ -36,7 +36,7 @@ class EntityStore {
         pointChargeEntity.components.set(CollisionComponent(shapes: [.generateSphere(radius: radius * 1.2)]))
     }
     
-    private func load_PointChargeModel(radius: Float, color: UIColor) -> ModelComponent {
+    private func load_PointCharge_ModelComponent(radius: Float, color: UIColor) -> ModelComponent {
         let material: SimpleMaterial = {
             var mat = SimpleMaterial()
             mat.metallic = MaterialScalarParameter(floatLiteral: 0.5)
@@ -49,8 +49,8 @@ class EntityStore {
         return model
     }
     
-    func update_PointChargeEntity(pointChargeEntity: Entity, radius: Float, color: UIColor) {
-        self.update_PointChargeModel(on: pointChargeEntity, radius: radius, color: color)
+    func update_PointCharge(pointChargeEntity: Entity, radius: Float, color: UIColor) {
+        self.update_PointCharge_ModelComponent(on: pointChargeEntity, radius: radius, color: color)
     }
     
     // MARK: - Text
@@ -122,41 +122,38 @@ class EntityStore {
             mat.tintColor = UIColor.white
             return mat
         }()
-        
         let model: ModelComponent = ModelComponent(mesh: .generateBox(width: 0.001, height: 0.001, depth: length), materials: [material] )
-        
         return model
     }
     
-    private func update_ArrowBody_Entity_Length(arrowBodyEntity: Entity, length: Float) {
+    private func update_ArrowBody_Length(arrowBodyEntity: Entity, length: Float) {
         let model = load_ArrowBody_ModelComponent(length: length)
         arrowBodyEntity.components.set(model)
     }
     
-    func load_ArrowBody_Entity(pointEntity: Entity, magnetude: Float) -> Entity {
+    func load_ArrowBody(pointEntity: Entity, magnitude: Float) -> Entity {
         let bodyEntity: Entity = Entity()
         pointEntity.addChild(bodyEntity)
-        
         bodyEntity.name = "Arrow Body Entity"
 
         return bodyEntity
     }
     
-    func update_ArrowBody_Entity(arrowBodyEntity: Entity, magnetude: Float) {
+    func update_ArrowBody(arrowBodyEntity: Entity, magnitude: Float) {
         /// Get the actual length in meters
-        let length = magnetude * Force.metersPerNewton
+        let length = magnitude * Force.metersPerNewton
         
         /// Arrow Body center needs to be <arrow-length>/2 + <pointCharge-Radius> meters away from Pivot Entity (Arrow's Parent)
         let pos = length/2 + 0.02
         arrowBodyEntity.setPosition(SIMD3<Float>(0, 0, pos), relativeTo: arrowBodyEntity.parent)
         
         /// Update Arrow Body Length
-        self.update_ArrowBody_Entity_Length(arrowBodyEntity: arrowBodyEntity, length: length)
+        self.update_ArrowBody_Length(arrowBodyEntity: arrowBodyEntity, length: length)
     }
     
     // MARK: - Arrow Head
     
-    func load_ArrowHead(on arrowEntity: Entity, magnetude: Float) {
+    func load_ArrowHead(on arrowEntity: Entity, magnitude: Float) {
         let arrowHeadAnchor = try! ArrowHead.load_ArrowHead()
         let arrowHeadEntity = arrowHeadAnchor.arrowHead! as Entity
         
@@ -176,15 +173,15 @@ class EntityStore {
 
         /// <Positioning>
         /// Get actual length in meters
-        let length = magnetude * Force.metersPerNewton
+        let length = magnitude * Force.metersPerNewton
         /// Set Position relatively to arrow entity (distance = half its length)
         /// CAREFUL: TO BE EXACT FOR THIS ARROW HEAD MODEL, REMOVE <----0.005m---->
         arrowHeadEntity.setPosition(SIMD3<Float>(0, 0, length/2 - 0.005), relativeTo: arrowEntity)
         
-//        self.update_ArrowHead(on: arrowEntity, magnetude: magnetude)
+//        self.update_ArrowHead(on: arrowEntity, magnitude: magnitude)
     }
     
-    func update_ArrowHead(on arrowEntity: Entity, magnetude: Float) {
+    func update_ArrowHead(on arrowEntity: Entity, magnitude: Float) {
         
         /// Find arrow Head Entity and update
         arrowEntity.children.forEach{ entity in
@@ -193,7 +190,7 @@ class EntityStore {
                 
                 /// - Tag: Positioning
                 /// Get actual length in meters
-                let length = magnetude * Force.metersPerNewton
+                let length = magnitude * Force.metersPerNewton
                 /// Set Position relatively to arrow entity (distance = half its length)
                 /// CAREFUL: TO BE EXACT FOR THIS ARROW HEAD MODEL, REMOVE <----0.005m---->
                 arrowHeadEntity.setPosition(SIMD3<Float>(0, 0, length/2 - 0.005), relativeTo: arrowEntity)
@@ -204,7 +201,6 @@ class EntityStore {
     
     
     // MARK: - Placement Indicator Entity
-    
     
     func load_PlacementIndicator(side: Float = 0.1, imageAssetPath: String = "Placement_Indicator_LightYellow") -> AnchorEntity {
         let piEntity: AnchorEntity = AnchorEntity()
@@ -262,17 +258,18 @@ class EntityStore {
         return distanceEntity
     }
     
-    func load_DistanceLine_Model(length: Float) -> ModelComponent {
+    func load_DistanceLine_ModelComponent(length: Float) -> ModelComponent {
         let mesh: MeshResource = .generateBox(width: length, height: 0.0005, depth: 0.0005)
         return ModelComponent(mesh: mesh, materials: [DistanceIndicator.lineMaterial])
     }
     
     func update_DistanceLine_Length(entity: Entity, length: Float) {
-        let model = load_DistanceLine_Model(length: length)
+        let model = load_DistanceLine_ModelComponent(length: length)
         entity.components.set(model)
     }
     
     func update_DistanceLines(sourceLine: Entity, targetLine: Entity, length: Float) {
+        
         /// Line length = distance/2. Also, keep 0.02m to give distance label some space.
         let lineLength: Float = length/2 - 0.015
         ///So set position.x diff to (line)length/2, which technically is (paramter=distance)length/4

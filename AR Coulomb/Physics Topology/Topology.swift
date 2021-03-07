@@ -40,7 +40,7 @@ class Topology {
         self.labels = []
         
         /// Import the Point Charge Model, clone the entity as many times as needed
-        self.pointChargeEntityTemplate = EntityStore.shared.load_PointChargeEntity()
+        self.pointChargeEntityTemplate = EntityStore.shared.load_PointCharge()
     }
     
     // MARK: - Topology functions
@@ -54,7 +54,7 @@ class Topology {
         self.viewController?.arView.scene.addAnchor(self.topoAnchorEntity)
 
         /// Create the Coulomb's Observers (value change or deletion)
-        self.viewController?.createCbObserver()
+        self.viewController?.setupObserverCoulomb()
         self.viewController?.setupObserverPointChargeDeletion()
     }
     
