@@ -34,7 +34,6 @@ extension Topology {
                         }
                     }
                 }
-                
             }
         }
     }
@@ -85,12 +84,12 @@ extension Topology {
         
     // MARK:- UPDATE FORCES
     
-    func updateForces() {
+    func updateForces(reDraw: Bool = true) {
         
         self.netForces.forEach{ netForceObj in
             
             netForceObj.forces.forEach{ forceObj in
-                forceObj.updateForce()
+                forceObj.updateForce(reDraw: reDraw)
             }
             
             // Calculate Force Magnitude, Angle
@@ -100,7 +99,9 @@ extension Topology {
             netForceObj.updateForceArrowOrientation()
             
             // Update Net Force Arrow
-            netForceObj.updateArrowModel()
+            if (reDraw) {
+                netForceObj.updateArrowModel()
+            }
         }
         
         // RE-DRAW: Angle Overview View
@@ -115,11 +116,11 @@ extension Topology {
 //        self.viewController?.angleOverview.updateAllForcesAngles(netForce: selectedPointChargeObj.netForce!)
     }
     
-    func updateForces(for pointCharge: PointChargeClass) {
+    func updateForces(for pointCharge: PointChargeClass, reDraw: Bool = true) {
         
         ///  Forces rendered on the pointCharge
         pointCharge.netForce?.forces.forEach{ force in
-            force.updateForce()
+            force.updateForce(reDraw: reDraw)
         }
         /// Calculate Net Force Magnitude, Angle
         pointCharge.netForce?.updateForce()
@@ -128,11 +129,13 @@ extension Topology {
         pointCharge.netForce?.updateForceArrowOrientation()
         
         /// Update Net Force Arrow
-        pointCharge.netForce?.updateArrowModel()
+        if (reDraw) {
+            pointCharge.netForce?.updateArrowModel()
+        }
         
         /// Forces rendered with respect to that pointCharge on others
         pointCharge.forcesOnOthers.forEach{ force in
-            force.updateForce()
+            force.updateForce(reDraw: reDraw)
         }
         
         // RE-DRAW: Angle Overview View

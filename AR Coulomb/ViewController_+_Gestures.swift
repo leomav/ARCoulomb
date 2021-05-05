@@ -167,7 +167,7 @@ extension ViewController {
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         if trackedEntity.name == "pointCharge" {
-            self.topology.updateForces(for: selectedPointChargeObj)
+            self.topology.updateForces(for: selectedPointChargeObj, reDraw: false)
             self.topology.updateDistanceIndicators(for: selectedPointChargeObj)
             
             

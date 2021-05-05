@@ -17,13 +17,11 @@ class Status {
         case trackingStateEscalation
         case planeEstimation
         case contentPlacement
-        case focusSquare
         
         static var all: [MessageType] = [
             .trackingStateEscalation,
             .planeEstimation,
             .contentPlacement,
-            .focusSquare
         ]
     }
     

@@ -152,30 +152,30 @@ extension ViewController {
                 let name = alertController.textFields?[0].text
                 let description = alertController.textFields?[1].text
                 
-                
-                // Save the topology
-                let topology = NSTopology(context: PersistenceService.context)
-                topology.name = name
-                topology.descr = description
-                topology.image = capturedImage 
-                PersistenceService.saveContext()
-                
-                // Save pointCharges info
-                self.topology.pointCharges.forEach{ pointChargeObj in
-                    let pointCharge = NSPointCharge(context: PersistenceService.context)
-                    pointCharge.posX = pointChargeObj.getPositionX()
-                    pointCharge.posY = pointChargeObj.getPositionY()
-                    pointCharge.posZ = pointChargeObj.getPositionZ()
-                    pointCharge.multiplier = PointChargeClass.multiplier
-                    pointCharge.value = pointChargeObj.value
-                    pointCharge.topology = topology
-                    PersistenceService.saveContext()
-                }
-                
-                // Reload the savedTopologies
-                TopologyStore.sharedInstance.reloadSavedTopologies()
-                //
-                PersistenceService.saveContext()
+                TopologyStore.sharedInstance.saveTopologyToCoreData(pointCharges: self.topology.pointCharges, name: name!, description: description!, capturedImage: capturedImage)
+//                // Save the topology
+//                let topology = NSTopology(context: PersistenceService.context)
+//                topology.name = name
+//                topology.descr = description
+//                topology.image = capturedImage
+//                PersistenceService.saveContext()
+//                
+//                // Save pointCharges info
+//                self.topology.pointCharges.forEach{ pointChargeObj in
+//                    let pointCharge = NSPointCharge(context: PersistenceService.context)
+//                    pointCharge.posX = pointChargeObj.getPositionX()
+//                    pointCharge.posY = pointChargeObj.getPositionY()
+//                    pointCharge.posZ = pointChargeObj.getPositionZ()
+//                    pointCharge.multiplier = PointChargeClass.multiplier
+//                    pointCharge.value = pointChargeObj.value
+//                    pointCharge.topology = topology
+//                    PersistenceService.saveContext()
+//                }
+//
+//                // Reload the savedTopologies
+//                TopologyStore.sharedInstance.reloadSavedTopologies()
+//                //
+//                PersistenceService.saveContext()
             }
             
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }

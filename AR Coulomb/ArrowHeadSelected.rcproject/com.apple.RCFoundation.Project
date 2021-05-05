@@ -34,21 +34,46 @@
                   "312D5ED2-9290-47B0-B2E5-C301CADD4C49" : null,
                   "632E476F-1E55-4E30-9723-1C51DD2E8B89" : null,
                   "991B2B5B-A881-496A-B522-164167223878" : null,
-                  "39226E4F-1B7C-4829-9C55-DBF913484CB9" : {
+                  "39226E4F-1B7C-4829-9C55-DBF913484CB9" : null,
+                  "080391AA-17E0-463F-B6F4-DED4C5031E0F" : null,
+                  "B9AE9C58-22EB-4008-9F9E-D7F5E37AF1A2" : null,
+                  "B91C7CA3-4AB1-4253-9A84-07383168A8A8" : null,
+                  "CC349E20-AE16-4762-BC6F-FD0C11EE025A" : {
                     "overrides" : {
                       "arguments" : [
                         [
-                          "diameter",
+                          "depth",
                           {
                             "typeName" : "Double",
-                            "value" : 0.031889187521152121
+                            "value" : 0.01
                           }
                         ],
                         [
-                          "material",
+                          "headEndpoint",
                           {
                             "typeName" : "String",
-                            "value" : "plastic"
+                            "value" : "none"
+                          }
+                        ],
+                        [
+                          "headLength",
+                          {
+                            "typeName" : "Double",
+                            "value" : 0.25
+                          }
+                        ],
+                        [
+                          "indent",
+                          {
+                            "typeName" : "Double",
+                            "value" : 0.5
+                          }
+                        ],
+                        [
+                          "length",
+                          {
+                            "typeName" : "Double",
+                            "value" : 0.0019999999999999879
                           }
                         ],
                         [
@@ -56,23 +81,44 @@
                           {
                             "typeName" : "double4",
                             "value" : [
-                              0.55000001192092896,
                               0.10999999940395355,
+                              0.55000001192092896,
                               0.10999999940395355,
                               1
                             ]
                           }
                         ],
                         [
-                          "type",
+                          "profile",
                           {
                             "typeName" : "String",
-                            "value" : "sphere"
+                            "value" : "rectangular"
+                          }
+                        ],
+                        [
+                          "tailEndpoint",
+                          {
+                            "typeName" : "String",
+                            "value" : "conical"
+                          }
+                        ],
+                        [
+                          "tailType",
+                          {
+                            "typeName" : "String",
+                            "value" : "straight"
+                          }
+                        ],
+                        [
+                          "width",
+                          {
+                            "typeName" : "Double",
+                            "value" : 0.18183071997857861
                           }
                         ]
                       ],
                       "factory" : {
-                        "identifier" : "com.apple.rc.af.CoreAssetFactories.PrimitiveShapeAssetFactory",
+                        "identifier" : "com.apple.rc.af.CoreAssetFactories.ArrowAssetFactory",
                         "version" : "1.0"
                       },
                       "runtimeAttributes" : [
@@ -80,49 +126,14 @@
                           "RuntimeIdentifier",
                           {
                             "typeName" : "UUID",
-                            "value" : "C4CF2E90-722D-47F7-99EE-3E4B5B96BAD5"
-                          }
-                        ],
-                        [
-                          "accessibilityLabel",
-                          {
-                            "typeName" : "String",
-                            "value" : "chargePointModel"
+                            "value" : "93829F8E-A2AE-41DC-96C2-05F03672855A"
                           }
                         ],
                         [
                           "entityName",
                           {
                             "typeName" : "String",
-                            "value" : "pointCharge"
-                          }
-                        ],
-                        [
-                          "isAccessibilityEnabled",
-                          {
-                            "typeName" : "Bool",
-                            "value" : true
-                          }
-                        ],
-                        [
-                          "rigidBody-enabled",
-                          {
-                            "typeName" : "Bool",
-                            "value" : true
-                          }
-                        ],
-                        [
-                          "rigidBody-motionType",
-                          {
-                            "typeName" : "REMotionType",
-                            "value" : "static"
-                          }
-                        ],
-                        [
-                          "rigidBody-shapeType",
-                          {
-                            "typeName" : "String",
-                            "value" : "default"
+                            "value" : "ArrowHeadSelected"
                           }
                         ]
                       ]
@@ -141,16 +152,13 @@
                         0,
                         1,
                         0,
-                        0,
-                        0.039999999105930328,
-                        0,
+                        -0.0020000000949949026,
+                        0.0049999989569187164,
+                        -0.045099999755620956,
                         1
                       ]
                     }
                   },
-                  "080391AA-17E0-463F-B6F4-DED4C5031E0F" : null,
-                  "B9AE9C58-22EB-4008-9F9E-D7F5E37AF1A2" : null,
-                  "B91C7CA3-4AB1-4253-9A84-07383168A8A8" : null,
                   "FCC0B98E-AA28-4969-89B8-8AD7842362CA" : null
                 },
                 "factory" : null,
@@ -172,24 +180,24 @@
                 ]
               },
               "physicsMode" : "grid",
-              "title" : "PointCharge",
+              "title" : "ArrowHeadSelected",
               "viewTransform" : {
                 "cameraTransform" : [
-                  0.99216866493225098,
-                  -2.2351745343485163e-08,
-                  -0.12490513175725937,
+                  -0.08274860680103302,
+                  -2.4214386940002441e-08,
+                  -0.9965704083442688,
                   0,
-                  -0.0797300785779953,
-                  0.76976650953292847,
-                  -0.63332653045654297,
+                  -0.4030948281288147,
+                  0.91454601287841797,
+                  0.033470276743173599,
                   0,
-                  0.096147745847702026,
-                  0.63832545280456543,
-                  0.76373833417892456,
+                  0.91140943765640259,
+                  0.40448197722434998,
+                  -0.075677350163459778,
                   0,
-                  -0.020392652601003647,
-                  0.29140621423721313,
-                  0.40142005681991577,
+                  0.50826257467269897,
+                  0.14197950065135956,
+                  -0.066407419741153717,
                   1
                 ],
                 "sceneTransform" : [

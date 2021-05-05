@@ -45,7 +45,7 @@ class Topology {
     
     // MARK: - Topology functions
     
-    //  Add the parent viewController and a ARAnchor
+    //  Add the parent viewController and a ARAnchorEntity
     func pinToScene(viewController: ViewController, topoAnchor: AnchorEntity) {
         self.viewController = viewController
         
@@ -86,8 +86,6 @@ class Topology {
         self.showDistaneIndicators(for: selectedPointChargeObj)
     
         
-        
-        
         /// Update Angle Overview Dict
 //        self.viewController?.angleOverview.updateForcesDrawings(netForce: selectedPointChargeObj.netForce!)
         
@@ -122,7 +120,6 @@ class Topology {
     func toggleTopology(show: Bool) {
         self.toggleAllForces(show: show)
         self.toggleDistanceIndicators(show: show)
-        //        self.toggleAllForces(show: show)
     }
     
 }

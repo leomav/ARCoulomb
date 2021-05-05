@@ -26,7 +26,6 @@ extension ViewController {
     func configureAngleOverview() {
         self.arView.addSubview(self.angleOverview)
         
-        
         self.angleOverview.leadingAnchor.constraint(equalTo: self.arView.leadingAnchor, constant: 20).isActive = true
         self.angleOverview.topAnchor.constraint(equalTo: self.arView.topAnchor, constant: 20).isActive = true
         self.angleOverview.heightAnchor.constraint(equalToConstant: 150).isActive = true
@@ -39,10 +38,6 @@ extension ViewController {
         ///     3) When capturing a snapshot
         self.angleOverview.isHidden = true
 
-    }
-    
-    func configureAngleDraw() {
-        
     }
     
     func configureAngleLabel() {

@@ -54,18 +54,14 @@ class NetForce: Force {
     // Update Net Force
     func updateForce() {
         self.calculateNetForce()
-        
-//        self.updateArrowModel()
     }
     
     // Update the ORIENTATION of the arrowEntity
     override func updateForceArrowOrientation() {
         self.pivotEntity.setOrientation(simd_quatf(angle: self.angle, axis: SIMD3<Float>(0, 1.0, 0)), relativeTo: self.pointChargeObj.entity)
-//        self.arrowEntity.setOrientation(simd_quatf(angle: self.angle, axis: SIMD3<Float>(0, 1.0, 0)), relativeTo: self.pointChargeObj.entity)
     }
     
     override func updateForceAngle() {
-        //
         let fx = X_Force_Component; let fy = Y_Force_Component
         
         self.angle = self.netForceAngle(fx: fx, fy: fy)

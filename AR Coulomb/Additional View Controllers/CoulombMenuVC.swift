@@ -164,7 +164,6 @@ class CoulombMenuVC: UIViewController {
             btn.isEnabled = true
             btn.tag = i
             btn.widthAnchor.constraint(equalToConstant: 30).isActive = true
-            // btn.heightAnchor.constraint(equalToConstant: 30).isActive = true
             btns.append(btn)
         }
     }
@@ -196,11 +195,11 @@ class CoulombMenuVC: UIViewController {
     func sliderButtonAction(sender: UIButton) {
         if sender.tag == 0 {
             if (slider.value > slider.minimumValue) {
-                updateSlider(constant: -0.5)
+                updateSlider(constant: -step)
             }
         } else if sender.tag == 1 {
             if (slider.value < slider.maximumValue) {
-                updateSlider(constant: 0.5)
+                updateSlider(constant: step)
             }
         }
     }

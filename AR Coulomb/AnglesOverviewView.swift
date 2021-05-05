@@ -55,19 +55,9 @@ class AnglesOverviewView: UIView {
             x: bounds.width / 2,
             y: bounds.height / 2
         )
-        
-//        print("draw")
-        
+                
         if selectedPointChargeObj.netForce != nil {
-//            print("selected pc has netforce")
-            
             if selectedPointChargeObj.netForce!.forces.count > 0 {
-                /**
-                    
-                 TODO HERE:
-                 1) draw Angle Arc
-                 2) draw Forces
-                 */
                 
                 drawForces(center: center)
             }
@@ -85,21 +75,23 @@ class AnglesOverviewView: UIView {
             drawForce(center: center, angle: f.angle, forceType: f.type, color: f.color, selected: f.selected)
         }
         
-//        forcesDrawings.forEach{ f in
-//            self.drawForce(center: center, force: f.value)
-//        }
     }
     
     private func drawForce(center: CGPoint, angle: Float, forceType: ForceType, color: UIColor, selected: Bool) {
         
-        print("Draw Force, angle: \(angle)")
+        /**
+         - Regulated Angle:
+         To ensure that the angle representation and the
+         vectors go the same way as the 3d models
+         */
+        let regulatedAngle = 360.degreesToRadians() - angle
         
         // Get the tail length
         let tailLength: Float = forceType == ForceType.single ? FORCE_ARROW_TAIL_LENGTH : NETFORCE_ARROW_TAIL_LENGTH
         
         // Find the end point based on the angle
-        let end_x_Point = CGFloat(center.x) + CGFloat( tailLength * cos(angle) )
-        let end_y_Point = CGFloat(center.y) + CGFloat( tailLength * sin(angle) )
+        let end_x_Point = CGFloat(center.x) + CGFloat( tailLength * cos(regulatedAngle) )
+        let end_y_Point = CGFloat(center.y) + CGFloat( tailLength * sin(regulatedAngle) )
         
         // Create the arrow path
         let arrowPath = UIBezierPath.arrow(from: center, to: CGPoint(x: end_x_Point, y: end_y_Point), tailWidth: CGFloat(ARROW_TAIL_WIDTH), headWidth: CGFloat(HEAD_WIDTH), headLength: CGFloat(HEAD_LENGTH))
@@ -108,17 +100,13 @@ class AnglesOverviewView: UIView {
         color.setFill()
         arrowPath.fill()
         
-        
         // If force is the selected one, draw Arc
         if selected {
-//            print("selected")
-            drawAngleArc(center: center, angle: angle)
+            drawAngleArc(center: center, angle: regulatedAngle)
         }
     }
     
     private func drawAngleArc(center: CGPoint, angle: Float) {
-        
-        print("Draw Angle")
         
         let startAngle: CGFloat = 0
 //        let forceAngle: CGFloat = CGFloat(force.angle) - .pi/2
@@ -126,7 +114,7 @@ class AnglesOverviewView: UIView {
 //        let endAngle: CGFloat = startAngle - forceAngle
         
         // Create arc path starting from 0 angle
-        let arcPath = UIBezierPath(arcCenter: center, radius: CGFloat(ARC_RADIUS), startAngle: startAngle, endAngle: forceAngle, clockwise: true)
+        let arcPath = UIBezierPath(arcCenter: center, radius: CGFloat(ARC_RADIUS), startAngle: startAngle, endAngle: forceAngle, clockwise: false)
         
         // Add line to center
         arcPath.addLine(to: center)

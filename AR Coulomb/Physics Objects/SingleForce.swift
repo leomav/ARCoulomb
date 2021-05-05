@@ -80,13 +80,15 @@ class SingleForce: Force {
         return force
     }
     
-    func updateForce() {
+    func updateForce(reDraw: Bool = true) {
         self.updateForceArrowOrientation()
         self.updateForceAngle()
         self.updateForceMagnitude()
         
         /// Update the Force Arrow
-        self.updateArrowModel()
+        if (reDraw) {
+            self.updateArrowModel()
+        }
     }
     
     override func updateForceArrowOrientation() {

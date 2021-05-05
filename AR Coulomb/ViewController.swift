@@ -35,7 +35,6 @@ var selectedForceAngleFloatValue: Float = 90 {
 var previouslySelectedForceAngleFloatValue: Float = 90
 
 /// PointCharge
-//var selectedPointChargeObj: PointChargeClass = PointChargeClass(on: Entity(), inside: Topology(), withValue: 0)
 var selectedPointChargeObj: PointChargeClass = PointChargeClass(on: Entity(), inside: Topology(), withValue: 0){
     willSet {
         newValue.netForce?.selected = true
@@ -118,7 +117,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     let angleLabel: UILabel = {
         let label = UILabel()
         
-        label.translatesAutoresizingMaskIntoConstraints = false
+//        label.translatesAutoresizingMaskIntoConstraiangnts = false
         label.accessibilityIdentifier = "Angle Label"
         
         return label
@@ -181,6 +180,10 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     @objc
     func goBack(sender: UIButton){
         // - TODO:
+        
+        // Show forces
+        self.topology.toggleAllForces(show: true)
+        
         self.transitionStackViewMenu(to: "main")
     }
     
@@ -241,6 +244,10 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     @objc
     func openCaptureMenu(sender: UIButton) {
+        
+        // Hide all forces
+        self.topology.toggleAllForces(show: false)
+        
         self.transitionStackViewMenu(to: "camera")
     }
     

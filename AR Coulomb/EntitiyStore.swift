@@ -191,8 +191,9 @@ class EntityStore {
                 /// - Tag: Positioning
                 /// Get actual length in meters
                 let length = magnitude * Force.metersPerNewton
+                
                 /// Set Position relatively to arrow entity (distance = half its length)
-                /// CAREFUL: TO BE EXACT FOR THIS ARROW HEAD MODEL, REMOVE <----0.005m---->
+                /// CAREFUL: TO BE EXACT FOR THIS SPESIFIC ARROW HEAD MODEL, REMOVE <----0.005m---->
                 arrowHeadEntity.setPosition(SIMD3<Float>(0, 0, length/2 - 0.005), relativeTo: arrowEntity)
                 
             }

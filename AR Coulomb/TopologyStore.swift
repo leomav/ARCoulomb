@@ -35,8 +35,6 @@ class TopologyStore {
     
     private func loadSavedTopologies() {
         
-//        print("Load Saved Topologies")
-        
         let fetchRequest: NSFetchRequest<NSTopology> = NSTopology.fetchRequest()
         
         do {
@@ -66,6 +64,33 @@ class TopologyStore {
         } catch {
             print("No saved topologies!")
         }
+    }
+    
+    func saveTopologyToCoreData(pointCharges: [PointChargeClass], name: String, description: String, capturedImage: Data) {
+        
+        // Save the topology info
+        let topology = NSTopology(context: PersistenceService.context)
+        topology.name = name
+        topology.descr = description
+        topology.image = capturedImage
+        PersistenceService.saveContext()
+        
+        // Save pointCharges info
+        pointCharges.forEach{ pointChargeObj in
+            let pointCharge = NSPointCharge(context: PersistenceService.context)
+            pointCharge.posX = pointChargeObj.getPositionX()
+            pointCharge.posY = pointChargeObj.getPositionY()
+            pointCharge.posZ = pointChargeObj.getPositionZ()
+            pointCharge.multiplier = PointChargeClass.multiplier
+            pointCharge.value = pointChargeObj.value
+            pointCharge.topology = topology
+            PersistenceService.saveContext()
+        }
+        
+        // Reload the savedTopologies
+        TopologyStore.sharedInstance.reloadSavedTopologies()
+        //
+        PersistenceService.saveContext()
     }
     
     func saveDefaultTopologiesToCoreData() {
@@ -135,8 +160,6 @@ class TopologyStore {
     }
     
     func deleteTopologyFromCoreData(topology: NSTopology) {
-        
-//        print("Delete Topology From Core Data  (Default)")
 
         /// Delete the NS topo from Core Data
         PersistenceService.context.delete(topology)
@@ -145,8 +168,6 @@ class TopologyStore {
     }
     
     func deleteSavedTopologyFromCoreData(topology: TopologyModel) {
-        
-//        print("Delete Saved Topology From Core Data")
         
         let fetchRequest: NSFetchRequest<NSTopology> = NSTopology.fetchRequest()
         
@@ -170,8 +191,6 @@ class TopologyStore {
     }
     
     func reloadSavedTopologies() {
-        
-//        print("Reload Topologies")
         
         ///  First, delete previous saved topologies
         self.eraseTopologies()

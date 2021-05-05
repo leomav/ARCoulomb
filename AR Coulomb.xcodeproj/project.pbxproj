@@ -14,7 +14,7 @@
 		9F2350F82571601C00E739CB /* Topologies.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9F2350F62571601C00E739CB /* Topologies.xcdatamodeld */; };
 		9F2350FC2571741300E739CB /* PersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2350FB2571741300E739CB /* PersistenceService.swift */; };
 		9F2FC67424F4006800D0BA7D /* Topology.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2FC67324F4006800D0BA7D /* Topology.swift */; };
-		9F368B25249A582000C6E07A /* PointCharge.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 9F368B24249A582000C6E07A /* PointCharge.rcproject */; };
+		9F368B25249A582000C6E07A /* ArrowHeadSelected.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 9F368B24249A582000C6E07A /* ArrowHeadSelected.rcproject */; };
 		9F37040924FAA82900960422 /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F37040824FAA82900960422 /* Status.swift */; };
 		9F3E8B7324F79FBB0018D250 /* ViewController_+_Observers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3E8B7224F79FBB0018D250 /* ViewController_+_Observers.swift */; };
 		9F3E8B7524F7AD980018D250 /* Topology_+_PointCharges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3E8B7424F7AD980018D250 /* Topology_+_PointCharges.swift */; };
@@ -59,7 +59,7 @@
 		9F2350F72571601C00E739CB /* Topologies.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Topologies.xcdatamodel; sourceTree = "<group>"; };
 		9F2350FB2571741300E739CB /* PersistenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceService.swift; sourceTree = "<group>"; };
 		9F2FC67324F4006800D0BA7D /* Topology.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Topology.swift; sourceTree = "<group>"; };
-		9F368B24249A582000C6E07A /* PointCharge.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = PointCharge.rcproject; sourceTree = "<group>"; };
+		9F368B24249A582000C6E07A /* ArrowHeadSelected.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = ArrowHeadSelected.rcproject; sourceTree = "<group>"; };
 		9F37040824FAA82900960422 /* Status.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Status.swift; sourceTree = "<group>"; };
 		9F3E8B7224F79FBB0018D250 /* ViewController_+_Observers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController_+_Observers.swift"; sourceTree = "<group>"; };
 		9F3E8B7424F7AD980018D250 /* Topology_+_PointCharges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Topology_+_PointCharges.swift"; sourceTree = "<group>"; };
@@ -197,7 +197,7 @@
 				9FD9447C249A258600C0E646 /* Assets.xcassets */,
 				9FD9447E249A258600C0E646 /* LaunchScreen.storyboard */,
 				9FD94477249A258400C0E646 /* Experience.rcproject */,
-				9F368B24249A582000C6E07A /* PointCharge.rcproject */,
+				9F368B24249A582000C6E07A /* ArrowHeadSelected.rcproject */,
 				9FFD6FC724ABA5BF00D8DE89 /* ArrowHead.rcproject */,
 				9FD94481249A258600C0E646 /* Info.plist */,
 				9F2350F62571601C00E739CB /* Topologies.xcdatamodeld */,
@@ -324,7 +324,7 @@
 				9FFD6FCC24ABFE2400D8DE89 /* ViewController_+_Gestures.swift in Sources */,
 				9F6D256524BDFCCE00F25D06 /* NetForce.swift in Sources */,
 				9FF874E82578192D00D5532F /* DefaultPositions.swift in Sources */,
-				9F368B25249A582000C6E07A /* PointCharge.rcproject in Sources */,
+				9F368B25249A582000C6E07A /* ArrowHeadSelected.rcproject in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -470,6 +470,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9XSWPVCQM5;
 				INFOPLIST_FILE = "AR Coulomb/Info.plist";
@@ -480,6 +481,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.leomav.AR-Coulomb";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -489,6 +491,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9XSWPVCQM5;
 				INFOPLIST_FILE = "AR Coulomb/Info.plist";
@@ -499,6 +502,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.leomav.AR-Coulomb";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

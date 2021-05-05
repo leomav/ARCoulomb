@@ -195,23 +195,6 @@ extension Topology {
                 /// So, create a radius of 0.1 around it
                 
                 let selectedPosition = self.selectedPositions[0]                
-//                self.selectedPositions.forEach{ pos in
-//                    if pos.x > xmax {
-//                        xmax = pos.x
-//                    }
-//
-//                    if pos.x < xmin {
-//                        xmin = pos.x
-//                    }
-//
-//                    if pos.z > zmax {
-//                        zmax = pos.z
-//                    }
-//
-//                    if pos.z < zmin {
-//                        zmin = pos.z
-//                    }
-//                }
                 
                 xmin = selectedPosition.x - 0.1
                 xmax = selectedPosition.x + 0.1

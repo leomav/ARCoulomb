@@ -122,11 +122,10 @@ class BottomTopoMenuVC: UIViewController {
     
     
     @IBOutlet var bottomTopoMenuView: UIView!
+    
     var selectedTopo: TopologyModel?
     
     override func viewDidLoad() {
-        
-//        print("Bottom Topo Menu did load")
         
         /// Reload savedTopologies, cause Object Identifiers for custom saved topos
         /// change for some reason. Also, do the same before deleting!
@@ -150,7 +149,6 @@ class BottomTopoMenuVC: UIViewController {
     }
     
     private func reloadTopoView() {
-//        print("Reload Topo View")
         
         self.stackView.removeFromSuperview()
         self.configureStackView()
@@ -168,9 +166,8 @@ class BottomTopoMenuVC: UIViewController {
         self.scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         self.scrollView.bottomAnchor.constraint(equalTo: view.topAnchor, constant: 100).isActive = true
     }
+    
     func configureStackView() {
-        
-//        print("Configure Stack View")
         
         self.scrollView.addSubview(self.stackView)
         
@@ -209,7 +206,7 @@ class BottomTopoMenuVC: UIViewController {
             // Add the button to the view
             self.stackView.addArrangedSubview(btn)
             
-            // If i=0, set selectedTopo
+            // If i=0, set it as selectedTopo
             if i == 0 {
                 self.selectTopo(button: btn)
             }
@@ -306,9 +303,10 @@ class BottomTopoMenuVC: UIViewController {
         self.previewDetailsTextView.backgroundColor = UIColor.white.withAlphaComponent(0)
     }
     
+    
+    // MARK: -
+    
     func updatePreview() {
-        
-//        print("Update Preview")
         
         self.previewImageView.image = selectedTopo?.getImage()
         self.previewTitleTextView.text = selectedTopo?.getName().uppercased()
@@ -328,7 +326,6 @@ class BottomTopoMenuVC: UIViewController {
     
     @objc
     func buttonLoadTopoAction(sender: UIButton!) {
-//        print("Load Topo \(selectedTopo!.name)")
         
         /// Notify for new positions
         let notifName = Notification.Name(rawValue: topoNotificationKey)
@@ -342,7 +339,6 @@ class BottomTopoMenuVC: UIViewController {
     
     @objc
     func buttonDeleteTopoAction(sender: UIButton!) {
-//        print("Delete Topo Action")
         
         let btnsend: UIButton = sender
             
@@ -381,8 +377,6 @@ class BottomTopoMenuVC: UIViewController {
     
     private func selectTopo(button: UIButton) {
         
-//        print("Select Topo")
-        
         let totalTopologies = TopologyStore.sharedInstance.totalTopologies()
         if button.tag > -1 && button.tag < (totalTopologies) {
             /// Set the new topology
@@ -400,26 +394,6 @@ class BottomTopoMenuVC: UIViewController {
             self.updatePreview()
         }
     }
-    
-    
-    // MARK: - TouchesBegan: check if touch happened outside the menu subviews
-    
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        let touchView = touches.first?.view
-//        var exit = true
-//
-//        /// If no subView is touched, dismiss
-//        self.bottomTopoMenuView.subviews.forEach{ subView in
-//            if touchView == subView {
-//                exit = false
-//            }
-//        }
-//        if exit == true {
-//            dismiss(animated: true) {
-//                self.notifyObserver(withKey: dismissalNotificationKey)
-//            }
-//        }
-//    }
     
     private func notifyObserver(withKey key: String){
         let notifName = Notification.Name(rawValue: key)
