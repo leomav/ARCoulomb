@@ -24,11 +24,14 @@ extension ViewController {
     // MARK: - Configurations
     
     func configureAngleOverview() {
+        
+        print("Configure Angle Overview")
+        
         self.arView.addSubview(self.angleOverview)
         
         self.angleOverview.leadingAnchor.constraint(equalTo: self.arView.leadingAnchor, constant: 20).isActive = true
         self.angleOverview.topAnchor.constraint(equalTo: self.arView.topAnchor, constant: 20).isActive = true
-        self.angleOverview.heightAnchor.constraint(equalToConstant: 150).isActive = true
+        self.angleOverview.heightAnchor.constraint(equalToConstant: 100).isActive = true
         self.angleOverview.widthAnchor.constraint(equalToConstant: 100).isActive = true
         
         /// Starts off hidden
@@ -37,22 +40,27 @@ extension ViewController {
         ///     2) When Coulomb or Topo menu open
         ///     3) When capturing a snapshot
         self.angleOverview.isHidden = true
-
     }
     
     func configureAngleLabel() {
+        
+        print("Configure Angle Label")
+        
         self.arView.addSubview(self.angleLabel)
         
-        self.angleLabel.leadingAnchor.constraint(equalTo: self.angleOverview.leadingAnchor).isActive = true
-        self.angleLabel.topAnchor.constraint(equalTo: self.angleOverview.bottomAnchor).isActive = true
-        self.angleLabel.trailingAnchor.constraint(equalTo: self.angleOverview.trailingAnchor).isActive = true
-        self.angleLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        
+        self.angleLabel.leadingAnchor.constraint(equalTo: self.angleOverview.trailingAnchor).isActive = true
+        self.angleLabel.topAnchor.constraint(equalTo: self.angleOverview.topAnchor).isActive = true
+        self.angleLabel.heightAnchor.constraint(equalTo: self.angleOverview.heightAnchor).isActive = true
+        self.angleLabel.widthAnchor.constraint(equalToConstant: 70).isActive = true
+
+//        self.angleLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+//        self.angleLabel.trailingAnchor.constraint(equalTo: self.angleOverview.trailingAnchor).isActive = true
+
         self.angleLabel.text = selectedForceValue
         self.angleLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         self.angleLabel.textAlignment = .center
         self.angleLabel.textColor = .white
-        self.angleLabel.backgroundColor = .black
+//        self.angleLabel.backgroundColor = 
         
         self.angleLabel.isHidden = true
     }
@@ -231,16 +239,12 @@ extension ViewController {
         self.angleLabel.isHidden = hide
     }
     
-    // MARK: - SubViews existance
-    func toggleAllSubviews(of view: UIView, hide: Bool) {
-        view.subviews.forEach { sub in
+//    // MARK: - SubViews existance
+//    func toggleAllSubviews(of view: UIView, hide: Bool) {
+//        view.subviews.forEach { sub in
 //            sub.isHidden = hide
-            print(sub)
-            print(":")
-            print(sub.subviews)
-            print()
-        }
-    }
+//        }
+//    }
     
 }
 

@@ -29,7 +29,7 @@ class AnglesOverviewView: UIView {
     let HEAD_WIDTH: Float = 8
     let ARC_RADIUS: Float = 10
     
-    let ARC_COLOR: UIColor = UIColor.orange
+    let ARC_COLOR: UIColor = UIColor.green
     let NETFORCE_COLOR: UIColor = UIColor.green
     let FORCE_COLOR: UIColor = UIColor.white
     let SELECTED_FORCE_COLOR: UIColor = UIColor.yellow
@@ -67,14 +67,12 @@ class AnglesOverviewView: UIView {
 
     // MARK: - Actions
     private func drawForces(center: CGPoint) {
-        
         let netForce = selectedPointChargeObj.netForce!
         drawForce(center: center, angle: netForce.angle, forceType: netForce.type, color: netForce.color, selected: netForce.selected)
         
         netForce.forces.forEach{ f in
             drawForce(center: center, angle: f.angle, forceType: f.type, color: f.color, selected: f.selected)
         }
-        
     }
     
     private func drawForce(center: CGPoint, angle: Float, forceType: ForceType, color: UIColor, selected: Bool) {

@@ -42,7 +42,7 @@ var selectedPointChargeObj: PointChargeClass = PointChargeClass(on: Entity(), in
             selectedForceObj = force
 
         }
-        print("will set")
+//        print("will set")
         
         if let angle = newValue.netForce?.angle {
             if abs(angle.radiansToDegrees - selectedForceAngleFloatValue.radiansToDegrees) >= 1 {
@@ -109,7 +109,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         overview.translatesAutoresizingMaskIntoConstraints = false
         overview.accessibilityIdentifier = "Angle Overview"
         
-        overview.backgroundColor = .black
+        overview.backgroundColor = UIColor(white: 0, alpha: 0)
         
         return overview
     }()
@@ -117,7 +117,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     let angleLabel: UILabel = {
         let label = UILabel()
         
-//        label.translatesAutoresizingMaskIntoConstraiangnts = false
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.accessibilityIdentifier = "Angle Label"
         
         return label
@@ -203,7 +203,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     func captureSnapshot(sender: UIButton) {
         
         /// Hide all subviews (buttons, labels)
-        //        self.toggleAllSubviews(of: self.arView, hide: true)
+//        self.toggleAllSubviews(of: self.arView, hide: true)
         
         // SHUTTER VIEW IS FOR FLASH EFFECT (not working)
         self.shutterView.alpha = 1
@@ -391,11 +391,11 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        print("will disappear")
+//        print("will disappear")
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-        print("did disappear")
+//        print("did disappear")
     }
     
     

@@ -198,7 +198,7 @@ extension ViewController {
     
     @objc
     func updateAnglesOverviewView(notification: Notification) {
-        print(previouslySelectedForceAngleFloatValue.radiansToDegrees, selectedForceAngleFloatValue.radiansToDegrees)
+//        print(previouslySelectedForceAngleFloatValue.radiansToDegrees, selectedForceAngleFloatValue.radiansToDegrees)
         self.angleOverview.setNeedsDisplay()
         self.angleLabel.setNeedsDisplay()
     }
