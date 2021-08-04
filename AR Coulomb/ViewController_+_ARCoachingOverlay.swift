@@ -14,9 +14,18 @@ extension ViewController: ARCoachingOverlayViewDelegate {
         /// - Tag: HideUI
         func coachingOverlayViewWillActivate(_ coachingOverlayView: ARCoachingOverlayView) {
             
+            // DEBUG
+            print("\n ----------------- RECOGNIZERS -----------------")
+            self.arView.gestureRecognizers?.forEach{ r in
+                print(r)
+            }
+            
             /// Disable the gesturesRecognizers
             self.arView.gestureRecognizers?.forEach{ recognizer in
-                recognizer.isEnabled = false
+                /// Don't deactivate the RealityKit Translataion recognizers of the models.
+                if recognizer.name == "First Point Recognizer" || recognizer.name == "Long Press Recognizer" {
+                    recognizer.isEnabled = false
+                }
             }
             
             /// Disable the Placement Indicator
@@ -26,26 +35,33 @@ extension ViewController: ARCoachingOverlayViewDelegate {
         /// - Tag: PresentUI
         func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
             
-            /// Enable the Tap Recognizer to place the Topology after finding a surface
-            self.arView.gestureRecognizers?.first(where: {$0.name == "First Point Recognizer"})?.isEnabled = true
+            // DEBUG
+            print("\n ----------------- RECOGNIZERS -----------------")
+
+            self.arView.gestureRecognizers?.forEach{ r in
+                print(r)
+            }
             
-            /// Helping Message in MessagePanel when surface is detected
-            self.status?.cancelScheduledMessage(for: .planeEstimation)
-            self.status?.showMessage("SURFACE DETECTED")
-            
-            if self.topology != nil {
-                if self.topology.pointCharges.count == 0 {
-                    /// Activate the Placement Indicator
-                    EntityStore.shared.toggle_PlacementIndicator(anchor: placementIndicator, show: true)
-                    /// Schedule message
-                    self.status?.scheduleMessage("TAP TO PLACE TOPOLOGY", inSeconds: 2, messageType: .contentPlacement)
-                }
+            if self.topology.pointCharges.count == 0 {
+                
+                /// Enable the Tap Recognizer to place the Topology after finding a surface
+                self.enableRecognizers(withName: "First Point Recognizer")
+                print("\n DEBUG: Coaching Overlay Did Deactivate")
+                    
+                /// Helping Message in MessagePanel when surface is detected
+                self.status?.cancelScheduledMessage(for: .planeEstimation)
+                self.status?.showMessage("SURFACE DETECTED")
+                    
+                /// Activate the Placement Indicator
+                EntityStore.shared.toggle_PlacementIndicator(anchor: placementIndicator, show: true)
+                /// Schedule message
+                self.status?.scheduleMessage("TAP TO PLACE TOPOLOGY", inSeconds: 2, messageType: .contentPlacement)
             }
         }
     
         /// - Tag: StartOver
         func coachingOverlayViewDidRequestSessionReset(_ coachingOverlayView: ARCoachingOverlayView) {
-            print("coaching Overlay View did REQUEST SESSION RESET")
+            print("\n DEBUG: Coaching Overlay did REQUEST SESSION RESET")
             restartExperience()
         }
 

@@ -30,8 +30,11 @@ class Topology {
     var labels: [Entity]
     /// A pointChargeEntity Template used for cloning
     var pointChargeEntityTemplate: Entity?
+    /// Saved Status
+    var saved: Bool
     
     init() {
+        self.saved = true
         self.selectedPositions = []
         self.pointCharges = []
         self.netForces = []

@@ -181,10 +181,20 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     func goBack(sender: UIButton){
         // - TODO:
         
+        self.toggleToMenu(menu: "main")
         // Show forces
-        self.topology.toggleAllForces(show: true)
-        
-        self.transitionStackViewMenu(to: "main")
+//        self.topology.toggleAllForces(show: true)
+//
+//        self.transitionStackViewMenu(to: "main")
+    }
+    
+    func toggleToMenu(menu: String) {
+        if menu == "main" {
+            self.topology.toggleAllForces(show: true)
+        } else {
+            self.topology.toggleAllForces(show: false)
+        }
+        self.transitionStackViewMenu(to: menu)
     }
     
     let captureButton: UIButton = {
@@ -245,10 +255,11 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     @objc
     func openCaptureMenu(sender: UIButton) {
         
+        self.toggleToMenu(menu: "camera")
         // Hide all forces
-        self.topology.toggleAllForces(show: false)
-        
-        self.transitionStackViewMenu(to: "camera")
+//        self.topology.toggleAllForces(show: false)
+//        
+//        self.transitionStackViewMenu(to: "camera")
     }
     
     let newTopoButton: UIButton = {
@@ -264,7 +275,13 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     @objc
     func confirmSeagueToTopoMenu(sender: UIButton) {
-        Alert.showSeagueToTopoMenuConfirmation(on: self)
+        if self.topology.saved == false {
+            // Not saved, show Alert
+            Alert.showSeagueToTopoMenuConfirmation(on: self)
+        } else {
+            // Already saved, go to New Topology Menu
+            self.performSegueToTopoMenu()
+        }
     }
     
     let addButton: UIButton = {
@@ -406,6 +423,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         config.planeDetection = [.horizontal, .vertical]
         config.environmentTexturing = .automatic
         
+        // People Occlusion
+        config.frameSemantics.insert(.personSegmentationWithDepth)
+        
         self.arView.session.run(config, options: [.resetTracking, .removeExistingAnchors])
         
         /// Enabel/Disable Renderer Options
@@ -504,14 +524,15 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     // MARK: - Reset Tracking
-    
     private func resetTracking() {
         selectedPointChargeObj = PointChargeClass(on: Entity(), inside: self.topology, withValue: 0)
         longPressedEntity = Entity()
         trackedEntity = Entity()
         
-        self.arView.gestureRecognizers?.first(where: {$0.name == "First Point Recognizer"})?.isEnabled = true
-        self.arView.gestureRecognizers?.first(where: {$0.name == "Long Press Recognizer"})?.isEnabled = false
+//        self.arView.gestureRecognizers?.first(where: {$0.name == "First Point Recognizer"})?.isEnabled = true
+        self.enableRecognizers(withName: "First Point Recognizer")
+//        self.arView.gestureRecognizers?.first(where: {$0.name == "Long Press Recognizer"})?.isEnabled = false
+        self.disableRecognizers(withName: "Long Press Recognizer")
         
         self.setupARView()
         

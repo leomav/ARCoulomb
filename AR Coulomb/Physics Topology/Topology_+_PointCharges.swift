@@ -79,12 +79,19 @@ extension Topology {
         
         /// Install gestures, careful to set its ".cancelTouchesInView" to false cause it cancels touches gestures  other than
         /// the installed below (I do that in Topology Placement)
-        self.viewController?.arView.installGestures([.translation, .rotation], for: point as! HasCollision)
-        
+        self.viewController?.arView.installGestures([.translation], for: point as! HasCollision)
+//        self.viewController?.arView.installGestures([.translation, .rotation], for: point as! HasCollision)
+
         /// Enable the pointCharge LongPress Recognizer
         /// Careful that the above installedGesutres for translation and rotation disable the rest recognizers
         /// so for them set ".cancelsTouchesInView" to false, so that LongPress Recognizer is active
         self.viewController?.enableRecognizers(withName: "Long Press Recognizer")
+        
+        //
+//        print("Print gesture Recognizers")
+//        self.viewController?.arView.gestureRecognizers?.forEach{ r in
+//            print(r)
+//        }
     }
     
     func addPointCharge(to pos: SIMD3<Float>) {
@@ -107,12 +114,19 @@ extension Topology {
         
         /// Install gestures, careful to set its ".cancelTouchesInView" to false cause it cancels touches gestures  other than
         /// the installed below (I do that in Topology Placement)
-        self.viewController?.arView.installGestures([.translation, .rotation], for: point as! HasCollision)
-        
+        self.viewController?.arView.installGestures([.translation], for: point as! HasCollision)
+//        self.viewController?.arView.installGestures([.translation, .rotation], for: point as! HasCollision)
+
         /// Enable the pointCharge LongPress Recognizer
         /// Careful that the above installedGesutres for translation and rotation disable the rest recognizers
         /// so for them set ".cancelsTouchesInView" to false, so that LongPress Recognizer is active
         self.viewController?.enableRecognizers(withName: "Long Press Recognizer")
+        
+        //
+//        print("Print gesture Recognizers")
+//        self.viewController?.arView.gestureRecognizers?.forEach{ r in
+//            print(r)
+//        }
     }
     
     func removeAllPointCharges() {

@@ -62,6 +62,27 @@ struct Alert {
         
     }
     
+    private static func showSuccessAlert(on vc: ViewController, title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        vc.present(alert, animated: true, completion: nil)
+        
+        // change to desired number of seconds (in this case 5 seconds)
+        let when = DispatchTime.now() + 3
+        DispatchQueue.main.asyncAfter(deadline: when){
+          // your code with delay
+          alert.dismiss(animated: true, completion: nil)
+        }
+    }
+    
+    /**
+    -----------------------------------------------
+     */
+    
+    static func showSuccessfulSaveTopologyAlert(on vc: ViewController) {
+        showSuccessAlert(on: vc, title: "Saved", message: "Your topology was saved successfully!")
+    }
+    
     static func showDeletionConfirmation(on vc: ViewController) {
         showConfirmationAlert(on: vc, title: "Confirm", message: "Are you sure you want to delete this Point of Charge?")
     }

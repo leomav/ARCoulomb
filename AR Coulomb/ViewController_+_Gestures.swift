@@ -93,6 +93,12 @@ extension ViewController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let location = touches.first?.location(in: self.arView) else {return}
         guard let hitEntity = self.arView.entity(at: location) else {return}
+        
+        // DEBUG
+//        self.arView.gestureRecognizers?.forEach{ r in
+//            print(r)
+//        }
+        //
 
         if hitEntity.name == "pointCharge" {
             
@@ -246,6 +252,7 @@ extension ViewController {
         Anchor is placed
     */
     func disableRecognizers(withName name: String) {
+        
         self.arView.gestureRecognizers?.forEach{ recognizer in
             
             /// Disable the First Touch Topology Anchor Placement recognizer

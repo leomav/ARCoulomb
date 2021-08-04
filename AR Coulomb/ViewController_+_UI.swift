@@ -52,14 +52,11 @@ extension ViewController {
         self.angleLabel.topAnchor.constraint(equalTo: self.angleOverview.topAnchor).isActive = true
         self.angleLabel.heightAnchor.constraint(equalTo: self.angleOverview.heightAnchor).isActive = true
         self.angleLabel.widthAnchor.constraint(equalToConstant: 70).isActive = true
-
-//        self.angleLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-//        self.angleLabel.trailingAnchor.constraint(equalTo: self.angleOverview.trailingAnchor).isActive = true
-
+        
         self.angleLabel.text = selectedForceValue
         self.angleLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         self.angleLabel.textAlignment = .center
-        self.angleLabel.textColor = .white
+        self.angleLabel.textColor = .yellow
 //        self.angleLabel.backgroundColor = 
         
         self.angleLabel.isHidden = true

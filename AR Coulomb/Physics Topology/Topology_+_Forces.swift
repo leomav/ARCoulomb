@@ -86,6 +86,9 @@ extension Topology {
     
     func updateForces(reDraw: Bool = true) {
         
+        // Topology's status should be not saved
+        self.saved = false
+        
         self.netForces.forEach{ netForceObj in
             
             netForceObj.forces.forEach{ forceObj in
@@ -117,6 +120,9 @@ extension Topology {
     }
     
     func updateForces(for pointCharge: PointChargeClass, reDraw: Bool = true) {
+        
+        // Topology's status should be not saved
+        self.saved = false
         
         ///  Forces rendered on the pointCharge
         pointCharge.netForce?.forces.forEach{ force in

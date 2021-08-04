@@ -15,28 +15,18 @@ enum ForceType {
 
 class AnglesOverviewView: UIView {
     
-//    let FORCE_ARROW_TAIL_LENGTH: Float = 0.003
-//    let NETFORCE_ARROW_TAIL_LENGTH: Float = 0.005
-//    let ARROW_TAIL_WIDTH: Float = 0.0005
-//    let HEAD_LENGTH: Float = 0.001
-//    let HEAD_WIDTH: Float = 0.001
-//    let ARC_RADIUS: Float = 0.002
-    
     let FORCE_ARROW_TAIL_LENGTH: Float = 30
     let NETFORCE_ARROW_TAIL_LENGTH: Float = 50
     let ARROW_TAIL_WIDTH: Float = 2
     let HEAD_LENGTH: Float = 10
-    let HEAD_WIDTH: Float = 8
+    let HEAD_WIDTH: Float = 7
     let ARC_RADIUS: Float = 10
     
-    let ARC_COLOR: UIColor = UIColor.green
-    let NETFORCE_COLOR: UIColor = UIColor.green
-    let FORCE_COLOR: UIColor = UIColor.white
-    let SELECTED_FORCE_COLOR: UIColor = UIColor.yellow
+    let ARC_COLOR: UIColor = UIColor.yellow
+//    let NETFORCE_COLOR: UIColor = UIColor.white
+//    let FORCE_COLOR: UIColor = UIColor.white
+//    let SELECTED_FORCE_COLOR: UIColor = UIColor.green
     
-//    var forcesDrawings: [Int: ForceDrawing] =  [:]
-//    
-//    var selectedForceDrawIndex = -1
     
     // MARK: - Initialization
     override init(frame: CGRect) {
@@ -97,6 +87,7 @@ class AnglesOverviewView: UIView {
         // Fill with color
         color.setFill()
         arrowPath.fill()
+        arrowPath.stroke(with: .color, alpha: 1)
         
         // If force is the selected one, draw Arc
         if selected {
@@ -120,7 +111,6 @@ class AnglesOverviewView: UIView {
         // Fill color
         ARC_COLOR.setFill()
         arcPath.fill()
-        
     }
     
 //    private func drawForce(center: CGPoint, force: ForceDrawing) {

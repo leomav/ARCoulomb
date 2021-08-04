@@ -176,6 +176,13 @@ extension ViewController {
 //                TopologyStore.sharedInstance.reloadSavedTopologies()
 //                //
 //                PersistenceService.saveContext()
+                
+                // Mark topology as saved
+                self.topology.saved = true
+                // Show Alert
+                Alert.showSuccessfulSaveTopologyAlert(on: self)
+                // Go back to main menu
+                self.toggleToMenu(menu: "main")
             }
             
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }

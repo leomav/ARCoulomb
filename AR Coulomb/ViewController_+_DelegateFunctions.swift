@@ -34,9 +34,23 @@ extension ViewController: ARSessionDelegate{
 //        print()
 //    }
     
+    /// Try to relocalize after interruption
+    func sessionShouldAttemptRelocalization(_ session: ARSession) -> Bool {
+        print("relocalization attempt")
+        return true
+    }
     
     
-    /// Changes to the quality of ARKit's device position tracking
+    func sessionInterruptionEnded(_ session: ARSession) {
+        print("interruption ended")
+    }
+    
+    func sessionWasInterrupted(_ session: ARSession) {
+        print("interruption")
+        
+    }
+    
+    /// Changes to the quality of ARKit's position tracking
     func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
         self.status?.showTrackingQualityInfo(for: camera.trackingState, autoHide: true)
         switch camera.trackingState {
@@ -44,9 +58,11 @@ extension ViewController: ARSessionDelegate{
             self.status?.escalateFeedback(for: camera.trackingState, inSeconds: 3.0)
         case .normal:
             self.status?.cancelScheduledMessage(for: .trackingStateEscalation)
-            self.topology.toggleTopology(show: false)
+            
+//            self.topology.toggleTopology(show: false)
         }
     }
+    
     
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
                 
