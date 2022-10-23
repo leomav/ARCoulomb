@@ -1,4 +1,4 @@
-# ARFortia 
+# ARCoulomb 
 An AR application to present Coulomb's law simulations for iOS devices
 - OS: iOS
 - Language: Swift
